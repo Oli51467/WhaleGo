@@ -1,17 +1,18 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <router-link class="navbar-brand" :to="{ name: 'battle'}">King Of Bots</router-link>
+      <router-link class="navbar-brand" :to="{ name: 'battle' }">King Of Bots</router-link>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'battle' }">Battle</router-link>
+            <!--如果想在属性中使用表达式，则用冒号引一下-->
+            <router-link v-bind:class="route_name == 'battle' ? 'nav-link active': 'nav-link'" :to="{ name: 'battle' }">Battle</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'record' }">Record</router-link>
+            <router-link v-bind:class="route_name == 'record' ? 'nav-link active' : 'nav-link'" :to="{ name: 'record' }">Record</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'rank' }">Ranking</router-link>
+            <router-link v-bind:class="route_name == 'rank' ? 'nav-link active' : 'nav-link'" :to="{ name: 'rank' }">Ranking</router-link>
           </li>
         </ul>
         <ul class="navbar-nav">
@@ -36,10 +37,18 @@
 </template>
     
 <script>
-
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
 export default {
-  name: "NavBar",
+  setup() {
+    const route = useRoute();
+    let route_name = computed(() => route.name)
+    return {
+      route_name
+    }
+  },
+  name: "NavBar"
 }
 </script>
     

@@ -1,30 +1,30 @@
 <template>
 
     <div class="container">
-      <div class="card">
-        <div class="card-body">
-          <slot></slot>
-          <!--slot存放父组件传来的所有children-->
+        <div class="card">
+            <div class="card-body">
+                <slot></slot>
+                <!--slot存放父组件传来的所有children-->
+            </div>
         </div>
-      </div>
     </div>
+
+</template>
   
-  </template>
-  
-  <script>
-  export default {
+<script>
+export default {
     name: 'ContentBase',
     components: {
     }
-  }
-  </script>
+}
+</script>
   
-  <style scoped>
-  .container {
+<style scoped>
+.container {
     margin-top: 20px;
-  }
-  
-  .card-body {
+}
+
+.card-body {
     text-align: left;
-  }
-  </style>
+}
+</style>
