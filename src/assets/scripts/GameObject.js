@@ -8,15 +8,12 @@ export class GameObject {
     }
 
     start() {   // 只执行一次
-
     }
 
     update() {  // 除第一帧外，每一帧执行一次
-
     }
 
     on_destory() {  // 删除之前执行
-
     }
 
     destory() {

@@ -9,7 +9,7 @@ export class GameMap extends GameObject {
         this.parent = parent;
         this.L = 0;     // 每个格子的绝对距离
         this.rows = 19;
-        this.cols = 19;
+        this.cols = 20;
 
         this.inner_walls_count = 55;
         this.walls = []; // 存储所有的墙
@@ -51,9 +51,9 @@ export class GameMap extends GameObject {
             for (let j = 0; j < 1000; j ++ ) {
                 let r = parseInt(Math.random() * this.rows);
                 let c = parseInt(Math.random() * this.cols);
-                if (g[r][c] || g[c][r]) continue;   // 若已经覆盖则继续
+                if (g[r][c] || g[this.rows - 1 - r][this.cols - 1 - c]) continue;   // 若已经覆盖则继续
                 if (r == this.rows - 2 && c == 1 || r == 1 && c == this.cols - 2) continue; // 若随机到左下或右下，则继续
-                g[r][c] = g[c][r] = true;
+                g[r][c] = g[this.rows - 1 - r][this.cols - 1 - c] = true;
                 break;
             }
         }
