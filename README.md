@@ -1,24 +1,18 @@
-# kob-front
+# kob
+king of bots 贪吃蛇对战平台前端
 
-## Project setup
-```
-npm install
-```
+> 好玩的贪吃蛇大战
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 技术栈
 
-### Compiles and minifies for production
-```
-npm run build
-```
+- 前端
+    - Vue3
+    - Axios
+    - Vue Router
+- 后端
+    - Java
+    - Springboot
+    - SpringSecurity
+    - Redis
+    - MySql
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
