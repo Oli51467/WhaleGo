@@ -1,17 +1,15 @@
 <template>
-    <ContentBase>
-        Battle
-    </ContentBase>
+    <PlayGround/>
 </template>
 
 <script>
-import ContentBase from '@/components/ContentBase';
+import PlayGround from '@/components/PlayGround.vue';
 
 export default {
   name: 'BattleIndex',
   // 存放templates中用到的其他组件
   components: {
-    ContentBase
+    PlayGround
   }
 }
 </script>
