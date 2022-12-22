@@ -32,10 +32,10 @@ export class Snake extends GameObject {
         this.direction = d;
     }
 
-    check_tail_increasing() {
-        if (this.step <= 10) return true;
-        if (this.step % 3 === 1) return true;
-        return false;
+    check_tail_move() {
+        if (this.step <= 10) return false;
+        if (this.step % 3 === 1) return false;
+        return true;
     }
 
     next_step() {   // 将蛇的状态变为走下一步 更新this.next_cell
@@ -49,6 +49,9 @@ export class Snake extends GameObject {
         for (let i = k; i > 0; i -- ) {
             this.cells[i] = JSON.parse(JSON.stringify(this.cells[i - 1]));  // 将旧的复制一份
         }
+        if (!this.gamemap.check_valid_move(this.next_cell)) {    // 下一步不合法
+            this.status = "die";
+        }
     }
 
     update_move() { // 每秒钟控制蛇的移动
@@ -61,7 +64,7 @@ export class Snake extends GameObject {
             this.next_cell = null;
             this.status = "idle";   // 走完了 更新状态
 
-            if (!this.check_tail_increasing()) {    // 蛇不变长就将蛇尾砍掉
+            if (this.check_tail_move()) {    // 蛇不变长就将蛇尾砍掉
                 this.cells.pop();
             }
         } else {
@@ -69,7 +72,7 @@ export class Snake extends GameObject {
             this.cells[0].x += move_distance * dx / distance;   // x实际走的距离
             this.cells[0].y += move_distance * dy / distance;
 
-            if (!this.check_tail_increasing()) {
+            if (this.check_tail_move()) {
                 const k = this.cells.length;
                 const tail = this.cells[k - 1], tail_target = this.cells[k - 2];
                 const tail_dx = tail_target.x - tail.x;
@@ -93,11 +96,14 @@ export class Snake extends GameObject {
         const ctx = this.gamemap.ctx;
 
         ctx.fillStyle = this.color;
+        if (this.status === "die") {
+            ctx.fillStyle = "white";
+        }
+
         for (const cell of this.cells) {
             ctx.beginPath();
             // 前两个参数是圆弧中点，第三个参数是圆弧半径， 后两个参数是起始角度和中止角度
             ctx.arc(cell.x * L, cell.y * L, L / 2 * 0.8, 0, Math.PI * 2);
-            ctx.fillStyle = this.color;
             ctx.fill();
         }
 

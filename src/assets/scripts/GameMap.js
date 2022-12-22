@@ -123,6 +123,26 @@ export class GameMap extends GameObject {
         return true;
     }
 
+    // 判断目标位置是否合法：没有撞到两条蛇的身体和障碍物
+    check_valid_move(cell) {
+        for (const wall of this.walls) {
+            if (wall.row === cell.r && wall.col === cell.c) return false;
+        }
+
+        for (const snake of this.snakes) {
+            let k = snake.cells.length;
+            if (snake.check_tail_move()) {     // 蛇尾移动的时候不判断自己的头咬到尾
+                k -- ;
+            } 
+            for (let i = 0; i < k; i ++ ) {
+                if (cell.r === snake.cells[i].r && cell.c === snake.cells[i].c) 
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
     // 当两条蛇给出移动指令时，控制两条蛇移动进入下一回合
     next_step() {   
         for (const snake of this.snakes) {
