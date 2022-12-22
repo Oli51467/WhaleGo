@@ -96,9 +96,21 @@ export class Snake extends GameObject {
         for (const cell of this.cells) {
             ctx.beginPath();
             // 前两个参数是圆弧中点，第三个参数是圆弧半径， 后两个参数是起始角度和中止角度
-            ctx.arc(cell.x * L, cell.y * L, L / 2, 0, Math.PI * 2);
+            ctx.arc(cell.x * L, cell.y * L, L / 2 * 0.8, 0, Math.PI * 2);
             ctx.fillStyle = this.color;
             ctx.fill();
+        }
+
+        // 渲染的时候将蛇身连起来，思路是在两个相邻的蛇身之间画一个矩形
+        for (let i = 1; i < this.cells.length; i ++ ) {
+            const a = this.cells[i - 1], b = this.cells[i];
+            // 如果两个格子已经移动地很近，则可以不用画
+            if (Math.abs(a.x - b.x) < this.eps && Math.abs(a.y - b.y) < this.eps) continue;
+            if (Math.abs(a.x - b.x) < this.eps) {   // 竖直方向相连的情况
+                ctx.fillRect((a.x - 0.4) * L, Math.min(a.y, b.y) * L, L * 0.8, Math.abs(a.y - b.y) * L);
+            } else {
+                ctx.fillRect(Math.min(a.x, b.x) * L, (a.y - 0.4) * L, Math.abs(a.x - b.x) * L, L * 0.8);
+            }
         }
     }
 }
