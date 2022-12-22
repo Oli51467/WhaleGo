@@ -35,6 +35,7 @@ export class GameMap extends GameObject {
         return false;
     }
 
+    // 创建障碍物
     create_walls() {
         const g = [];   // 位置是否有墙的二维bool数组
         for (let r = 0; r < this.rows; r ++ ) {
@@ -79,14 +80,33 @@ export class GameMap extends GameObject {
         return true;
     }
 
+    // 给canvas添加监听事件
+    add_listening_events() {
+        this.ctx.canvas.focus();    // 先聚焦
+        const [snake0, snake1] = this.snakes;
+        this.ctx.canvas.addEventListener("keydown", e => {
+            if (e.key === 'w') snake0.set_direction(0);
+            else if (e.key === 'd') snake0.set_direction(1);
+            else if (e.key === 's') snake0.set_direction(2);
+            else if (e.key === 'a') snake0.set_direction(3);
+            else if (e.key === 'ArrowUp') snake1.set_direction(0);
+            else if (e.key === 'ArrowRight') snake1.set_direction(1);
+            else if (e.key === 'ArrowDown') snake1.set_direction(2);
+            else if (e.key === 'ArrowLeft') snake1.set_direction(3);
+        });
+    }
+
+    // 开始执行一次
     start() {
         for (let i = 0; i < 1000; i ++ ) {
             if (this.create_walls()) {
                 break;
             }
         }
+        this.add_listening_events();
     }
 
+    // 每秒根据浏览器更新大小
     update_size() {
         // 因为区域是不断变化的，所以要在每一帧里动态地求一个区域中可以包含的最大的矩形的一个格子的长和宽
         this.L = parseInt(Math.min(this.parent.clientWidth / this.cols, this.parent.clientHeight / this.rows));
@@ -94,11 +114,32 @@ export class GameMap extends GameObject {
         this.ctx.canvas.height = this.L * this.rows;
     }
 
+    // 检查两条蛇是否准备好 并且是否都发出了移动指令
+    check_ready() { 
+        for (const snake of this.snakes) {
+            if (snake.status !== "idle") return false;
+            if (snake.direction === -1) return false;
+        }
+        return true;
+    }
+
+    // 当两条蛇给出移动指令时，控制两条蛇移动进入下一回合
+    next_step() {   
+        for (const snake of this.snakes) {
+            snake.next_step();
+        }
+    }
+
+    // 每秒执行60次
     update() {
         this.update_size();
+        if (this.check_ready()) {
+             this.next_step();   
+        }
         this.render();
     }
 
+    // 渲染
     render() {
         const color_even = "#AAD751", color_odd = "#A2D149";
         for (let r = 0; r < this.rows; r ++ ) {
