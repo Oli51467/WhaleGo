@@ -1,4 +1,5 @@
 import { GameObject } from "./GameObject";
+import { Snake } from "./Snake";
 import { Wall } from "./Wall";
 
 export class GameMap extends GameObject {
@@ -13,6 +14,11 @@ export class GameMap extends GameObject {
 
         this.inner_walls_count = 55;
         this.walls = []; // 存储所有的墙
+
+        this.snakes = [
+            new Snake({id: 0, color: "#4876EC", r: this.rows - 2, c: 1}, this),
+            new Snake({id: 1, color: "#F94848", r: 1, c: this.cols - 2}, this),
+        ]
     }
 
     // flood fill判断连通性
