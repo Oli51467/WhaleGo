@@ -11,7 +11,7 @@ export class GameMap extends GameObject {
         this.rows = 19;
         this.cols = 19;
 
-        this.inner_walls_count = 50;
+        this.inner_walls_count = 55;
         this.walls = []; // 存储所有的墙
     }
 
