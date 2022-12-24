@@ -8,6 +8,7 @@ const UserModule = {
         avatar: "",
         token: "",
         is_login: false,
+        show_login_page: true,
     },
     getters: {
     },

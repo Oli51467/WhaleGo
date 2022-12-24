@@ -1,5 +1,5 @@
 <template>
-    <ContentBase>
+    <ContentBase v-if="$store.state.user.show_login_page">
         <div class="row justify-content-md-center">
             <div class="col-3">
                 <!--为表单设置点击事件 并使用.prevent屏蔽其他事件-->
@@ -40,6 +40,7 @@ export default {
 
         const login = () => {
             error_message.value = "";
+            store.state.user.show_login_page = false;
             store.dispatch("login", {
                 username: username.value,
                 password: password.value,
@@ -48,6 +49,7 @@ export default {
                         success() {
                             router.push({ name: 'battle'});
                             console.log(store.state.user);
+                            store.state.user.show_login_page = true;
                         }
                     })
                 },
