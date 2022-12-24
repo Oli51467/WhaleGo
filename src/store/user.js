@@ -26,6 +26,7 @@ const UserModule = {
             state.id = "";
             state.username = "";
             state.avatar = "";
+            state.token = "";
             state.is_login = false;
         }
     },
@@ -77,6 +78,10 @@ const UserModule = {
                   data.error(resp);
                 }
               })
+        },
+
+        logout(context) {
+            context.commit("logout");
         }
     },
     modules: {

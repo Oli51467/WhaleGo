@@ -32,7 +32,7 @@
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="#">Exit</a></li>
+              <li><a class="dropdown-item" href="#" @click="logout">Exit</a></li>
             </ul>
           </li>
         </ul>
@@ -54,13 +54,20 @@
 <script>
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   setup() {
     const route = useRoute();
+    const store = useStore();
     let route_name = computed(() => route.name)
+
+    const logout = () => {
+      store.dispatch("logout");
+    }
     return {
-      route_name
+      route_name,
+      logout
     }
   },
   name: "NavBar"
