@@ -4,16 +4,16 @@
       <router-link class="navbar-brand" :to="{ name: 'home' }">Snakes</router-link>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item" v-if="$store.state.user.is_login">
+          <li class="nav-item">
             <!--如果想在属性中使用表达式，则用冒号引一下-->
             <router-link v-bind:class="route_name == 'battle' ? 'nav-link active' : 'nav-link'"
               :to="{ name: 'battle' }">Battle</router-link>
           </li>
-          <li class="nav-item" v-if="$store.state.user.is_login">
+          <li class="nav-item">
             <router-link v-bind:class="route_name == 'record' ? 'nav-link active' : 'nav-link'"
               :to="{ name: 'record' }">Record</router-link>
           </li>
-          <li class="nav-item" v-if="$store.state.user.is_login">
+          <li class="nav-item">
             <router-link v-bind:class="route_name == 'rank' ? 'nav-link active' : 'nav-link'"
               :to="{ name: 'rank' }">Ranking</router-link>
           </li>
