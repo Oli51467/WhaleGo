@@ -25,22 +25,6 @@ export default {
       localStorage.setItem('store', JSON.stringify(this.$store.state))
     })
   }
-
-  // $.ajax({
-  //   url: "http://127.0.0.1:3000/api/account/register/",
-  //   type: "post",
-  //   data: {
-  //     username: "abc",
-  //     password: "123",
-  //     confirmedPassword: "123",
-  //   },
-  //   success(resp) {
-  //     console.log(resp);
-  //   },
-  //   error(resp) {
-  //     console.log(resp);
-  //   }
-  // })
 }
 </script>
 
