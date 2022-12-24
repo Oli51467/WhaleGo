@@ -7,7 +7,6 @@ const UserModule = {
         username: "",
         avatar: "",
         token: "",
-        password: "",
         is_login: false,
     },
     getters: {
@@ -18,7 +17,6 @@ const UserModule = {
             state.id = user.id;
             state.username = user.username;
             state.avatar = user.avatar;
-            state.password = user.password;
             state.is_login = user.is_login;
         },
         updateToken(state, token) {
@@ -27,13 +25,12 @@ const UserModule = {
         logout(state) {
             state.id = "";
             state.username = "";
-            state.password = "";
             state.avatar = "";
             state.is_login = false;
         }
     },
     actions: {
-        // context为上下文
+        // context为上下文 用户点击登陆时调用
         login(context, userInfo) {
             $.ajax({
                 url: `${API_URL}/account/token/`,
@@ -45,13 +42,6 @@ const UserModule = {
                 success(resp) {
                     if (resp.msg === "success") {
                         context.commit("updateToken", resp.token);  // 登陆成功后更新token
-                        context.commit("updateUserInfo", {          // 更新用户信息 存储到store中
-                            id: userInfo.id,
-                            username: userInfo.username,
-                            password: userInfo.password,
-                            avatar: userInfo.avatar,
-                            is_login: true,
-                        });
                         userInfo.success(resp); // 成功的回调函数
                     } else {
                         userInfo.error(resp);   // 失败的回调函数
@@ -61,6 +51,32 @@ const UserModule = {
                     userInfo.error(resp);
                 }
             })
+        },
+
+        //  从后端获取当前登陆的用户的信息，包括用户名、头像
+        getInfo(context, data) {
+            $.ajax({
+                url: `${API_URL}/account/info/`,
+                type: "get",
+                headers: {
+                  Authorization: "Bearer " + context.state.token,
+                },
+                success(resp) {
+                    if (resp.msg === "success") {
+                        console.log("!!", resp);
+                        context.commit("updateUserInfo", {          // 更新用户信息 存储到store中
+                            ...resp,    // 解构resp 直接填充到函数的参数列表中
+                            is_login: true,
+                        });
+                        data.success(resp);
+                    } else {
+                        data.error(resp);
+                    }
+                },
+                error(resp) {
+                  data.error(resp);
+                }
+              })
         }
     },
     modules: {

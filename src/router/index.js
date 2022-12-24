@@ -9,9 +9,8 @@ import RegisterView from '../views/user/account/RegisterView'
 
 const routes = [
   {
-    path: '/',
+    path: '/index',
     name: "home",
-    redirect: "/battle"
   },
   { 
     path: '/battle/',

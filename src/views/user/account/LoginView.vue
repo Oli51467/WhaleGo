@@ -43,9 +43,13 @@ export default {
             store.dispatch("login", {
                 username: username.value,
                 password: password.value,
-                success(resp) {
-                    router.push({ name: 'home'});
-                    console.log("dispatch login -> ", resp);
+                success() {
+                    store.dispatch("getInfo", {
+                        success() {
+                            router.push({ name: 'battle'});
+                            console.log(store.state.user);
+                        }
+                    })
                 },
                 error(resp) {
                     console.log("dispatch login ->", resp);
