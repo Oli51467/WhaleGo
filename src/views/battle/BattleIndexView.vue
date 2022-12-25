@@ -37,13 +37,17 @@ export default {
 
       socket.onmessage = msg => {
         const data = JSON.parse(msg.data);
-        console.log(data);
         if (data.event === "start") { // 匹配成功
           console.log(data.opponent_username + data.opponent_avatar);
           store.commit("updateOpponent", {
             username: data.opponent_username,
             avatar: data.opponent_avatar,
           });
+          store.commit("updateStatus", "pending");
+          setTimeout(() => {
+            store.commit("updateStatus", "playing");
+          }, 2500);
+          store.commit("updateGamemap", data.game_map); 
         }
       }
 
@@ -54,6 +58,7 @@ export default {
 
     onUnmounted(() => {
       socket.close();
+      store.commit("updateStatus", "waiting");
     })
   }
 }

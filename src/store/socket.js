@@ -4,6 +4,7 @@ const SocketModule = {
         socket: null,
         opponent_username: "",
         opponent_avatar: "",
+        gamemap: null,
     },
     getters: {
 
@@ -18,6 +19,9 @@ const SocketModule = {
         },
         updateStatus(state, status) {
             state.status = status;
+        },
+        updateGamemap(state, gamemap) {
+            state.gamemap = gamemap;
         }
     },
 

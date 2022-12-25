@@ -3,11 +3,12 @@ import { Snake } from "./Snake";
 import { Wall } from "./Wall";
 
 export class GameMap extends GameObject {
-    constructor(ctx, parent) {
+    constructor(ctx, parent, store) {
         super();    // 这里先执行父类的构造函数
 
         this.ctx = ctx;
         this.parent = parent;
+        this.store = store;
         this.L = 0;     // 每个格子的绝对距离
         this.rows = 19;
         this.cols = 20;
@@ -21,55 +22,9 @@ export class GameMap extends GameObject {
         ]
     }
 
-    // flood fill判断连通性
-    check_connectivity(g, sx, sy, tx, ty) {
-        if (sx == tx && sy == ty) return true;
-        g[sx][sy] = true;   // 该位置走过了，不要往回走
-        let dx = [-1, 0, 1, 0], dy = [0, 1, 0, -1];
-        for (let i = 0; i < 4; i ++ ) {
-            let x = sx + dx[i], y = sy + dy[i];
-            if (!g[x][y] && this.check_connectivity(g, x, y, tx, ty)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     // 创建障碍物
-    create_walls() {
-        const g = [];   // 位置是否有墙的二维bool数组
-        for (let r = 0; r < this.rows; r ++ ) {
-            g[r] = [];
-            for (let c = 0; c < this.cols; c ++ ) {
-                g[r][c] = false;
-            }
-        }
-        // 给四周加墙
-        for (let r = 0; r < this.rows; r ++ ) {
-            g[r][0] = g[r][this.cols - 1] = true;
-        }
-
-        for (let c = 0; c < this.cols; c ++ ) {
-            g[0][c] = g[this.rows - 1][c] = true;
-        }
-
-        // 创建随机障碍物
-        for (let i = 0; i < this.inner_walls_count / 2; i ++ ) {
-            for (let j = 0; j < 1000; j ++ ) {
-                let r = parseInt(Math.random() * this.rows);
-                let c = parseInt(Math.random() * this.cols);
-                if (g[r][c] || g[this.rows - 1 - r][this.cols - 1 - c]) continue;   // 若已经覆盖则继续
-                if (r == this.rows - 2 && c == 1 || r == 1 && c == this.cols - 2) continue; // 若随机到左下或右下，则继续
-                g[r][c] = g[this.rows - 1 - r][this.cols - 1 - c] = true;
-                break;
-            }
-        }
-
-        const cogy_g = JSON.parse(JSON.stringify(g));   // 将墙的位置的参数传过去 为了不脏掉重新复制一份
-        // 检查连通性 如果两头不连通 则返回重新生成
-        if (!this.check_connectivity(cogy_g, this.rows - 2, 1, 1, this.cols - 2)) {
-            return false;
-        }
+    create_map() {
+        const g = this.store.state.socket.gamemap;
         for (let r = 0; r < this.rows; r ++ ) {
             for(let c = 0; c < this.cols; c ++ ) {
                 if (g[r][c]) {
@@ -77,7 +32,6 @@ export class GameMap extends GameObject {
                 }
             }
         }
-        return true;
     }
 
     // 给canvas添加监听事件
@@ -98,11 +52,7 @@ export class GameMap extends GameObject {
 
     // 开始执行一次
     start() {
-        for (let i = 0; i < 1000; i ++ ) {
-            if (this.create_walls()) {
-                break;
-            }
-        }
+        this.create_map();
         this.add_listening_events();
     }
 

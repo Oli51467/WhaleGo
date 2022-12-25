@@ -17,11 +17,12 @@
                     {{ $store.state.socket.opponent_username }}
                 </div>
             </div>
-            <div class="col-12" style="text-align: center; padding-top: 15vh;">
+            <div class="col-12" style="text-align: center; padding-top: 15vh;" v-if="$store.state.socket.status==='waiting' || $store.state.socket.status==='matching' ">
                 <button type="button" class="btn btn-warning btn-lg" @click="click_match">{{ btn_text }}</button>
             </div>
             <div class="col-12" style="text-align: center; padding-top: 10px;" v-if="btn_text == '取消匹配' ">
-                <span class="process">正在匹配中...</span>
+                <span class="process" v-if="$store.state.socket.status==='matching'">正在匹配中...</span>
+                <span class="process" v-if="$store.state.socket.status==='pending'" >匹配成功</span>
             </div>
         </div>
     </div>
@@ -39,17 +40,13 @@ export default {
         const click_match = () => {
             if (btn_text.value === "对战") {
                 btn_text.value = "取消匹配";
-                store.commit("updateStatus", {
-                    status: "matching"
-                });
+                store.commit("updateStatus", "matching");
                 store.state.socket.socket.send(JSON.stringify({
                     event: "start",
                 }));
             } else {
                 btn_text.value = "对战";
-                store.commit("updateStatus", {
-                    status: "waiting",
-                });
+                store.commit("updateStatus", "waiting");
                 store.state.socket.socket.send(JSON.stringify({
                     event: "cancel",
                 }));
@@ -57,7 +54,7 @@ export default {
         }
         return {
             btn_text,
-            click_match
+            click_match,
         }
     }
 }

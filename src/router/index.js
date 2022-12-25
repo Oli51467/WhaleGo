@@ -12,6 +12,7 @@ const routes = [
   {
     path: '/index',
     name: "home",
+    component: BattleIndexView,
     meta: {
       requestAuth: false,
     }
