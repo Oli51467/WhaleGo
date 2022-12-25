@@ -11,7 +11,7 @@
             </div>
             <div class="col-6">
                 <div class="user-avatar">
-                    <img src="@/assets/images/robot.jpeg" alt="">
+                    <img :src="$store.state.socket.opponent_avatar" alt="">
                 </div>
                 <div class="username" style="margin-top: 20px;">
                     {{ $store.state.socket.opponent_username }}
@@ -19,6 +19,9 @@
             </div>
             <div class="col-12" style="text-align: center; padding-top: 15vh;">
                 <button type="button" class="btn btn-warning btn-lg" @click="click_match">{{ btn_text }}</button>
+            </div>
+            <div class="col-12" style="text-align: center; padding-top: 10px;" v-if="btn_text == '取消匹配' ">
+                <span class="process">正在匹配中...</span>
             </div>
         </div>
     </div>
@@ -35,25 +38,30 @@ export default {
 
         const click_match = () => {
             if (btn_text.value === "对战") {
-                btn_text.value = "正在匹配中...";
+                btn_text.value = "取消匹配";
                 store.commit("updateStatus", {
                     status: "matching"
                 });
-            }
-            else {
+                store.state.socket.socket.send(JSON.stringify({
+                    event: "start",
+                }));
+            } else {
                 btn_text.value = "对战";
                 store.commit("updateStatus", {
-                    status: "waiting"
-                })
+                    status: "waiting",
+                });
+                store.state.socket.socket.send(JSON.stringify({
+                    event: "cancel",
+                }));
             }
         }
-
         return {
             btn_text,
             click_match
         }
     }
 }
+
 </script>
 
 <style scoped>
@@ -81,7 +89,12 @@ div.username {
     color: white;
     padding-top: 10px;
 }
+
 div.btn btn-warning {
     text-align: center;
+}
+
+.process {
+    color: white;
 }
 </style>
