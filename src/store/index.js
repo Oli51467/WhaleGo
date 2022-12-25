@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import UserModule from './user'
+import SocketModule from './socket'
 
 export default createStore({
   state: {
@@ -12,5 +13,6 @@ export default createStore({
   },
   modules: {
     user: UserModule,
+    socket: SocketModule,
   }
 })
