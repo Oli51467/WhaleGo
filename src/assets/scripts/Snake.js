@@ -48,6 +48,10 @@ export class Snake extends GameObject {
         this.direction = d;
     }
 
+    set_eye_direction(d) {
+        this.eye_direction = d;
+    }
+
     check_tail_move() {
         if (this.step <= 10) return false;
         if (this.step % 3 === 1) return false;

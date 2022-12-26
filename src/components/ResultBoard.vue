@@ -28,6 +28,10 @@ export default {
     setup() {
         const store = useStore();
         const return_to_match = () => {
+            store.commit("updateOpponent", {
+                username: "旗鼓相当的对手",
+                avatar: '/robot.jpeg',
+            })
             store.commit("updateStatus", "waiting");
             store.commit("updateLoser", "none");
         }

@@ -23,7 +23,6 @@ export default {
   setup() {
     const store = useStore();
     const socketUrl = `ws://127.0.0.1:3000/websocket/${store.state.user.token}`;
-    console.log(store.state.game.loser);
     let socket = null;
     // 当组件被挂载时建立socket连接
     onMounted(() => {
@@ -54,13 +53,9 @@ export default {
         } else {
           const game = store.state.game.gameObject;
           const [snake0, snake1] = game.snakes;
-          console.log(data);
-          if (data.event === "move") {
-            snake0.set_direction(data.a_direction);
-            snake1.set_direction(data.b_direction);
-          } else if (data.event === "result") {
-            snake0.set_direction(data.a_direction);
-            snake1.set_direction(data.b_direction);
+          snake0.set_direction(data.a_direction);
+          snake1.set_direction(data.b_direction);
+          if (data.event === "result") {
             console.log(data.a_direction, data.b_direction);
             if (data.loser === "all" || data.loser === "A") {
               snake0.status = "die";
