@@ -11,18 +11,18 @@
             </div>
             <div class="col-6">
                 <div class="user-avatar">
-                    <img :src="$store.state.socket.opponent_avatar" alt="">
+                    <img :src="$store.state.game.opponent_avatar" alt="">
                 </div>
                 <div class="username" style="margin-top: 20px;">
-                    {{ $store.state.socket.opponent_username }}
+                    {{ $store.state.game.opponent_username }}
                 </div>
             </div>
-            <div class="col-12" style="text-align: center; padding-top: 15vh;" v-if="$store.state.socket.status==='waiting' || $store.state.socket.status==='matching' ">
+            <div class="col-12" style="text-align: center; padding-top: 15vh;" v-if="$store.state.game.status==='waiting' || $store.state.game.status==='matching' ">
                 <button type="button" class="btn btn-warning btn-lg" @click="click_match">{{ btn_text }}</button>
             </div>
             <div class="col-12" style="text-align: center; padding-top: 10px;" v-if="btn_text == '取消匹配' ">
-                <span class="process" v-if="$store.state.socket.status==='matching'">正在匹配中...</span>
-                <span class="process" v-if="$store.state.socket.status==='pending'" >匹配成功</span>
+                <span class="process" v-if="$store.state.game.status==='matching'">正在匹配中...</span>
+                <span class="process" v-if="$store.state.game.status==='pending'" >匹配成功</span>
             </div>
         </div>
     </div>
@@ -41,13 +41,13 @@ export default {
             if (btn_text.value === "对战") {
                 btn_text.value = "取消匹配";
                 store.commit("updateStatus", "matching");
-                store.state.socket.socket.send(JSON.stringify({
+                store.state.game.socket.send(JSON.stringify({
                     event: "start",
                 }));
             } else {
                 btn_text.value = "对战";
                 store.commit("updateStatus", "waiting");
-                store.state.socket.socket.send(JSON.stringify({
+                store.state.game.socket.send(JSON.stringify({
                     event: "cancel",
                 }));
             }

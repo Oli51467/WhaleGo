@@ -66,9 +66,6 @@ export class Snake extends GameObject {
         for (let i = k; i > 0; i -- ) {
             this.cells[i] = JSON.parse(JSON.stringify(this.cells[i - 1]));  // 将旧的复制一份
         }
-        if (!this.gamemap.check_valid_move(this.next_cell)) {    // 下一步不合法
-            this.status = "die";
-        }
     }
 
     update_move() { // 每秒钟控制蛇的移动

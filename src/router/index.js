@@ -10,7 +10,7 @@ import store from '../store/index'
 
 const routes = [
   {
-    path: '/index',
+    path: '/',
     name: "home",
     component: BattleIndexView,
     meta: {

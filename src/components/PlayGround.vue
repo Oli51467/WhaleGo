@@ -16,9 +16,9 @@ export default {
 
 <style scoped>
 div.playground {
-    width: 60vw;
+    width: 75vw;
     height: 85vh;
-    background: lightblue;
+    background-color: rgba(50, 50, 50, 0.4);
     margin: 40px auto;
 }
 </style>

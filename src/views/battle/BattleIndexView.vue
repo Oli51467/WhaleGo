@@ -1,5 +1,5 @@
 <template>
-  <PlayGround v-if="$store.state.socket.status === 'playing'" />
+  <PlayGround v-if="$store.state.game.status === 'playing'" />
   <MatchGround v-else />
 </template>
 
@@ -47,7 +47,22 @@ export default {
           setTimeout(() => {
             store.commit("updateStatus", "playing");
           }, 2500);
-          store.commit("updateGame", data.game); 
+          store.commit("updateGame", data.game);
+        } else {
+          const game = store.state.game.gameObject;
+          const [snake0, snake1] = game.snakes;
+          console.log(data);
+          if (data.event === "move") {
+            snake0.set_direction(data.a_direction);
+            snake1.set_direction(data.b_direction);
+          } else if (data.event === "result") {
+            if (data.loser === "all" || data.loser === "A") {
+              snake0.status = "die";
+            }
+            if (data.loser === "all" || data.loser === "B") {
+              snake1.status = "die";
+            }
+          }
         }
       }
 

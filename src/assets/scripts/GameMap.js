@@ -24,7 +24,7 @@ export class GameMap extends GameObject {
 
     // 创建障碍物
     create_map() {
-        const g = this.store.state.socket.gamemap;
+        const g = this.store.state.game.gamemap;
         for (let r = 0; r < this.rows; r ++ ) {
             for(let c = 0; c < this.cols; c ++ ) {
                 if (g[r][c]) {
@@ -37,16 +37,20 @@ export class GameMap extends GameObject {
     // 给canvas添加监听事件
     add_listening_events() {
         this.ctx.canvas.focus();    // 先聚焦
-        const [snake0, snake1] = this.snakes;
         this.ctx.canvas.addEventListener("keydown", e => {
-            if (e.key === 'w') snake0.set_direction(0);
-            else if (e.key === 'd') snake0.set_direction(1);
-            else if (e.key === 's') snake0.set_direction(2);
-            else if (e.key === 'a') snake0.set_direction(3);
-            else if (e.key === 'ArrowUp') snake1.set_direction(0);
-            else if (e.key === 'ArrowRight') snake1.set_direction(1);
-            else if (e.key === 'ArrowDown') snake1.set_direction(2);
-            else if (e.key === 'ArrowLeft') snake1.set_direction(3);
+            let d = -1;
+            if (e.key === 'w') d = 0;
+            else if (e.key === 'd')  d = 1;
+            else if (e.key === 's')  d = 2;
+            else if (e.key === 'a')  d = 3;
+            // 检测到移动 向后端发送请求
+            if (d >= 0) {
+                this.store.state.game.socket.send(JSON.stringify({
+                    event: "move",
+                    direction: d,
+                }));
+            }
+
         });
     }
 

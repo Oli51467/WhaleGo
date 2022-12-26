@@ -1,6 +1,16 @@
 <template>
-    <div ref="parent" class="gamemap">
-        <canvas ref="canvas" tabindex="0"></canvas>
+    <div>
+        <div class="row">
+            <div class="col-9">
+                <div ref="parent" class="gamemap">
+                    <canvas ref="canvas" tabindex="0"></canvas>
+                </div>
+            </div>
+            <div class="col-3">
+                <span v-if="$store.state.game.a_id == $store.state.user.id">您在左下角</span>
+                <span v-else>您在右上角</span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -16,7 +26,7 @@ export default {
         let canvas = ref(null);
 
         onMounted(() => {   // 组件挂载完之后执行 匿名函数没有this，会向上层指
-            new GameMap(canvas.value.getContext('2d'), parent.value, store);
+            store.commit("updateGameObject", new GameMap(canvas.value.getContext('2d'), parent.value, store));
         });
 
         return {
@@ -28,11 +38,12 @@ export default {
 </script>
 
 <style scoped>
-div.gamemap {
-    width: 100%;
-    height: 100%;
+.gamemap {
+    width: 85vw;
+    height: 85vh;
     display: flex;
-    justify-content: center;
+    justify-content: left;
+    margin-left: 30px;
     align-items: center;
 }
 </style>

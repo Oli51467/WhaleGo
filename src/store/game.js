@@ -1,4 +1,4 @@
-const SocketModule = {
+const GameModule = {
     state: {
         status: "waiting", // matching表示匹配界面 playing表示对战界面
         socket: null,
@@ -11,6 +11,7 @@ const SocketModule = {
         b_id: 0,
         b_sx: 0,
         b_sy: 0,
+        gameObject: null,
     },
     getters: {
 
@@ -34,6 +35,9 @@ const SocketModule = {
             state.b_id = game.b_id;
             state.b_sx = game.b_sx;
             state.b_sy = game.b_sy;
+        },
+        updateGameObject(state, gameObject) {
+            state.gameObject = gameObject;
         }
     },
 
@@ -45,4 +49,4 @@ const SocketModule = {
     }
 }
 
-export default SocketModule;
+export default GameModule;
