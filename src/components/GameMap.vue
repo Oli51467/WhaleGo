@@ -22,6 +22,10 @@ import { useStore } from 'vuex';
 export default {
     setup() {
         const store = useStore();
+        store.commit("updateOpponent", {
+            username: "旗鼓相当的对手",
+            avatar: '/robot.jpeg',
+        })
         let parent = ref(null);
         let canvas = ref(null);
 

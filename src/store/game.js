@@ -1,6 +1,7 @@
 const GameModule = {
     state: {
         status: "waiting", // matching表示匹配界面 playing表示对战界面
+        loser: "none",  // all, A, B
         socket: null,
         opponent_username: "",
         opponent_avatar: "",
@@ -38,6 +39,9 @@ const GameModule = {
         },
         updateGameObject(state, gameObject) {
             state.gameObject = gameObject;
+        },
+        updateLoser(state, loser) {
+            state.loser = loser;
         }
     },
 

@@ -21,8 +21,8 @@
                 <button type="button" class="btn btn-warning btn-lg" @click="click_match">{{ btn_text }}</button>
             </div>
             <div class="col-12" style="text-align: center; padding-top: 10px;" v-if="btn_text == '取消匹配' ">
-                <span class="process" v-if="$store.state.game.status==='matching'">正在匹配中...</span>
-                <span class="process" v-if="$store.state.game.status==='pending'" >匹配成功</span>
+                <span class="process" v-if="$store.state.game.status === 'matching'">正在匹配中...</span>
+                <span class="process" v-if="$store.state.game.status === 'pending'" >匹配成功</span>
             </div>
         </div>
     </div>
