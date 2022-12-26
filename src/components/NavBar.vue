@@ -63,6 +63,10 @@ export default {
     let route_name = computed(() => route.name)
 
     const logout = () => {
+      // 取消匹配
+      store.state.game.socket.send(JSON.stringify({
+        event: "cancel",
+      }));
       store.dispatch("logout");
     }
     return {

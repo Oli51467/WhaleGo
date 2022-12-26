@@ -1,6 +1,6 @@
 <template>
   <PlayGround v-if="$store.state.game.status === 'playing'" />
-  <MatchGround v-else />
+  <MatchGround v-if="$store.state.user.is_login && $store.state.game.status != 'playing' " />
   <ResultBoard v-if="$store.state.game.loser === 'A' || $store.state.game.loser === 'B' || $store.state.game.loser === 'all'" />
 </template>
 
