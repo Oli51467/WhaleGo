@@ -1,5 +1,5 @@
 # kob
-king of bots 贪吃蛇对战平台前端
+king of bots AI对战平台前端
 
 > 好玩的贪吃蛇大战
 
