@@ -1,13 +1,23 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-9">
+            <div class="col-8">
                 <div ref="parent" class="goboard">
                     <canvas ref="canvas" tabindex="0"></canvas>
                 </div>
             </div>
-            <div class="col-3">
-                info
+            <div class="col-4">
+                <div class="container">
+                    <div class="card-body">
+                        <el-tabs v-model="matchplay" type="border-card" @tab-click="handleClick" stretch="true" tab-position="top">
+                            <el-tab-pane label="matchplay" class="settings">
+                                <GoMatchBoard/>
+                            </el-tab-pane>
+                            <el-tab-pane label="AIplay" class="settings" >AI</el-tab-pane>
+                            <el-tab-pane label="freeplay" class="settings">自由</el-tab-pane>
+                        </el-tabs>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -15,9 +25,14 @@
 
 <script>
 import { GoBoard } from '@/assets/scripts/GoBoard';
+import GoMatchBoard from '@/components/GoMatchBoard.vue'
 import { ref, onMounted } from 'vue';
 
 export default {
+    components: {
+        GoMatchBoard
+    },
+
     setup() {
         let parent = ref(null);
         let canvas = ref(null);
@@ -31,20 +46,23 @@ export default {
             parent,
             canvas
         }
+    },
+
+    data() {
+        return {
+            activeName: 'first'
+        };
+    },
+    methods: {
+        handleClick(tab, event) {
+            console.log(tab, event);
+        }
     }
 }
 
 </script>
 
 <style scoped>
-
-*,
-*:before,
-*:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
 .goboard {
     width: 85vw;
     height: 85vh;
@@ -65,4 +83,11 @@ canvas {
     cursor: pointer;
     box-shadow: -2px -2px 2px #EFEFEF, 5Px 5px 5px #b9b9b9;
 }
+
+.container {
+    width: auto;
+    margin-left: -100px;
+}
+
+
 </style>
