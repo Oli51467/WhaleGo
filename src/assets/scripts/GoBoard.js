@@ -111,6 +111,19 @@ export class GoBoard extends GameObject {
         }
     }
 
+    draw_indexes() {
+        for (let i = 1; i <= 19; i ++ ) {
+            this.ctx.fillStyle = "black";
+            this.ctx.font = "30px";
+            this.ctx.fillText(String.fromCharCode(64 + i), this.cell_len - 20, this.cell_len * i + 4);
+        }
+        for (let i = 1; i <= 19; i ++ ) {
+            this.ctx.fillStyle = "black";
+            this.ctx.font = "30px";
+            this.ctx.fillText(i, this.cell_len * i - 3, this.ctx.canvas.height - this.cell_len + 15);
+        }
+    }
+
     draw_stars(x, y) {
         this.ctx.fillStyle = "#f402f26";
         this.ctx.beginPath();
@@ -156,6 +169,7 @@ export class GoBoard extends GameObject {
     render() {
         this.draw_lines();
         this.init_stars();
+        this.draw_indexes();
         this.draw_stones(5, 5, 2);
         for (let r = 1; r <= this.rows; r ++ ) {
             for (let c = 1; c <= this.cols; c ++ ) {
