@@ -55,14 +55,12 @@ export default {
 }
 
 canvas {
-    background-color: #735444;
+    background-color: #6a4d3f;
     border: 1px solid #522;
     margin-top: 20px;
     display: inline-block;
     border: 1px solid #522;
-    background-image: -moz-radial-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0));
-    background-image: -webkit-radial-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0));
-    background-image: radial-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0));
+    background-image: radial-gradient(rgba(255, 255, 255, 0.4), rgba(26, 25, 25, 0));
     -moz-box-shadow: 0 0 2em rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 0 2em rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 2em rgba(0, 0, 0, 0.5);
