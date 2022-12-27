@@ -6,6 +6,7 @@ import UserBotIndexView from '../views/user/bots/UserBotIndexView'
 import NotFoundView from '../views/error/NotFoundView'
 import LoginView from '../views/user/account/LoginView'
 import RegisterView from '../views/user/account/RegisterView'
+import GoPlayView from '../views/battle/GoPlayView'
 import store from '../store/index'
 
 const routes = [
@@ -21,6 +22,14 @@ const routes = [
     path: '/battle/',
     name: 'battle',
     component: BattleIndexView,
+    meta: {
+      requestAuth: true,
+    }
+  },
+  { 
+    path: '/goplay/',
+    name: 'goplay',
+    component: GoPlayView,
     meta: {
       requestAuth: true,
     }

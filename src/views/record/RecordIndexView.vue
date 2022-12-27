@@ -1,7 +1,7 @@
 <template>
-    <ContentBase>
-        Record
-    </ContentBase>
+  <ContentBase>
+    Record
+  </ContentBase>
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
   name: 'RecordIndex',
   // 存放templates中用到的其他组件
   components: {
-    ContentBase
+    ContentBase,
   }
 }
 </script>
