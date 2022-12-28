@@ -131,6 +131,14 @@ export class GoBoard extends GameObject {
         this.ctx.fill();
     }
 
+    clear_board() {
+        for (let i = 1; i <= this.rows; i ++ ) {
+            for (let j = 1 ; j <= this.cols; j ++ ) {
+                this.stones[i][j] = 0;
+            }
+        }
+    }
+
     // 每秒根据浏览器更新大小
     update_size() {
         // 因为区域是不断变化的，所以要在每一帧里动态地求一个区域中可以包含的最大的矩形的一个格子的长和宽
@@ -161,16 +169,22 @@ export class GoBoard extends GameObject {
         this.ctx.fill();
     }
 
-    update() {
-        this.update_size();
-        this.render();
+    on_destory() {
+        this.clear_board();
     }
 
-    render() {
+    update() {
+        this.update_size();
         this.draw_lines();
         this.init_stars();
         this.draw_indexes();
-        this.draw_stones(5, 5, 2);
+        if (this.store.state.gogame.current === this.store.state.gogame.which) {
+            this.render();
+        }
+        //this.render();
+    }
+
+    render() {
         for (let r = 1; r <= this.rows; r ++ ) {
             for (let c = 1; c <= this.cols; c ++ ) {
                 this.draw_stones(c, r, this.stones[r][c]);

@@ -6,8 +6,8 @@ const GoGameModule = {
         opponent_username: "",
         socket: null,
         loser: "none",
-        black_id: 0,
-        white_id: 0,
+        current: 0, // 当前轮到哪一方
+        which: 0,   // 自己是哪一方
     },
     getters: {
 
@@ -29,11 +29,12 @@ const GoGameModule = {
         updateGoLoser(state, loser) {
             state.loser = loser;
         },
-        updateGoGame(state, game) {
-            state.black_id = game.black_id;
-            state.white_id = game.white_id;
-            //state.board = game.board;
-        }
+        updateCurrent(state, current) {
+            state.current = current;
+        },
+        updateWhich(state, which) {
+            state.which = which;
+        },
     },
 
     actions: {

@@ -47,7 +47,7 @@ export default {
         onMounted (() => {
             let ctx = canvas.value.getContext('2d');
             let ctx1 = canvas1.value.getContext('2d');
-            if (store.state.gogame.black_id == store.state.user.id) {
+            if (store.state.gogame.which == 1) {
                 ctx.fillStyle = "black";
                 ctx1.fillStyle = "white";
             } else {
@@ -114,6 +114,6 @@ div.username {
 
 canvas {
     width: 400%;
-    margin-left: -25px;
+    margin-left: -20px;
 }
 </style>

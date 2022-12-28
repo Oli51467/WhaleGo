@@ -43,9 +43,15 @@ export default {
             avatar: data.opponent_avatar,
           });
           store.commit("updateGoGameStatus", "playing");
-          store.commit("updateGoGame", data.game);
+          if (data.game.black_id == store.state.user.id) { // 执黑
+            store.commit("updateWhich", 1);
+          } else {  // 执白
+            store.commit("updateWhich", 2);
+          }
+          store.commit("updateCurrent", 1);
         } else if (data.event === "result") {
-          console.log(data.loser, store.state.gogame.black_id, store.state.gogame.white_id);
+          store.commit("updateWhich", 0);
+          store.commit("updateCurrent", 0);
           if (store.state.user.id == data.loser) {
             store.commit("updateGoLoser", "myself");
           } else {
@@ -62,6 +68,8 @@ export default {
     onUnmounted(() => {
       socket.close();
       store.commit("updateGoGameStatus", "waiting");
+      store.commit("updateWhich", 0);
+      store.commit("updateCurrent", 0);
     })
 
   }
