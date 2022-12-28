@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-8">
+            <div class="col-7">
                 <div ref="parent" class="goboard">
                     <canvas ref="canvas" tabindex="0"></canvas>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 <div class="container">
                     <div class="card-body">
                         <el-tabs v-model="matchplay" type="border-card" @tab-click="handleClick" stretch=true
@@ -83,7 +83,7 @@ export default {
 canvas {
     background-color: #6a4d3f;
     border: 1px solid #522;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 50px;
     display: inline-block;
     border: 1px solid #522;
@@ -95,6 +95,8 @@ canvas {
 .container {
     width: auto;
     margin-left: -100px;
+    margin-top: 15px;
+    margin-right: 100px;
 }
 
 .play-board {

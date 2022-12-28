@@ -1,12 +1,11 @@
 <template>
-  <ContentBase>
-    <GoPlayGround></GoPlayGround>
-  </ContentBase>
+    <GoPlayGround/>
+    <GoResultBoard v-if="$store.state.gogame.loser ==='myself' ||  $store.state.gogame.loser ==='oppo'"/>
 </template>
   
 <script>
-import ContentBase from '@/components/ContentBase';
 import GoPlayGround from '@/components/go/GoPlayGround.vue'
+import GoResultBoard from '@/components/go/GoResultBoard.vue'
 import { onMounted, onUnmounted } from 'vue';
 import { useStore } from 'vuex';
 
@@ -14,8 +13,8 @@ export default {
   name: 'RecordIndex',
   // 存放templates中用到的其他组件
   components: {
-    ContentBase,
-    GoPlayGround
+    GoPlayGround,
+    GoResultBoard,
   },
 
   setup() {
@@ -27,6 +26,7 @@ export default {
         username: "旗鼓相当的对手",
         avatar: '/robot.jpeg',
       });
+      store.commit("updateGoLoser", "none");
       store.commit("updateGoGameStatus", "waiting");
       socket = new WebSocket(goSocketUrl);
       socket.onopen = () => {
@@ -44,6 +44,13 @@ export default {
           });
           store.commit("updateGoGameStatus", "playing");
           store.commit("updateGoGame", data.game);
+        } else if (data.event === "result") {
+          console.log(data.loser, store.state.gogame.black_id, store.state.gogame.white_id);
+          if (store.state.user.id == data.loser) {
+            store.commit("updateGoLoser", "myself");
+          } else {
+            store.commit("updateGoLoser", "oppo");
+          }
         }
       }
 
@@ -54,7 +61,7 @@ export default {
 
     onUnmounted(() => {
       socket.close();
-      store.commit("updateGoStatus", "waiting");
+      store.commit("updateGoGameStatus", "waiting");
     })
 
   }

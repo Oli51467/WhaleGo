@@ -26,7 +26,7 @@
         </div>
         <div class="row">
             <div class="col-4 func">
-                <button type="button" class="btn btn-warning btn-lg">认输</button>
+                <button type="button" class="btn btn-warning btn-lg" @click="click_resign">认输</button>
             </div>
         </div>
 
@@ -80,8 +80,8 @@ export default {
 
 <style scoped>
 div.playboard {
-    width: 60vw;
-    margin: 40px auto;
+    width: 40vw;
+    margin: 40px 10vw auto;
 }
 
 div.user-avatar {
@@ -90,6 +90,7 @@ div.user-avatar {
 
 div.user-avatar>img {
     width: 15vh;
+    border-radius: 10%;
 }
 
 div.username {
@@ -112,7 +113,7 @@ div.username {
 }
 
 canvas {
-    width: 300%;
-    margin-left: -15px;
+    width: 400%;
+    margin-left: -25px;
 }
 </style>

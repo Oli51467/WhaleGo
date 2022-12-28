@@ -103,10 +103,10 @@ export class GoBoard extends GameObject {
 
         for (let i = 1; i <= 19; i++) {
             this.ctx.moveTo(this.cell_len, this.cell_len * i);
-            this.ctx.lineTo(this.ctx.canvas.width - this.cell_len - 4, this.cell_len * i);
+            this.ctx.lineTo(this.ctx.canvas.width * 0.944, this.cell_len * i);
             this.ctx.stroke();
             this.ctx.moveTo(this.cell_len * i, this.cell_len);
-            this.ctx.lineTo(this.cell_len * i, this.ctx.canvas.height - this.cell_len - 4);
+            this.ctx.lineTo(this.cell_len * i, this.ctx.canvas.height * 0.944);
             this.ctx.stroke();
         }
     }
