@@ -14,7 +14,7 @@
                     <img :src="$store.state.gogame.opponent_avatar" alt="">
                 </div>
                 <div class="username" style="margin-top: 20px;">
-                    {{ $store.state.game.opponent_username }}
+                    {{ $store.state.gogame.opponent_username }}
                 </div>
             </div>
         </div>

@@ -63,15 +63,15 @@ export default {
 
         const click_match = () => {
             if (store.state.gogame.status === 'matching') {
-                store.commit("updateGoGameStatus", "waiting");
                 store.state.gogame.socket.send(JSON.stringify({
                     event: "cancel",
                 }));
+                store.commit("updateGoGameStatus", "waiting");
             } else if (store.state.gogame.status === 'waiting') {
+                store.commit("updateGoGameStatus", "matching");
                 store.state.gogame.socket.send(JSON.stringify({
                     event: "start",
                 }));
-                store.commit("updateGoGameStatus", "matching");
             }
         }
 

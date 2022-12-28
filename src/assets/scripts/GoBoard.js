@@ -82,7 +82,6 @@ export class GoBoard extends GameObject {
         const center_y = y * this.cell_len;
         const r = this.cell_len / 2 * 0.9;
         if (this.is_black) {
-            console.log(x, y);
             let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
             gradient.addColorStop(0, "#333333");
             gradient.addColorStop(1, "#4d4d4d");
