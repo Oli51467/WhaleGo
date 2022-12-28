@@ -6,7 +6,7 @@
   
   <script>
   import ContentBase from '@/components/ContentBase';
-  import GoPlayGround from '@/components/GoPlayGround.vue'
+  import GoPlayGround from '@/components/go/GoPlayGround.vue'
   
   export default {
     name: 'RecordIndex',

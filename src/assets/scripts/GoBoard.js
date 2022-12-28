@@ -1,12 +1,13 @@
 import { GameObject } from "./GameObject";
 
 export class GoBoard extends GameObject {
-    constructor(ctx, parent, rows, cols) {
+    constructor(ctx, parent, rows, cols, store) {
         super();
         this.ctx = ctx;
         this.parent = parent;
         this.rows = rows;
         this.cols = cols;
+        this.store = store;
         this.L = 0;
         this.cell_len = 0;
         this.stones = [];
@@ -99,7 +100,7 @@ export class GoBoard extends GameObject {
 
     draw_lines() {
         this.ctx.strokeStyle = "#522";
-        this.ctx.lineWidth = 0.8;
+        this.ctx.lineWidth = 0.5;
 
         for (let i = 1; i <= 19; i++) {
             this.ctx.moveTo(this.cell_len, this.cell_len * i);

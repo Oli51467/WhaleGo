@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { post } from 'jquery';
 
-const API_URL = "http://127.0.0.1:3000/api" 
+const API_URL = "http://127.0.0.1:3000/api";
 
 class Apis {
     getToken = (data) => {
@@ -33,5 +33,6 @@ class Apis {
 const apis = new Apis()
 
 export {
-    apis, API_URL
+    apis, 
+    API_URL,
 }
