@@ -6,7 +6,8 @@ const GoGameModule = {
         opponent_username: "",
         socket: null,
         loser: "none",
-
+        black_id: 0,
+        white_id: 0,
     },
     getters: {
 
@@ -28,6 +29,11 @@ const GoGameModule = {
         updateGoLoser(state, loser) {
             state.loser = loser;
         },
+        updateGoGame(state, game) {
+            state.black_id = game.black_id;
+            state.white_id = game.white_id;
+            //state.board = game.board;
+        }
     },
 
     actions: {

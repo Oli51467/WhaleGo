@@ -36,7 +36,6 @@ export default {
 
       socket.onmessage = msg => {
         const data = JSON.parse(msg.data);
-        console.log(data);
         if (data.event === "start") {
           console.log(data.opponent_username + data.opponent_avatar);
           store.commit("updateGoOpponent", {
@@ -44,7 +43,7 @@ export default {
             avatar: data.opponent_avatar,
           });
           store.commit("updateGoGameStatus", "playing");
-          store.commit("updateBoard", data.game);
+          store.commit("updateGoGame", data.game);
         }
       }
 

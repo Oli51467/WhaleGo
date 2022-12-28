@@ -10,7 +10,7 @@
                 <div class="container">
                     <div class="card-body">
                         <el-tabs v-model="matchplay" type="border-card" @tab-click="handleClick" stretch=true
-                            tab-position="top">
+                            tab-position="top" class="play-board">
                             <el-tab-pane label="matchplay" class="settings">
                                 <div v-if="$store.state.gogame.status === 'waiting' || $store.state.gogame.status === 'matching'">
                                     <GoMatchBoard/>
@@ -33,7 +33,7 @@
 import { GoBoard } from '@/assets/scripts/GoBoard';
 import GoMatchBoard from '@/components/go/GoMatchBoard.vue'
 import GoPlayBoard from '@/components/go/GoPlayBoard.vue'
-import { ref} from 'vue';
+import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
 
@@ -95,5 +95,9 @@ canvas {
 .container {
     width: auto;
     margin-left: -100px;
+}
+
+.play-board {
+    background-color: antiquewhite;
 }
 </style>
