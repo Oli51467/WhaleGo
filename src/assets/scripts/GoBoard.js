@@ -16,15 +16,6 @@ export class GoBoard extends GameObject {
         this.virtual_y = -1;
     }
 
-    init_stones() {
-        for (let r = 1; r <= this.rows; r ++ ) {
-            this.stones[r] = [];
-            for(let c = 1; c <= this.cols; c ++ ) {
-                this.stones[r][c] = 0;
-            }
-        }
-    }
-
     init_stars() {
         for (let i = 4; i <= 16; i += 6) {
             for (let j = 4; j <= 16; j += 6) {
@@ -34,64 +25,65 @@ export class GoBoard extends GameObject {
     }
 
     add_mouse_events() {
-        this.ctx.canvas.addEventListener("mousemove", e => {
-            let click_x = e.offsetX;
-            let click_y = e.offsetY;
-            let x = Math.floor(click_y / 32);
-            let y = Math.floor(click_x / 32);
-            if (x <= 0 || x > 19 || y <= 0 || y > 19 || this.stones[x][y]) {
-                this.virtual_x = -1;
-                this.virtual_y = -1;
-                return;
-            }
-            this.virtual_x = y;
-            this.virtual_y = x;
-        });
-        this.ctx.canvas.addEventListener("click", e => {
-            let click_x = e.offsetX;
-            let click_y = e.offsetY;
-            let x = Math.floor(click_y / 32);
-            let y = Math.floor(click_x / 32);
+        this.ctx.canvas.addEventListener("mousemove", this.handle_mousemove);
+        this.ctx.canvas.addEventListener("click", this.handle_mouseclick);
+    }
+
+    handle_mousemove = (e) => {
+        let click_x = e.offsetX;
+        let click_y = e.offsetY;
+        let x = Math.floor(click_y / 32);
+        let y = Math.floor(click_x / 32);
+        if (x <= 0 || x > 19 || y <= 0 || y > 19) {
             this.virtual_x = -1;
             this.virtual_y = -1;
-            if (x <= 0 || x > 19 || y <= 0 || y > 19 || this.stones[x][y]) return;
-            // 调试 在前端落子
-            if (this.is_black) {
-                this.stones[x][y] = 1;
-            } else {
-                this.stones[x][y] = 2;
-            }
-            this.is_black = !this.is_black;
-            // if (d >= 0) {
-            //     this.store.state.game.socket.send(JSON.stringify({
-            //         event: "move",
-            //         direction: d,
-            //     }));
-            // }
+            return;
+        }
+        this.virtual_x = y;
+        this.virtual_y = x;
+    }
 
-        });
+    handle_mouseclick = (e) => {
+        const g = this.store.state.gogame.board;
+        let click_x = e.offsetX;
+        let click_y = e.offsetY;
+        let x = Math.floor(click_y / 32);
+        let y = Math.floor(click_x / 32);
+        this.virtual_x = -1; 
+        this.virtual_y = -1;
+        if (x <= 0 || x > 19 || y <= 0 || y > 19 || g[x][y]) return;
+        
+        this.store.state.gogame.socket.send(JSON.stringify({
+            event: "play",
+            x: x,
+            y: y,
+        }));
+    }
+
+    remove_mouse_events() {
+        this.ctx.canvas.removeEventListener("mousemove", this.handle_mousemove);
+        this.ctx.canvas.removeEventListener("click", this.handle_mouseclick);
     }
 
     start() {
-        this.init_stones();
-        this.add_mouse_events();
+        
     }
 
     draw_virtual_stone(x, y) {
         const center_x = x * this.cell_len;
         const center_y = y * this.cell_len;
         const r = this.cell_len / 2 * 0.9;
-        if (this.is_black) {
+        if (this.store.state.gogame.current == 1 && this.store.state.gogame.which == 1) {
             let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
             gradient.addColorStop(0, "#333333");
             gradient.addColorStop(1, "#4d4d4d");
             this.ctx.fillStyle = gradient;
-        } else {
+        } else if (this.store.state.gogame.current == 2 && this.store.state.gogame.which == 2) {
             let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
             gradient.addColorStop(0, "#e6e6e6");
             gradient.addColorStop(1, "#ffffff");
             this.ctx.fillStyle = gradient;
-        } 
+        }
         this.ctx.beginPath();
         this.ctx.arc(center_x, center_y, r, 0, Math.PI * 2);
         this.ctx.fill();
@@ -112,12 +104,12 @@ export class GoBoard extends GameObject {
     }
 
     draw_indexes() {
-        for (let i = 1; i <= 19; i ++ ) {
+        for (let i = 1; i <= 19; i++) {
             this.ctx.fillStyle = "black";
             this.ctx.font = "30px";
             this.ctx.fillText(String.fromCharCode(64 + i), this.cell_len - 20, this.cell_len * i + 4);
         }
-        for (let i = 1; i <= 19; i ++ ) {
+        for (let i = 1; i <= 19; i++) {
             this.ctx.fillStyle = "black";
             this.ctx.font = "30px";
             this.ctx.fillText(i, this.cell_len * i - 3, this.ctx.canvas.height - this.cell_len + 15);
@@ -129,14 +121,6 @@ export class GoBoard extends GameObject {
         this.ctx.beginPath();
         this.ctx.arc(x * this.cell_len, y * this.cell_len, this.cell_len / 5 * 0.75, 0, Math.PI * 2);
         this.ctx.fill();
-    }
-
-    clear_board() {
-        for (let i = 1; i <= this.rows; i ++ ) {
-            for (let j = 1 ; j <= this.cols; j ++ ) {
-                this.stones[i][j] = 0;
-            }
-        }
     }
 
     // 每秒根据浏览器更新大小
@@ -163,7 +147,7 @@ export class GoBoard extends GameObject {
             gradient.addColorStop(0, "#e6e6e6");
             gradient.addColorStop(1, "#ffffff");
             this.ctx.fillStyle = gradient;
-        } 
+        }
         this.ctx.beginPath();
         this.ctx.arc(center_x, center_y, r, 0, Math.PI * 2);
         this.ctx.fill();
@@ -178,16 +162,18 @@ export class GoBoard extends GameObject {
         this.draw_lines();
         this.init_stars();
         this.draw_indexes();
-        if (this.store.state.gogame.current === this.store.state.gogame.which) {
-            this.render();
+        if (this.store.state.gogame.current == this.store.state.gogame.which) {
+            this.add_mouse_events();
         }
-        //this.render();
+        else this.remove_mouse_events();
+        this.render();
     }
 
     render() {
-        for (let r = 1; r <= this.rows; r ++ ) {
-            for (let c = 1; c <= this.cols; c ++ ) {
-                this.draw_stones(c, r, this.stones[r][c]);
+        const g = this.store.state.gogame.board;
+        for (let r = 1; r <= this.rows; r++) {
+            for (let c = 1; c <= this.cols; c++) {
+                this.draw_stones(c, r, g[r][c]);
                 if (this.virtual_x != -1 && this.virtual_y != -1) this.draw_virtual_stone(this.virtual_x, this.virtual_y);
             }
         }

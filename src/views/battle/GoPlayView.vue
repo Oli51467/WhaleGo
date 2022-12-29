@@ -1,6 +1,6 @@
 <template>
-    <GoPlayGround/>
-    <GoResultBoard v-if="$store.state.gogame.loser ==='myself' ||  $store.state.gogame.loser ==='oppo'"/>
+  <GoPlayGround />
+  <GoResultBoard v-if="$store.state.gogame.loser === 'myself' || $store.state.gogame.loser === 'oppo'" />
 </template>
   
 <script>
@@ -28,6 +28,14 @@ export default {
       });
       store.commit("updateGoLoser", "none");
       store.commit("updateGoGameStatus", "waiting");
+      let g = [];
+      for (let i = 1; i <= 19; i++) {
+        g[i] = [];
+        for (let j = 1; j <= 19; j++) {
+          g[i][j] = 0;
+        }
+      }
+      store.commit("updateBoard", g);
       socket = new WebSocket(goSocketUrl);
       socket.onopen = () => {
         console.log("GoGame Socket Connnected!");
@@ -37,18 +45,18 @@ export default {
       socket.onmessage = msg => {
         const data = JSON.parse(msg.data);
         if (data.event === "start") {
-          console.log(data.opponent_username + data.opponent_avatar);
           store.commit("updateGoOpponent", {
             username: data.opponent_username,
             avatar: data.opponent_avatar,
           });
           store.commit("updateGoGameStatus", "playing");
+          store.commit("updateBoard", data.game.board);
+          store.commit("updateCurrent", 1);
           if (data.game.black_id == store.state.user.id) { // 执黑
             store.commit("updateWhich", 1);
           } else {  // 执白
             store.commit("updateWhich", 2);
           }
-          store.commit("updateCurrent", 1);
         } else if (data.event === "result") {
           store.commit("updateWhich", 0);
           store.commit("updateCurrent", 0);
@@ -57,6 +65,17 @@ export default {
           } else {
             store.commit("updateGoLoser", "oppo");
           }
+          let g = [];
+          for (let i = 1; i <= 19; i++) {
+            g[i] = [];
+            for (let j = 1; j <= 19; j++) {
+              g[i][j] = 0;
+            }
+          }
+          store.commit("updateBoard", g);
+        } else if (data.event === 'play') {
+          store.commit("updateBoard", data.board);
+          store.commit("updateCurrent", data.current);
         }
       }
 
