@@ -30,11 +30,12 @@ export class GoBoard extends GameObject {
     }
 
     handle_mousemove = (e) => {
+        const g = this.store.state.gogame.board;
         let click_x = e.offsetX;
         let click_y = e.offsetY;
         let x = Math.floor(click_y / 32);
         let y = Math.floor(click_x / 32);
-        if (x <= 0 || x > 19 || y <= 0 || y > 19) {
+        if (x <= 0 || x > 19 || y <= 0 || y > 19 || g[x][y]) {
             this.virtual_x = -1;
             this.virtual_y = -1;
             return;
@@ -73,7 +74,7 @@ export class GoBoard extends GameObject {
         const center_x = x * this.cell_len;
         const center_y = y * this.cell_len;
         const r = this.cell_len / 2 * 0.9;
-        if (this.store.state.gogame.current == 1 && this.store.state.gogame.which == 1) {
+        if (this.store.state.gogame.current == 1 && this.store.state.gogame.which == 1 || this.store.state.gogame.current == 0) {
             let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
             gradient.addColorStop(0, "#333333");
             gradient.addColorStop(1, "#4d4d4d");

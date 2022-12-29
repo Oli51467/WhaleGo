@@ -74,7 +74,9 @@ export default {
           }
           store.commit("updateBoard", g);
         } else if (data.event === 'play') {
-          store.commit("updateBoard", data.board);
+          if (data.valid === 'yes') {
+            store.commit("updateBoard", data.board);
+          }
           store.commit("updateCurrent", data.current);
         }
       }
