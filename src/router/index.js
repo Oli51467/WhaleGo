@@ -14,9 +14,9 @@ const routes = [
     {
         path: '/',
         name: "home",
-        component: BattleIndexView,
+        redirect: "/battle/",
         meta: {
-            requestAuth: false,
+            requestAuth: true,
         }
     },
     {
