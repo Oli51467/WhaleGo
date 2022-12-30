@@ -31,6 +31,7 @@ export class GoBoard extends GameObject {
 
     handle_mousemove = (e) => {
         const g = this.store.state.gogame.board;
+        if (g == null) return;
         let click_x = e.offsetX;
         let click_y = e.offsetY;
         let x = Math.floor(click_y / 32);
@@ -46,6 +47,7 @@ export class GoBoard extends GameObject {
 
     handle_mouseclick = (e) => {
         const g = this.store.state.gogame.board;
+        if (g == null) return;
         let click_x = e.offsetX;
         let click_y = e.offsetY;
         let x = Math.floor(click_y / 32);

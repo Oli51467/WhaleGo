@@ -15,7 +15,7 @@
                     </li>
                     <li class="nav-item">
                         <router-link v-bind:class="route_name == 'record' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'record' }">Record</router-link>
+                            :to="{ name: 'snakerecord' }">Record</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link v-bind:class="route_name == 'rank' ? 'nav-link active' : 'nav-link'"

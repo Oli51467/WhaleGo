@@ -36,22 +36,48 @@ export class GameMap extends GameObject {
 
     // 给canvas添加监听事件
     add_listening_events() {
-        this.ctx.canvas.focus();    // 先聚焦
-        this.ctx.canvas.addEventListener("keydown", e => {
-            let d = -1;
-            if (e.key === 'w') d = 0;
-            else if (e.key === 'd')  d = 1;
-            else if (e.key === 's')  d = 2;
-            else if (e.key === 'a')  d = 3;
-            // 检测到移动 向后端发送请求
-            if (d >= 0) {
-                this.store.state.game.socket.send(JSON.stringify({
-                    event: "move",
-                    direction: d,
-                }));
-            }
-
-        });
+        if (this.store.state.snake_record.is_record) {
+            let k = 0;
+            const a_steps = this.store.state.snake_record.a_steps;
+            const b_steps = this.store.state.snake_record.b_steps;
+            const loser = this.store.state.snake_record.record_loser;
+            const [snake0, snake1] = this.snakes;
+            const interval_id = setInterval(() => {
+                if (k >= a_steps.length - 1) {
+                    if (loser === "all" || loser === "A") {
+                        snake0.status = "die";
+                        snake0.set_eye_direction(a_steps[k]);
+                    }
+                    if (loser === "all" || loser === "B") {
+                        snake1.status = "die";
+                        snake1.set_eye_direction(b_steps[k]);
+                    }
+                    clearInterval(interval_id); 
+                }
+                else {
+                    snake0.set_direction(parseInt(a_steps[k]));
+                    snake1.set_direction(parseInt(b_steps[k]));
+                }
+                k ++;
+            }, 300);
+        } 
+        else {
+            this.ctx.canvas.focus();    // 先聚焦
+            this.ctx.canvas.addEventListener("keydown", e => {
+                let d = -1;
+                if (e.key === 'w') d = 0;
+                else if (e.key === 'd')  d = 1;
+                else if (e.key === 's')  d = 2;
+                else if (e.key === 'a')  d = 3;
+                // 检测到移动 向后端发送请求
+                if (d >= 0) {
+                    this.store.state.game.socket.send(JSON.stringify({
+                        event: "move",
+                        direction: d,
+                    }));
+                }
+            });
+        }
     }
 
     // 开始执行一次

@@ -1,6 +1,6 @@
 <template>
     <ContentBase>
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover" style="text-align:center">
             <thead>
                 <tr>
                     <th>A</th>
@@ -25,7 +25,8 @@
                     <td> {{ record.result }}</td>
                     <td> {{ record.record.createTime }}</td>
                     <td>
-                        <button type="button" class="btn btn-secondary">查看录像</button>
+                        <button type="button" class="btn btn-secondary"
+                            @click="open_record_video(record.record.id)">查看录像</button>
                     </td>
                 </tr>
             </tbody>
@@ -38,6 +39,7 @@
 import ContentBase from "@/components/ContentBase";
 import { useStore } from "vuex";
 import { ref } from "vue";
+import router from "@/router";
 import $ from "jquery";
 import { API_URL } from "@/assets/apis/api";
 
@@ -63,7 +65,7 @@ export default {
                 },
                 type: "get",
                 headers: {
-                    Authorization: "Bearer " + store.state.user.token
+                    Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
                     records.value = resp.records;
@@ -78,8 +80,51 @@ export default {
 
         pull_page(current_page);
 
+
+        const stringTo2D = map => {
+            let g = [];
+            for (let i = 0, k = 0; i < 13; i++) {
+                let line = [];
+                for (let j = 0; j < 14; j++, k++) {
+                    if (map[k] === '0') line.push(0);
+                    else line.push(1);
+                }
+                g.push(line);
+            }
+            return g;
+        }
+
+        const open_record_video = recordId => {
+            for (const record of records.value) {
+                if (record.record.id === recordId) {
+                    store.commit("updateIsRecord", true);
+                    store.commit("updateGame", {
+                        map: stringTo2D(record.record.map),
+                        a_id: record.record.aid,
+                        a_sx: record.record.asx,
+                        a_sy: record.record.asy,
+                        b_id: record.record.bid,
+                        b_sx: record.record.bsx,
+                        b_sy: record.record.bsy,
+                    });
+                    store.commit("updateSteps", {
+                        a_steps: record.record.asteps,
+                        b_steps: record.record.bsteps,
+                    });
+                    store.commit("updateRecordLoser", record.record.loser);
+                    router.push({
+                        name: "record_video",
+                        params: {
+                            recordId
+                        }
+                    })
+                    break;
+                }
+            }
+        }
+
         return {
-            pull_page,
+            open_record_video,
             records
         }
     }

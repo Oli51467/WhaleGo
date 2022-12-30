@@ -6,7 +6,7 @@
                     <canvas ref="canvas" tabindex="0"></canvas>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-3" v-if="$store.state.snake_record.is_record == false">
                 <span v-if="$store.state.game.a_id == $store.state.user.id">您在左下角</span>
                 <span v-else>您在右上角</span>
             </div>
