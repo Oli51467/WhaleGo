@@ -172,6 +172,7 @@ export class GoBoard extends GameObject {
 
     render() {
         const g = this.store.state.gogame.board;
+        if (g == null) return;
         for (let r = 1; r <= this.rows; r++) {
             for (let c = 1; c <= this.cols; c++) {
                 this.draw_stones(c, r, g[r][c]);

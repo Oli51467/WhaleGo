@@ -1,6 +1,6 @@
 <template>
-  <GoPlayGround />
-  <GoResultBoard v-if="$store.state.gogame.loser === 'myself' || $store.state.gogame.loser === 'oppo'" />
+    <GoPlayGround />
+    <GoResultBoard v-if="$store.state.gogame.loser === 'myself' || $store.state.gogame.loser === 'oppo'" />
 </template>
   
 <script>
@@ -10,90 +10,76 @@ import { onMounted, onUnmounted } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
-  name: 'RecordIndex',
-  // 存放templates中用到的其他组件
-  components: {
-    GoPlayGround,
-    GoResultBoard,
-  },
+    name: 'RecordIndex',
+    // 存放templates中用到的其他组件
+    components: {
+        GoPlayGround,
+        GoResultBoard,
+    },
 
-  setup() {
-    const store = useStore();
-    const goSocketUrl = `ws://127.0.0.1:3000/go/websocket/${store.state.user.token}`;
-    let socket = null;
-    onMounted(() => {
-      store.commit("updateGoOpponent", {
-        username: "旗鼓相当的对手",
-        avatar: '/robot.jpeg',
-      });
-      store.commit("updateGoLoser", "none");
-      store.commit("updateGoGameStatus", "waiting");
-      let g = [];
-      for (let i = 1; i <= 19; i++) {
-        g[i] = [];
-        for (let j = 1; j <= 19; j++) {
-          g[i][j] = 0;
-        }
-      }
-      store.commit("updateBoard", g);
-      socket = new WebSocket(goSocketUrl);
-      socket.onopen = () => {
-        console.log("GoGame Socket Connnected!");
-        store.commit("updateGoSocket", socket);
-      }
-
-      socket.onmessage = msg => {
-        const data = JSON.parse(msg.data);
-        if (data.event === "start") {
-          store.commit("updateGoOpponent", {
-            username: data.opponent_username,
-            avatar: data.opponent_avatar,
-          });
-          store.commit("updateGoGameStatus", "playing");
-          store.commit("updateBoard", data.game.board);
-          store.commit("updateCurrent", 1);
-          if (data.game.black_id == store.state.user.id) { // 执黑
-            store.commit("updateWhich", 1);
-          } else {  // 执白
-            store.commit("updateWhich", 2);
-          }
-        } else if (data.event === "result") {
-          store.commit("updateWhich", 0);
-          store.commit("updateCurrent", 0);
-          if (store.state.user.id == data.loser) {
-            store.commit("updateGoLoser", "myself");
-          } else {
-            store.commit("updateGoLoser", "oppo");
-          }
-          let g = [];
-          for (let i = 1; i <= 19; i++) {
-            g[i] = [];
-            for (let j = 1; j <= 19; j++) {
-              g[i][j] = 0;
+    setup() {
+        const store = useStore();
+        const goSocketUrl = `ws://127.0.0.1:3000/go/websocket/${store.state.user.token}`;
+        let socket = null;
+        onMounted(() => {
+            store.commit("updateGoOpponent", {
+                username: "旗鼓相当的对手",
+                avatar: '/robot.jpeg',
+            });
+            store.commit("updateGoLoser", "none");
+            store.commit("updateGoGameStatus", "waiting");
+            store.commit("updateBoard", null);
+            socket = new WebSocket(goSocketUrl);
+            socket.onopen = () => {
+                console.log("GoGame Socket Connnected!");
+                store.commit("updateGoSocket", socket);
             }
-          }
-          store.commit("updateBoard", g);
-        } else if (data.event === 'play') {
-          if (data.valid === 'yes') {
-            store.commit("updateBoard", data.board);
-          }
-          store.commit("updateCurrent", data.current);
-        }
-      }
 
-      socket.onclose = () => {
-        console.log("Disconnected");
-      }
-    });
+            socket.onmessage = msg => {
+                const data = JSON.parse(msg.data);
+                if (data.event === "start") {
+                    store.commit("updateGoOpponent", {
+                        username: data.opponent_username,
+                        avatar: data.opponent_avatar,
+                    });
+                    store.commit("updateGoGameStatus", "playing");
+                    store.commit("updateBoard", data.game.board);
+                    store.commit("updateCurrent", 1);
+                    if (data.game.black_id == store.state.user.id) { // 执黑
+                        store.commit("updateWhich", 1);
+                    } else {  // 执白
+                        store.commit("updateWhich", 2);
+                    }
+                } else if (data.event === "result") {
+                    store.commit("updateWhich", 0);
+                    store.commit("updateCurrent", 0);
+                    store.commit("updateBoard", null);
+                    if (store.state.user.id == data.loser) {
+                        store.commit("updateGoLoser", "myself");
+                    } else {
+                        store.commit("updateGoLoser", "oppo");
+                    }
+                } else if (data.event === 'play') {
+                    if (data.valid === 'yes') {
+                        store.commit("updateBoard", data.board);
+                    }
+                    store.commit("updateCurrent", data.current);
+                }
+            }
 
-    onUnmounted(() => {
-      socket.close();
-      store.commit("updateGoGameStatus", "waiting");
-      store.commit("updateWhich", 0);
-      store.commit("updateCurrent", 0);
-    })
+            socket.onclose = () => {
+                console.log("Disconnected");
+            }
+        });
 
-  }
+        onUnmounted(() => {
+            socket.close();
+            store.commit("updateGoGameStatus", "waiting");
+            store.commit("updateWhich", 0);
+            store.commit("updateCurrent", 0);
+        })
+
+    }
 }
 </script>
   
