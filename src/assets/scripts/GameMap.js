@@ -10,10 +10,10 @@ export class GameMap extends GameObject {
         this.parent = parent;
         this.store = store;
         this.L = 0;     // 每个格子的绝对距离
-        this.rows = 19;
-        this.cols = 20;
+        this.rows = 13;
+        this.cols = 14;
 
-        this.inner_walls_count = 55;
+        this.inner_walls_count = 20;
         this.walls = []; // 存储所有的墙
 
         this.snakes = [

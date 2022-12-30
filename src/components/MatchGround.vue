@@ -1,7 +1,7 @@
 <template>
     <div class="matchground">
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <div class="user-avatar">
                     <img :src="$store.state.user.avatar" alt="">
                 </div>
@@ -9,7 +9,15 @@
                     {{ $store.state.user.username }}
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
+                <div class="selectbot">
+                    <select class="form-select" v-model="select_bot">
+                        <option value=0 selected>匹配模式</option>
+                        <option value=1>人机对战</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
                 <div class="user-avatar">
                     <img :src="$store.state.game.opponent_avatar" alt="">
                 </div>
@@ -17,12 +25,13 @@
                     {{ $store.state.game.opponent_username }}
                 </div>
             </div>
-            <div class="col-12" style="text-align: center; padding-top: 15vh;" v-if="$store.state.game.status==='waiting' || $store.state.game.status==='matching' ">
+            <div class="col-12" style="text-align: center; padding-top: 15vh;"
+                v-if="$store.state.game.status === 'waiting' || $store.state.game.status === 'matching'">
                 <button type="button" class="btn btn-warning btn-lg" @click="click_match">{{ btn_text }}</button>
             </div>
-            <div class="col-12" style="text-align: center; padding-top: 10px;" v-if="btn_text == '取消匹配' ">
+            <div class="col-12" style="text-align: center; padding-top: 10px;" v-if="btn_text == '取消匹配'">
                 <span class="process" v-if="$store.state.game.status === 'matching'">正在匹配中...</span>
-                <span class="process" v-if="$store.state.game.status === 'pending'" >匹配成功</span>
+                <span class="process" v-if="$store.state.game.status === 'pending'">匹配成功</span>
             </div>
         </div>
     </div>
@@ -36,6 +45,7 @@ export default {
     setup() {
         const store = useStore();
         let btn_text = ref('对战');
+        let select_bot = ref("0");
 
         const click_match = () => {
             if (btn_text.value === "对战") {
@@ -43,6 +53,7 @@ export default {
                 store.commit("updateStatus", "matching");
                 store.state.game.socket.send(JSON.stringify({
                     event: "start",
+                    mode: select_bot.value,
                 }));
             } else {
                 btn_text.value = "对战";
@@ -54,6 +65,7 @@ export default {
         }
         return {
             btn_text,
+            select_bot,
             click_match,
         }
     }
@@ -93,5 +105,14 @@ div.btn btn-warning {
 
 .process {
     color: white;
+}
+
+.selectbot {
+    padding-top: 20vh;
+}
+
+div.selectbot>select {
+    width: 60%;
+    margin: 0 auto;
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
   <PlayGround v-if="$store.state.game.status === 'playing'" />
-  <MatchGround v-if="$store.state.user.is_login && $store.state.game.status != 'playing' " />
-  <ResultBoard v-if="$store.state.game.loser === 'A' || $store.state.game.loser === 'B' || $store.state.game.loser === 'all'" />
+  <MatchGround v-if="$store.state.user.is_login && $store.state.game.status != 'playing'" />
+  <ResultBoard
+    v-if="$store.state.game.loser === 'A' || $store.state.game.loser === 'B' || $store.state.game.loser === 'all'" />
 </template>
 
 <script>
@@ -46,9 +47,15 @@ export default {
             avatar: data.opponent_avatar,
           });
           store.commit("updateStatus", "pending");
-          setTimeout(() => {
-            store.commit("updateStatus", "playing");
-          }, 2500);
+          if (data.opponent_username === 'bot') {
+            setTimeout(() => {
+              store.commit("updateStatus", "playing");
+            }, 200);
+          } else {
+            setTimeout(() => {
+              store.commit("updateStatus", "playing");
+            }, 2000);
+          }
           store.commit("updateGame", data.game);
         } else {
           const game = store.state.game.gameObject;
@@ -77,6 +84,7 @@ export default {
     onUnmounted(() => {
       socket.close();
       store.commit("updateStatus", "waiting");
+      store.commit("updateLoser", "none");
     })
   }
 }
