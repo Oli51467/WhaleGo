@@ -65,7 +65,9 @@ export default {
 
         const click_resign = () => {
             store.state.gogame.socket.send(JSON.stringify({
-                event: "resign",
+                event: "play",
+                x: -1,
+                y: -1,
             }));
         }
 
