@@ -7,19 +7,25 @@
                     <li class="nav-item">
                         <!--如果想在属性中使用表达式，则用冒号引一下-->
                         <router-link v-bind:class="route_name == 'battle' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'battle' }">Battle</router-link>
+                            :to="{ name: 'battle' }">贪吃蛇</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link v-bind:class="route_name == 'goplay' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'goplay' }">Go</router-link>
+                            :to="{ name: 'goplay' }">围棋</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link v-bind:class="route_name == 'record' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'snakerecord' }">Record</router-link>
+                            :to="{ name: 'snakerecord' }">对战记录</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link v-bind:class="route_name == 'rank' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'rank' }">Ranking</router-link>
+                            :to="{ name: 'rank' }">我的好友</router-link>
+                    </li>
+                    <li>    
+                        <form class="d-flex container" role="search" style="margin: 0 15vw auto">
+                            <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search" style="width: 15vw">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
                     </li>
                 </ul>
 
@@ -94,5 +100,9 @@ img {
 .text {
     position: relative;
     top: 2px;
+}
+
+.search {
+
 }
 </style>

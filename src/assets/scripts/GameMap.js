@@ -1,6 +1,7 @@
 import { GameObject } from "./GameObject";
 import { Snake } from "./Snake";
 import { Wall } from "./Wall";
+import router from "@/router";
 
 export class GameMap extends GameObject {
     constructor(ctx, parent, store) {
@@ -53,13 +54,18 @@ export class GameMap extends GameObject {
                         snake1.set_eye_direction(b_steps[k]);
                     }
                     clearInterval(interval_id); 
+                    setTimeout(() => {
+                        router.push({
+                            name: "snakerecord",
+                        });
+                    }, 1000);
                 }
                 else {
                     snake0.set_direction(parseInt(a_steps[k]));
                     snake1.set_direction(parseInt(b_steps[k]));
                 }
                 k ++;
-            }, 300);
+            }, 500);
         } 
         else {
             this.ctx.canvas.focus();    // 先聚焦
