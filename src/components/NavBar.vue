@@ -18,8 +18,8 @@
                             :to="{ name: 'snakerecord' }">对战记录</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link v-bind:class="route_name == 'rank' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'rank' }">我的好友</router-link>
+                        <router-link v-bind:class="route_name == 'friend' ? 'nav-link active' : 'nav-link'"
+                            :to="{ name: 'friend' }">我的好友</router-link>
                     </li>
                     <li>
                         <div class="d-flex" style="margin: 0 18vw auto">

@@ -12,11 +12,12 @@
                         <el-tabs v-model="matchplay" type="border-card" @tab-click="handleClick" stretch=true
                             tab-position="top" class="play-board">
                             <el-tab-pane label="matchplay" class="settings">
-                                <div v-if="$store.state.gogame.status === 'waiting' || $store.state.gogame.status === 'matching'">
-                                    <GoMatchBoard/>
+                                <div
+                                    v-if="$store.state.gogame.status === 'waiting' || $store.state.gogame.status === 'matching'">
+                                    <GoMatchBoard />
                                 </div>
                                 <div v-else>
-                                    <GoPlayBoard/>
+                                    <GoPlayBoard />
                                 </div>
                             </el-tab-pane>
                             <el-tab-pane label="AIplay" class="settings">AI</el-tab-pane>
@@ -48,7 +49,7 @@ export default {
         let parent = ref(null);
         let canvas = ref(null);
         onMounted(() => {
-            store.commit("updateBoard", new GoBoard(canvas.value.getContext('2d'), parent.value, 19, 19, store)); 
+            store.commit("updateBoard", new GoBoard(canvas.value.getContext('2d'), parent.value, 19, 19, store));
         })
         return {
             parent,

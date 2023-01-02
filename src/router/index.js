@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import BattleIndexView from '../views/battle/BattleIndexView'
 import RecordIndexView from '../views/record/RecordIndexView'
 import SnakeRecordVideo from '../views/record/SnakeRecordVideo'
-import RankIndexView from '../views/ranklist/RankIndexView'
+import FriendIndexView from '../views/friend/FriendIndexView'
 import UserBotIndexView from '../views/user/bots/UserBotIndexView'
 import NotFoundView from '../views/error/NotFoundView'
 import LoginView from '../views/user/account/LoginView'
@@ -52,9 +52,9 @@ const routes = [
         }
     },
     {
-        path: '/rank/',
-        name: 'rank',
-        component: RankIndexView,
+        path: '/friend/',
+        name: 'friend',
+        component: FriendIndexView,
         meta: {
             requestAuth: true,
         }
