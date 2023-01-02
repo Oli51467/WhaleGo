@@ -83,8 +83,14 @@
                                 <td>
                                     <span class="record-user-username"> {{ user.info.level }}</span>
                                 </td>
-                                <td>
-                                    <button type="button" style="margin-top:-4px" class="btn btn-success">关注</button>
+                                <td v-if="user.info.username != $store.state.user.username && user.relation === 'stranger' || user.relation === 'follower'" >
+                                    <button type="button" style="margin-top:-4px" class="btn btn-success" @click="follow">关注</button>
+                                </td>
+                                <td v-else-if="user.info.username != $store.state.user.username && user.relation === 'followed'" >
+                                    <button type="button" style="margin-top:-4px" class="btn btn-secondary" @click="unfollow">已关注</button>
+                                </td>
+                                <td v-else-if="user.info.username != $store.state.user.username && user.relation === 'friend'" >
+                                    <button type="button" style="margin-top:-4px" class="btn btn-secondary" @click="unfollow">互相关注</button>
                                 </td>
                             </tr>
                             <tr v-else>
@@ -125,7 +131,6 @@ export default {
         }
 
         const search_user = () => {
-            console.log(user_search.value);
             $.ajax({
                 url: `${API_URL}/user/get/`,
                 type: "get",
@@ -136,7 +141,54 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
+                    console.log(resp);
                     user.value = resp;
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+        const follow = () => {
+            $.ajax({
+                url: `${API_URL}/user/follow/`,
+                type: "post",
+                data: {
+                    username: user_search.value,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success() {
+                    if (user.value.relation === 'stranger') {
+                        user.value.relation = 'followed';
+                    } else if (user.value.relation === 'follower') {
+                        user.value.relation = 'friend';
+                    }
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+        const unfollow = () => {
+            $.ajax({
+                url: `${API_URL}/user/unfollow/`,
+                type: "post",
+                data: {
+                    username: user_search.value,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success() {
+                    if (user.value.relation === 'friend') {
+                        user.value.relation = 'follower';
+                    } else if (user.value.relation === 'followed') {
+                        user.value.relation = 'stranger';
+                    }
                 },
                 error(resp) {
                     console.log(resp);
@@ -149,7 +201,9 @@ export default {
             user_search,
             user,
             search_user,
-            logout
+            logout,
+            follow,
+            unfollow,
         }
     },
     name: "NavBar"
