@@ -21,11 +21,13 @@
                         <router-link v-bind:class="route_name == 'rank' ? 'nav-link active' : 'nav-link'"
                             :to="{ name: 'rank' }">我的好友</router-link>
                     </li>
-                    <li>    
-                        <form class="d-flex container" role="search" style="margin: 0 15vw auto">
-                            <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search" style="width: 15vw">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
+                    <li>
+                        <div class="d-flex" style="margin: 0 18vw auto">
+                            <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search"
+                                style="width: 15vw" v-model="user_search">
+                            <button class="btn btn-outline-success" type="submit" data-bs-toggle="modal"
+                                data-bs-target="#search" @click="search_user">Search</button>
+                        </div>
                     </li>
                 </ul>
 
@@ -38,7 +40,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <router-link class="dropdown-item" :to="{ name: 'user_bots' }">My Bots</router-link>
+                                <router-link class="dropdown-item" :to="{ name: 'user_bots' }">个人中心</router-link>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -60,17 +62,58 @@
             </div>
         </div>
     </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="search" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">查找用户</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-hover" style="text-align:center">
+                        <tbody>
+                            <tr v-if="user.user === 'exist'">
+                                <td>
+                                    <img :src="user.info.avatar" alt="" class="record-user-avatar">
+                                    &nbsp;
+                                    <span class="record-user-username"> {{ user.info.username }}</span>
+                                </td>
+                                <td>
+                                    <span class="record-user-username"> {{ user.info.level }}</span>
+                                </td>
+                                <td>
+                                    <button type="button" style="margin-top:-4px" class="btn btn-success">关注</button>
+                                </td>
+                            </tr>
+                            <tr v-else>
+                                <span>该用户不存在</span>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
     
 <script>
 import { useRoute } from 'vue-router';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
+import { API_URL } from '@/assets/apis/api';
+import $ from 'jquery'
 
 export default {
     setup() {
         const route = useRoute();
         const store = useStore();
+        let user_search = ref('');
+        let user = ref([]);
         let route_name = computed(() => route.name)
 
         const logout = () => {
@@ -80,8 +123,32 @@ export default {
             }));
             store.dispatch("logout");
         }
+
+        const search_user = () => {
+            console.log(user_search.value);
+            $.ajax({
+                url: `${API_URL}/user/get/`,
+                type: "get",
+                data: {
+                    username: user_search.value,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    user.value = resp;
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
         return {
             route_name,
+            user_search,
+            user,
+            search_user,
             logout
         }
     },
@@ -100,9 +167,5 @@ img {
 .text {
     position: relative;
     top: 2px;
-}
-
-.search {
-
 }
 </style>
