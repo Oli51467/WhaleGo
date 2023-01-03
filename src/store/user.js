@@ -12,6 +12,7 @@ const UserModule = {
         has_invitation: false,
         request_player_id: "",
         invite_player_id: "",
+        refused: "",
     },
     getters: {
     },
@@ -41,6 +42,9 @@ const UserModule = {
         },
         updateInvitePlayerId(state, invite_player_id) {
             state.invite_player_id = invite_player_id;
+        },
+        updateRefused(state, refused) {
+            state.refused = refused;
         }
     },
     actions: {

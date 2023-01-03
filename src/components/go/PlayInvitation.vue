@@ -31,7 +31,7 @@
                 </div>
                 <div class="col">
                     <div class="deny">
-                        <button type="button" class="btn btn-danger btn-lg">拒绝</button>
+                        <button type="button" class="btn btn-danger btn-lg" @click="refuse_invitation">拒绝</button>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
 
 <script>
 import { computed } from 'vue';
-//import { toRef } from 'vue';
+import { useStore } from 'vuex';
 export default {
     props: {
         request_user: {
@@ -51,13 +51,22 @@ export default {
         },
     },
     setup(props) {
+        const store = useStore();
         const user = computed(() => {
             return props.request_user;
         })
-        console.log(user.value.username);
+        
+        const refuse_invitation = () => {
+            store.state.gogame.socket.send(JSON.stringify({
+                event: "refuse_invitation",
+                friend_id: store.state.user.invite_player_id,
+            }));
+            store.commit("updateInvitePlayerId", '');
+        }
 
         return {
             user,
+            refuse_invitation,
         }
     }
 }

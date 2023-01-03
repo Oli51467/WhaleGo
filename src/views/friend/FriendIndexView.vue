@@ -107,13 +107,15 @@
         </div>
         <RequestPlay v-if="$store.state.user.request_player_id != '' " />
         <PlayInvitation :request_user="request_user" v-if="$store.state.user.invite_player_id != ''"/>
+        <RefuseHint v-if="$store.state.user.refused != ''"/>
     </ContentBase>
 </template>
 
 <script>
-import ContentBase from '@/components/ContentBase';
+import ContentBase from '@/components/ContentBase.vue';
 import RequestPlay from '@/components/go/RequestPlay.vue';
 import PlayInvitation from '@/components/go/PlayInvitation.vue';
+import RefuseHint from '@/components/go/RefuseHint.vue';
 import $ from 'jquery';
 import { API_URL } from "@/assets/apis/api";
 import { useStore } from "vuex";
@@ -124,7 +126,8 @@ export default {
     components: {
         ContentBase,
         RequestPlay,
-        PlayInvitation
+        PlayInvitation,
+        RefuseHint
     },
 
     setup() {
@@ -137,6 +140,7 @@ export default {
         const goSocketUrl = `ws://127.0.0.1:3000/go/websocket/${store.state.user.token}`;
         store.commit("updateRequestPlayerId", '');
         store.commit("updateInvitePlayerId", '');
+        store.commit("updateRefused", '');
 
         onMounted(() => {
             socket = new WebSocket(goSocketUrl);
@@ -152,6 +156,9 @@ export default {
                     store.commit("updateInvitePlayerId", data.request_user.id);
                 } else if (data.event === 'request_cancel') {
                     store.commit("updateInvitePlayerId", '');
+                } else if (data.event === 'friend_refuse') {
+                    store.commit("updateRequestPlayerId", '');
+                    store.commit("updateRefused", "yes");
                 }
             }
 
