@@ -38,7 +38,7 @@
                                     <td>
                                         <button type="button" style="margin-top:-4px"
                                             v-bind:class="friend.state == 1 ? 'btn btn-primary' : 'btn btn-secondary'"
-                                            v-bind:disabled="friend.state == 1 ? false : true"
+                                            v-bind:disabled="friend.state == 1 && !$store.state.user.is_requesting ? false : true"
                                             @click="invite_play($store.state.user.id, friend.id)">邀请对局</button>
                                     </td>
                                 </tr>
@@ -105,20 +105,23 @@
                 </el-tabs>
             </div>
         </div>
+        <RequestPlay v-if="$store.state.user.is_requesting == true" />
     </ContentBase>
 </template>
 
 <script>
 import ContentBase from '@/components/ContentBase';
+import RequestPlay from '@/components/go/RequestPlay.vue';
 import $ from 'jquery';
 import { API_URL } from "@/assets/apis/api";
 import { useStore } from "vuex";
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 export default {
     // 存放templates中用到的其他组件
     components: {
-        ContentBase
+        ContentBase,
+        RequestPlay
     },
 
     setup() {
@@ -126,6 +129,26 @@ export default {
         let followed_users = ref([]);
         let followers = ref([]);
         let friends = ref([]);
+        let request = ref('');
+        let socket = null;
+        const goSocketUrl = `ws://127.0.0.1:3000/go/websocket/${store.state.user.token}`;
+
+        onMounted(() => {
+            socket = new WebSocket(goSocketUrl);
+            socket.onopen = () => {
+                console.log("GoGame Socket Connnected!");
+                store.commit("updateGoSocket", socket);
+            }
+
+            socket.onmessage = msg => {
+                const data = JSON.parse(msg.data);
+                console.log(data);
+            }
+
+            socket.onclose = () => {
+                console.log("Disconnected");
+            }
+        });
 
         $.ajax({
             url: `${API_URL}/user/getFollowed/`,
@@ -143,22 +166,7 @@ export default {
             error(resp) {
                 console.log(resp);
             }
-        }),
-
-            // $.ajax({
-            //     url: `${API_URL}/user/getFollowers/`,
-            //     type: "get",
-            //     headers: {
-            //         Authorization: "Bearer " + store.state.user.token,
-            //     },
-            //     success(resp) {
-            //         followers.value = resp;
-            //         console.log(followers.value.users);
-            //     },
-            //     error(resp) {
-            //         console.log(resp);
-            //     }
-            // })
+        })
 
         $.ajax({
             url: `${API_URL}/user/getFriends/`,
@@ -213,14 +221,20 @@ export default {
             })
         }
 
-        const invite_play = (userId, oppoId) => {
-            console.log(userId, oppoId);
+        const invite_play = (userId, friendId) => {
+            store.commit("updateRequest", true);
+            store.state.gogame.socket.send(JSON.stringify({
+                event: "request_play",
+                request_id: userId,
+                friend_id: friendId,
+            }));
         }
 
         return {
             followed_users,
             followers,
             friends,
+            request,
             unfollow,
             follow,
             invite_play,

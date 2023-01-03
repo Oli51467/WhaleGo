@@ -14,7 +14,7 @@ const routes = [
     {
         path: '/',
         name: "home",
-        redirect: "/battle/",
+        redirect: "/goplay/",
         meta: {
             requestAuth: true,
         }

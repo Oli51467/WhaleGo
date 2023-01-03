@@ -9,6 +9,7 @@ const UserModule = {
         token: "",
         is_login: false,
         show_login_page: true,
+        is_requesting: false,
     },
     getters: {
     },
@@ -29,7 +30,10 @@ const UserModule = {
             state.avatar = "";
             state.token = "";
             state.is_login = false;
-        }
+        },
+        updateRequest(state, is_requesting) {
+            state.is_requesting = is_requesting;
+        },
     },
     actions: {
         // context为上下文 用户点击登陆时调用

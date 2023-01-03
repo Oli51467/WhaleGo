@@ -165,7 +165,7 @@ export class GoBoard extends GameObject {
         this.draw_lines();
         this.init_stars();
         this.draw_indexes();
-        if (this.store.state.gogame.current == this.store.state.gogame.which) {
+        if (this.store.state.gogame.current == this.store.state.gogame.which && this.store.state.gogame.current !== 0) {
             this.add_mouse_events();
         }
         else this.remove_mouse_events();
@@ -174,7 +174,7 @@ export class GoBoard extends GameObject {
 
     render() {
         const g = this.store.state.gogame.board;
-        if (g == null) return;
+        if (g === null) return;
         for (let r = 1; r <= this.rows; r++) {
             for (let c = 1; c <= this.cols; c++) {
                 this.draw_stones(c, r, g[r][c]);

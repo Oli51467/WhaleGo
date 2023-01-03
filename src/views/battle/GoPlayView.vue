@@ -22,10 +22,6 @@ export default {
         const goSocketUrl = `ws://127.0.0.1:3000/go/websocket/${store.state.user.token}`;
         let socket = null;
         onMounted(() => {
-            store.commit("updateGoOpponent", {
-                username: "旗鼓相当的对手",
-                avatar: '/robot.jpeg',
-            });
             store.commit("updateGoLoser", "none");
             store.commit("updateGoGameStatus", "waiting");
             store.commit("updateBoard", null);
