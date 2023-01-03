@@ -22,7 +22,7 @@
                             :to="{ name: 'friend' }">我的好友</router-link>
                     </li>
                     <li>
-                        <div class="d-flex" style="margin: 0 18vw auto">
+                        <div class="d-flex" style="margin: 0 15vw auto">
                             <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search"
                                 style="width: 15vw" v-model="user_search">
                             <button class="btn btn-outline-success" type="submit" data-bs-toggle="modal"
@@ -124,9 +124,9 @@ export default {
 
         const logout = () => {
             // 取消匹配
-            store.state.game.socket.send(JSON.stringify({
-                event: "cancel",
-            }));
+            // store.state.gogame.socket.send(JSON.stringify({
+            //     event: "cancel",
+            // }));
             store.dispatch("logout");
         }
 

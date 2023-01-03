@@ -25,19 +25,21 @@
                                             {{ "棋力：" + friend.level }}
                                         </span>
                                     </td>
-                                    <td> 
+                                    <td>
                                         <span class="user-info">
                                             {{ friend.win + "胜" }}
                                         </span>
                                     </td>
-                                    <td> 
+                                    <td>
                                         <span class="user-info">
                                             {{ friend.lose + "负" }}
                                         </span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-primary"
-                                            style="margin-top:-4px">邀请对局</button>
+                                        <button type="button" style="margin-top:-4px"
+                                            v-bind:class="friend.state == 1 ? 'btn btn-primary' : 'btn btn-secondary'"
+                                            v-bind:disabled="friend.state == 1 ? false : true"
+                                            @click="invite_play($store.state.user.id, friend.id)">邀请对局</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -58,12 +60,12 @@
                                             {{ "棋力：" + user.level }}
                                         </span>
                                     </td>
-                                    <td> 
+                                    <td>
                                         <span class="user-info">
                                             {{ user.win + "胜" }}
                                         </span>
                                     </td>
-                                    <td> 
+                                    <td>
                                         <span class="user-info">
                                             {{ user.lose + "负" }}
                                         </span>
@@ -73,7 +75,7 @@
                                             @click="unfollow(user)" v-if="user.follow === true">取消关注</button>
 
                                         <button type="button" class="btn btn-success" style="margin-top:-4px"
-                                        @click="follow(user)" v-else>关注</button>
+                                            @click="follow(user)" v-else>关注</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -133,7 +135,7 @@ export default {
             },
             success(resp) {
                 followed_users.value = resp;
-                for(let user of followed_users.value.users) {
+                for (let user of followed_users.value.users) {
                     user.follow = true
                 }
                 console.log(followed_users.value.users);
@@ -158,20 +160,20 @@ export default {
             //     }
             // })
 
-            $.ajax({
-                url: `${API_URL}/user/getFriends/`,
-                type: "get",
-                headers: {
-                    Authorization: "Bearer " + store.state.user.token,
-                },
-                success(resp) {
-                    friends.value = resp;
-                    console.log(friends.value.users);
-                },
-                error(resp) {
-                    console.log(resp);
-                }
-            })
+        $.ajax({
+            url: `${API_URL}/user/getFriends/`,
+            type: "get",
+            headers: {
+                Authorization: "Bearer " + store.state.user.token,
+            },
+            success(resp) {
+                friends.value = resp;
+                console.log(friends.value.users);
+            },
+            error(resp) {
+                console.log(resp);
+            }
+        })
 
         const unfollow = (user) => {
             $.ajax({
@@ -211,12 +213,17 @@ export default {
             })
         }
 
+        const invite_play = (userId, oppoId) => {
+            console.log(userId, oppoId);
+        }
+
         return {
             followed_users,
             followers,
             friends,
             unfollow,
             follow,
+            invite_play,
         }
     }
 }
