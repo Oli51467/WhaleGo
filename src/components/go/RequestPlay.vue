@@ -18,7 +18,11 @@ export default {
     setup() {
         const store = useStore();
         const cancel_invite = () => {
-            store.commit("updateRequest", false);
+            store.state.gogame.socket.send(JSON.stringify({
+                event: "request_cancel",
+                friend_id: store.state.user.request_player_id,
+            }));
+            store.commit("updateRequestPlayerId", '');
         }
 
         return {

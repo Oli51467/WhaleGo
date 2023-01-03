@@ -105,13 +105,15 @@
                 </el-tabs>
             </div>
         </div>
-        <RequestPlay v-if="$store.state.user.is_requesting == true" />
+        <RequestPlay v-if="$store.state.user.request_player_id != '' " />
+        <PlayInvitation :request_user="request_user" v-if="$store.state.user.invite_player_id != ''"/>
     </ContentBase>
 </template>
 
 <script>
 import ContentBase from '@/components/ContentBase';
 import RequestPlay from '@/components/go/RequestPlay.vue';
+import PlayInvitation from '@/components/go/PlayInvitation.vue';
 import $ from 'jquery';
 import { API_URL } from "@/assets/apis/api";
 import { useStore } from "vuex";
@@ -121,7 +123,8 @@ export default {
     // 存放templates中用到的其他组件
     components: {
         ContentBase,
-        RequestPlay
+        RequestPlay,
+        PlayInvitation
     },
 
     setup() {
@@ -129,9 +132,11 @@ export default {
         let followed_users = ref([]);
         let followers = ref([]);
         let friends = ref([]);
-        let request = ref('');
+        let request_user = ref([]);
         let socket = null;
         const goSocketUrl = `ws://127.0.0.1:3000/go/websocket/${store.state.user.token}`;
+        store.commit("updateRequestPlayerId", '');
+        store.commit("updateInvitePlayerId", '');
 
         onMounted(() => {
             socket = new WebSocket(goSocketUrl);
@@ -142,7 +147,12 @@ export default {
 
             socket.onmessage = msg => {
                 const data = JSON.parse(msg.data);
-                console.log(data);
+                if (data.event === 'request_play') {
+                    request_user.value = data.request_user;
+                    store.commit("updateInvitePlayerId", data.request_user.id);
+                } else if (data.event === 'request_cancel') {
+                    store.commit("updateInvitePlayerId", '');
+                }
             }
 
             socket.onclose = () => {
@@ -222,7 +232,7 @@ export default {
         }
 
         const invite_play = (userId, friendId) => {
-            store.commit("updateRequest", true);
+            store.commit("updateRequestPlayerId", friendId);        // 请求的对手的id
             store.state.gogame.socket.send(JSON.stringify({
                 event: "request_play",
                 request_id: userId,
@@ -234,7 +244,7 @@ export default {
             followed_users,
             followers,
             friends,
-            request,
+            request_user,
             unfollow,
             follow,
             invite_play,
