@@ -12,11 +12,29 @@
                                     <td>
                                         <img :src="friend.avatar" alt="" class="user-avatar">
                                         &nbsp;
-                                        <span class="user-username"> {{ friend.username }}</span>
+                                        <span class="user-info"> {{ friend.username }}</span>
                                     </td>
-                                    <td> {{ "棋力：" + friend.level }}</td>
-                                    <td> {{ friend.win + "胜" }}</td>
-                                    <td> {{ friend.lose + "负" }}</td>
+                                    <td v-if="friend.state == 1">
+                                        <span class="on">在线</span>
+                                    </td>
+                                    <td v-else>
+                                        <span class="off">不在线</span>
+                                    </td>
+                                    <td>
+                                        <span class="user-info">
+                                            {{ "棋力：" + friend.level }}
+                                        </span>
+                                    </td>
+                                    <td> 
+                                        <span class="user-info">
+                                            {{ friend.win + "胜" }}
+                                        </span>
+                                    </td>
+                                    <td> 
+                                        <span class="user-info">
+                                            {{ friend.lose + "负" }}
+                                        </span>
+                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-primary"
                                             style="margin-top:-4px">邀请对局</button>
@@ -33,14 +51,26 @@
                                     <td>
                                         <img :src="user.avatar" alt="" class="user-avatar">
                                         &nbsp;
-                                        <span class="user-username"> {{ user.username }}</span>
+                                        <span class="user-info"> {{ user.username }}</span>
                                     </td>
-                                    <td> {{ "棋力：" + user.level }}</td>
-                                    <td> {{ user.win + "胜" }}</td>
-                                    <td> {{ user.lose + "负" }}</td>
+                                    <td>
+                                        <span class="user-info">
+                                            {{ "棋力：" + user.level }}
+                                        </span>
+                                    </td>
+                                    <td> 
+                                        <span class="user-info">
+                                            {{ user.win + "胜" }}
+                                        </span>
+                                    </td>
+                                    <td> 
+                                        <span class="user-info">
+                                            {{ user.lose + "负" }}
+                                        </span>
+                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-secondary" style="margin-top:-4px"
-                                            @click="unfollow(user)" v-if="user.state === true">取消关注</button>
+                                            @click="unfollow(user)" v-if="user.follow === true">取消关注</button>
 
                                         <button type="button" class="btn btn-success" style="margin-top:-4px"
                                         @click="follow(user)" v-else>关注</button>
@@ -104,7 +134,7 @@ export default {
             success(resp) {
                 followed_users.value = resp;
                 for(let user of followed_users.value.users) {
-                    user.state = true
+                    user.follow = true
                 }
                 console.log(followed_users.value.users);
             },
@@ -154,7 +184,7 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success() {
-                    user.state = false;
+                    user.follow = false;
                 },
                 error(resp) {
                     console.log(resp);
@@ -173,7 +203,7 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success() {
-                    user.state = true;
+                    user.follow = true;
                 },
                 error(resp) {
                     console.log(resp);
@@ -196,5 +226,15 @@ export default {
 img.user-avatar {
     width: 4vh;
     border-radius: 50%;
+}
+
+.user-info {
+    font-weight: 500;
+    margin-top: -14px;
+}
+
+.on {
+    color: green;
+    font-weight: 600;
 }
 </style>

@@ -73,12 +73,11 @@ export default {
         });
 
         onUnmounted(() => {
-            socket.close();
+            //socket.close();
             store.commit("updateGoGameStatus", "waiting");
             store.commit("updateWhich", 0);
             store.commit("updateCurrent", 0);
         })
-
     }
 }
 </script>
