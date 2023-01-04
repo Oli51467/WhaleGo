@@ -61,6 +61,7 @@ export class GoBoard extends GameObject {
             x: x,
             y: y,
         }));
+        this.remove_mouse_events();
     }
 
     remove_mouse_events() {
@@ -161,14 +162,13 @@ export class GoBoard extends GameObject {
     }
 
     update() {
+        if (this.store.state.gogame.current == this.store.state.gogame.which && this.store.state.gogame.current !== 0) {
+            this.add_mouse_events();
+        } else this.remove_mouse_events();
         this.update_size();
         this.draw_lines();
         this.init_stars();
         this.draw_indexes();
-        if (this.store.state.gogame.current == this.store.state.gogame.which && this.store.state.gogame.current !== 0) {
-            this.add_mouse_events();
-        }
-        else this.remove_mouse_events();
         this.render();
     }
 

@@ -26,7 +26,7 @@
                             <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search"
                                 style="width: 15vw" v-model="user_search">
                             <button class="btn btn-outline-success" type="submit" data-bs-toggle="modal"
-                                data-bs-target="#search" @click="search_user">Search</button>
+                                data-bs-target="#search" @click="search_user">搜索</button>
                         </div>
                     </li>
                 </ul>
@@ -45,7 +45,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#" @click="logout">Exit</a></li>
+                            <li><a class="dropdown-item" href="#" @click="logout">退出登陆</a></li>
                         </ul>
                     </li>
                 </ul>

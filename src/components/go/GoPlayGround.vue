@@ -11,7 +11,7 @@
                     <div class="card-body">
                         <el-tabs v-model="matchplay" type="border-card" @tab-click="handleClick" stretch=true
                             tab-position="top" class="play-board">
-                            <el-tab-pane label="matchplay" class="settings">
+                            <el-tab-pane label="匹配对手" class="settings">
                                 <div
                                     v-if="$store.state.gogame.status === 'waiting' || $store.state.gogame.status === 'matching'">
                                     <GoMatchBoard />
@@ -20,8 +20,8 @@
                                     <GoPlayBoard />
                                 </div>
                             </el-tab-pane>
-                            <el-tab-pane label="AIplay" class="settings">AI</el-tab-pane>
-                            <el-tab-pane label="freeplay" class="settings">自由</el-tab-pane>
+                            <el-tab-pane label="挑战AI" class="settings">AI</el-tab-pane>
+                            <el-tab-pane label="自由对弈" class="settings">自由</el-tab-pane>
                         </el-tabs>
                     </div>
                 </div>
@@ -83,15 +83,14 @@ export default {
 }
 
 canvas {
-    background-color: #6a4d3f;
+    background-color: #c28b69;
     border: 1px solid #522;
     margin-top: 20px;
     margin-left: 50px;
     display: inline-block;
-    border: 1px solid #522;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.4), rgba(26, 25, 25, 0));
+    background-image: radial-gradient(rgba(226, 255, 157, 0.25), rgba(26, 25, 25, 0));
     cursor: pointer;
-    box-shadow: -2px -2px 2px #EFEFEF, 5Px 5px 5px #b9b9b9;
+    box-shadow: 3px 3px 3px #b9b9b9;
 }
 
 .container {
