@@ -1,13 +1,13 @@
 # kob
-king of bots AI对战平台前端
+围棋对战平台前端
 
-> 好玩的贪吃蛇大战
+> 支持好友邀请、匹配模式、AI对弈
 
 ## 技术栈
 
 - 前端
     - Vue3
-    - Axios
+    - Ajax
     - Vue Router
 - 后端
     - Java
