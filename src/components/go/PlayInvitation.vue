@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col">
                     <div class="accept">
-                        <button type="button" class="btn btn-success btn-lg">接受</button>
+                        <button type="button" class="btn btn-success btn-lg" @click="accept_invitation">接受</button>
                     </div>
                 </div>
                 <div class="col">
@@ -64,9 +64,19 @@ export default {
             store.commit("updateInvitePlayerId", '');
         }
 
+        const accept_invitation = () => {
+            store.state.gogame.socket.send(JSON.stringify({
+                event: "accept_invitation",
+                user_id: store.state.user.id,
+                friend_id: store.state.user.invite_player_id,
+            }));
+            store.commit("updateInvitePlayerId", '');
+        }
+
         return {
             user,
             refuse_invitation,
+            accept_invitation,
         }
     }
 }

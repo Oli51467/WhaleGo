@@ -6,7 +6,7 @@
 <script>
 import GoPlayGround from '@/components/go/GoPlayGround.vue'
 import GoResultBoard from '@/components/go/GoResultBoard.vue'
-import { onMounted, onUnmounted } from 'vue';
+import { onUnmounted } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -19,57 +19,8 @@ export default {
 
     setup() {
         const store = useStore();
-        const goSocketUrl = `ws://127.0.0.1:3000/go/websocket/${store.state.user.token}`;
-        let socket = null;
-        onMounted(() => {
-            store.commit("updateGoLoser", "none");
-            store.commit("updateGoGameStatus", "waiting");
-            store.commit("updateBoard", null);
-            socket = new WebSocket(goSocketUrl);
-            socket.onopen = () => {
-                console.log("GoGame Socket Connnected!");
-                store.commit("updateGoSocket", socket);
-            }
-
-            socket.onmessage = msg => {
-                const data = JSON.parse(msg.data);
-                if (data.event === "start") {
-                    store.commit("updateGoOpponent", {
-                        username: data.opponent_username,
-                        avatar: data.opponent_avatar,
-                    });
-                    store.commit("updateGoGameStatus", "playing");
-                    store.commit("updateBoard", data.game.board);
-                    store.commit("updateCurrent", 1);
-                    if (data.game.black_id == store.state.user.id) { // 执黑
-                        store.commit("updateWhich", 1);
-                    } else {  // 执白
-                        store.commit("updateWhich", 2);
-                    }
-                } else if (data.event === "result") {
-                    store.commit("updateWhich", 0);
-                    store.commit("updateCurrent", 0);
-                    store.commit("updateBoard", null);
-                    if (store.state.user.id == data.loser) {
-                        store.commit("updateGoLoser", "myself");
-                    } else {
-                        store.commit("updateGoLoser", "oppo");
-                    }
-                } else if (data.event === 'play') {
-                    if (data.valid === 'yes') {
-                        store.commit("updateBoard", data.board);
-                    }
-                    store.commit("updateCurrent", data.current);
-                }
-            }
-
-            socket.onclose = () => {
-                console.log("Disconnected");
-            }
-        });
 
         onUnmounted(() => {
-            //socket.close();
             store.commit("updateGoGameStatus", "waiting");
             store.commit("updateWhich", 0);
             store.commit("updateCurrent", 0);

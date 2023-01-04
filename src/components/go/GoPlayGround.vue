@@ -49,8 +49,9 @@ export default {
         let parent = ref(null);
         let canvas = ref(null);
         onMounted(() => {
-            store.commit("updateBoard", new GoBoard(canvas.value.getContext('2d'), parent.value, 19, 19, store));
+            new GoBoard(canvas.value.getContext('2d'), parent.value, 19, 19, store)
         })
+
         return {
             parent,
             canvas
@@ -60,7 +61,7 @@ export default {
     data() {
         return {
             activeName: 'first'
-        };
+        }
     },
     methods: {
         handleClick(tab, event) {

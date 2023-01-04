@@ -41,7 +41,6 @@ export default {
             socket.onmessage = msg => {
                 const data = JSON.parse(msg.data);
                 if (data.event === "start") { // 匹配成功
-                    console.log(data.opponent_username + data.opponent_avatar);
                     store.commit("updateOpponent", {
                         username: data.opponent_username,
                         avatar: data.opponent_avatar,
@@ -63,7 +62,6 @@ export default {
                     snake0.set_direction(data.a_direction);
                     snake1.set_direction(data.b_direction);
                     if (data.event === "result") {
-                        console.log(data.a_direction, data.b_direction);
                         if (data.loser === "all" || data.loser === "A") {
                             snake0.status = "die";
                             store.commit("updateLoser", data.loser);

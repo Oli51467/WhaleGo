@@ -38,7 +38,7 @@
                                     <td>
                                         <button type="button" style="margin-top:-4px"
                                             v-bind:class="friend.state == 1 ? 'btn btn-primary' : 'btn btn-secondary'"
-                                            v-bind:disabled="friend.state == 1 && !$store.state.user.is_requesting ? false : true"
+                                            v-bind:disabled="friend.state == 1 && $store.state.user.request_player_id == '' ? false : true"
                                             @click="invite_play($store.state.user.id, friend.id)">邀请对局</button>
                                     </td>
                                 </tr>
@@ -105,9 +105,9 @@
                 </el-tabs>
             </div>
         </div>
-        <RequestPlay v-if="$store.state.user.request_player_id != '' " />
-        <PlayInvitation :request_user="request_user" v-if="$store.state.user.invite_player_id != ''"/>
-        <RefuseHint v-if="$store.state.user.refused != ''"/>
+        <RequestPlay v-if="$store.state.user.request_player_id != ''" />
+        <PlayInvitation :request_user="request_user" v-if="$store.state.user.invite_player_id != ''" />
+        <RefuseHint v-if="$store.state.user.refused != ''" />
     </ContentBase>
 </template>
 
@@ -119,7 +119,9 @@ import RefuseHint from '@/components/go/RefuseHint.vue';
 import $ from 'jquery';
 import { API_URL } from "@/assets/apis/api";
 import { useStore } from "vuex";
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
+// import { ref, onMounted, onUnmounted } from 'vue';
+// import router from '@/router';
 
 export default {
     // 存放templates中用到的其他组件
@@ -136,36 +138,55 @@ export default {
         let followers = ref([]);
         let friends = ref([]);
         let request_user = ref([]);
-        let socket = null;
-        const goSocketUrl = `ws://127.0.0.1:3000/go/websocket/${store.state.user.token}`;
+        request_user = store.state.user.request_user;   
         store.commit("updateRequestPlayerId", '');
         store.commit("updateInvitePlayerId", '');
         store.commit("updateRefused", '');
 
-        onMounted(() => {
-            socket = new WebSocket(goSocketUrl);
-            socket.onopen = () => {
-                console.log("GoGame Socket Connnected!");
-                store.commit("updateGoSocket", socket);
-            }
+        // onMounted(() => {
+        //     console.log(store.state.gogame.socket);
+        //     if (store.state.gogame.socket != null && store.state.gogame.status != 'inactive') {
+        //         socket = store.state.gogame.socket;
+        //     } else {
+        //         socket = new WebSocket(goSocketUrl);
+        //     }
+        //     socket.onopen = () => {
+        //         console.log("GoGame Socket Connnected!");
+        //         store.commit("updateGoSocket", {
+        //             socket: socket,
+        //             status: "active",
+        //         });
+        //     }
 
-            socket.onmessage = msg => {
-                const data = JSON.parse(msg.data);
-                if (data.event === 'request_play') {
-                    request_user.value = data.request_user;
-                    store.commit("updateInvitePlayerId", data.request_user.id);
-                } else if (data.event === 'request_cancel') {
-                    store.commit("updateInvitePlayerId", '');
-                } else if (data.event === 'friend_refuse') {
-                    store.commit("updateRequestPlayerId", '');
-                    store.commit("updateRefused", "yes");
-                }
-            }
+        //     socket.onmessage = msg => {
+        //         const data = JSON.parse(msg.data);
+        //         if (data.event === 'request_play') {
+        //             request_user.value = data.request_user;
+        //             store.commit("updateInvitePlayerId", data.request_user.id);
+        //         } else if (data.event === 'request_cancel') {
+        //             store.commit("updateInvitePlayerId", '');
+        //         } else if (data.event === 'friend_refuse') {
+        //             store.commit("updateRequestPlayerId", '');
+        //             store.commit("updateRefused", "yes");
+        //         } else if (data.event === 'ready') {
+        //             router.push({
+        //                 name: 'goplay'
+        //             })
+        //         }
+        //     }
 
-            socket.onclose = () => {
-                console.log("Disconnected");
-            }
-        });
+        //     socket.onclose = () => {
+        //         console.log("Disconnected");
+        //         store.commit("updateGoSocket", {
+        //             socket: socket,
+        //             status: "inactive",
+        //         });
+        //     }
+        // });
+
+        // onUnmounted(() => {
+        //     socket.close();
+        // })
 
         $.ajax({
             url: `${API_URL}/user/getFollowed/`,
