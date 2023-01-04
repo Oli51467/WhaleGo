@@ -1,5 +1,6 @@
 <template>
     <ContentBase>
+        <InteractiveComponents/>
         <table class="table table-striped table-hover" style="text-align:center">
             <thead>
                 <tr>
@@ -50,7 +51,8 @@
 </template>
 
 <script>
-import ContentBase from "@/components/ContentBase";
+import ContentBase from "@/components/ContentBase.vue";
+import InteractiveComponents from '@/components/go/InteractiveComponents.vue';
 import { useStore } from "vuex";
 import { ref } from "vue";
 import router from "@/router";
@@ -62,6 +64,7 @@ export default {
     // 存放templates中用到的其他组件
     components: {
         ContentBase,
+        InteractiveComponents,
     },
 
     setup() {

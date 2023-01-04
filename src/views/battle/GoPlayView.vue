@@ -1,4 +1,5 @@
 <template>
+    <InteractiveComponents/>
     <GoPlayGround />
     <GoResultBoard v-if="$store.state.gogame.loser === 'myself' || $store.state.gogame.loser === 'oppo'" />
 </template>
@@ -6,6 +7,7 @@
 <script>
 import GoPlayGround from '@/components/go/GoPlayGround.vue'
 import GoResultBoard from '@/components/go/GoResultBoard.vue'
+import InteractiveComponents from '@/components/go/InteractiveComponents.vue';
 import { onUnmounted } from 'vue';
 import { useStore } from 'vuex';
 
@@ -15,6 +17,7 @@ export default {
     components: {
         GoPlayGround,
         GoResultBoard,
+        InteractiveComponents,
     },
 
     setup() {

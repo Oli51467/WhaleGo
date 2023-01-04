@@ -71,6 +71,7 @@ export default {
                 store.commit("updateRequestPlayerId", '');
                 store.commit("updateRefused", "yes");
             } else if (data.event === 'ready') {
+                store.commit("updateRequestPlayerId", '');
                 router.push({
                     name: 'goplay'
                 })

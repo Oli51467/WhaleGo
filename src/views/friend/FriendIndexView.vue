@@ -105,31 +105,23 @@
                 </el-tabs>
             </div>
         </div>
-        <RequestPlay v-if="$store.state.user.request_player_id != ''" />
-        <PlayInvitation :request_user="request_user" v-if="$store.state.user.invite_player_id != ''" />
-        <RefuseHint v-if="$store.state.user.refused != ''" />
+        <InteractiveComponents/>
     </ContentBase>
 </template>
 
 <script>
 import ContentBase from '@/components/ContentBase.vue';
-import RequestPlay from '@/components/go/RequestPlay.vue';
-import PlayInvitation from '@/components/go/PlayInvitation.vue';
-import RefuseHint from '@/components/go/RefuseHint.vue';
+import InteractiveComponents from '@/components/go/InteractiveComponents.vue';
 import $ from 'jquery';
 import { API_URL } from "@/assets/apis/api";
 import { useStore } from "vuex";
 import { ref } from 'vue';
-// import { ref, onMounted, onUnmounted } from 'vue';
-// import router from '@/router';
 
 export default {
     // 存放templates中用到的其他组件
     components: {
         ContentBase,
-        RequestPlay,
-        PlayInvitation,
-        RefuseHint
+        InteractiveComponents,
     },
 
     setup() {
@@ -137,56 +129,9 @@ export default {
         let followed_users = ref([]);
         let followers = ref([]);
         let friends = ref([]);
-        let request_user = ref([]);
-        request_user = store.state.user.request_user;   
         store.commit("updateRequestPlayerId", '');
         store.commit("updateInvitePlayerId", '');
         store.commit("updateRefused", '');
-
-        // onMounted(() => {
-        //     console.log(store.state.gogame.socket);
-        //     if (store.state.gogame.socket != null && store.state.gogame.status != 'inactive') {
-        //         socket = store.state.gogame.socket;
-        //     } else {
-        //         socket = new WebSocket(goSocketUrl);
-        //     }
-        //     socket.onopen = () => {
-        //         console.log("GoGame Socket Connnected!");
-        //         store.commit("updateGoSocket", {
-        //             socket: socket,
-        //             status: "active",
-        //         });
-        //     }
-
-        //     socket.onmessage = msg => {
-        //         const data = JSON.parse(msg.data);
-        //         if (data.event === 'request_play') {
-        //             request_user.value = data.request_user;
-        //             store.commit("updateInvitePlayerId", data.request_user.id);
-        //         } else if (data.event === 'request_cancel') {
-        //             store.commit("updateInvitePlayerId", '');
-        //         } else if (data.event === 'friend_refuse') {
-        //             store.commit("updateRequestPlayerId", '');
-        //             store.commit("updateRefused", "yes");
-        //         } else if (data.event === 'ready') {
-        //             router.push({
-        //                 name: 'goplay'
-        //             })
-        //         }
-        //     }
-
-        //     socket.onclose = () => {
-        //         console.log("Disconnected");
-        //         store.commit("updateGoSocket", {
-        //             socket: socket,
-        //             status: "inactive",
-        //         });
-        //     }
-        // });
-
-        // onUnmounted(() => {
-        //     socket.close();
-        // })
 
         $.ajax({
             url: `${API_URL}/user/getFollowed/`,
@@ -272,7 +217,6 @@ export default {
             followed_users,
             followers,
             friends,
-            request_user,
             unfollow,
             follow,
             invite_play,
