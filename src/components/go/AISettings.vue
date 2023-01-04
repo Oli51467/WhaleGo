@@ -22,6 +22,15 @@
                     <div class="form-floating">
                         <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
                             <option selected>分先</option>
+                            <option disabled>让先</option>
+                            <option disabled>让2子</option>
+                            <option disabled>让3子</option>
+                            <option disabled>让4子</option>
+                            <option disabled>让5子</option>
+                            <option disabled>让6子</option>
+                            <option disabled>让7子</option>
+                            <option disabled>让8子</option>
+                            <option disabled>让9子</option>
                         </select>
                         <label for="floatingSelect">棋份</label>
                     </div>
@@ -35,6 +44,8 @@
                     <div class="form-floating">
                         <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
                             <option selected>猜先</option>
+                            <option disabled>执黑</option>
+                            <option disabled>执白</option>
                         </select>
                         <label for="floatingSelect">棋手</label>
                     </div>
@@ -47,41 +58,35 @@
                         <label for="floatingSelect">时间</label>
                     </div>
                 </div>
+                <div class="col-3 rules">
+                    <div class="form-floating">
+                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                            <option>1段</option>
+                            <option>2段</option>
+                            <option>3段</option>
+                            <option>4段</option>
+                            <option selected>5段</option>
+                            <option>6段</option>
+                            <option>7段</option>
+                            <option>8段</option>
+                            <option>9段</option>
+                        </select>
+                        <label for="floatingSelect">难度</label>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row" v-if="$store.state.gogame.status === 'waiting'">
-            <el-button type="success" round class="match" @click="click_match">开始匹配</el-button>
-        </div>
-        <div class="row" v-if="$store.state.gogame.status === 'matching'">
-            <el-button type="info" round class="match" @click="click_match">取消匹配</el-button>
+        <div class="row">
+            <el-button type="success" round class="match" @click="click_match">开始挑战</el-button>
         </div>
     </div>
 </template>
 
 <script>
-import { useStore } from 'vuex';
 
 export default {
     setup() {
-        const store = useStore();
-
-        const click_match = () => {
-            if (store.state.gogame.status === 'matching') {
-                store.state.gogame.socket.send(JSON.stringify({
-                    event: "cancel",
-                }));
-                store.commit("updateGoGameStatus", "waiting");
-            } else if (store.state.gogame.status === 'waiting') {
-                store.commit("updateGoGameStatus", "matching");
-                store.state.gogame.socket.send(JSON.stringify({
-                    event: "start",
-                }));
-            }
-        }
-
-        return {
-            click_match,
-        }
+        
     }
 }
 </script>

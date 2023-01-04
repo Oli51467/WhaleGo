@@ -9,7 +9,7 @@
             <div class="col-5">
                 <div class="container">
                     <div class="card-body">
-                        <el-tabs v-model="matchplay" type="border-card" @tab-click="handleClick" stretch=true
+                        <el-tabs v-model="matchplay" type="border-card" stretch=true
                             tab-position="top" class="play-board">
                             <el-tab-pane label="匹配对手" class="settings">
                                 <div
@@ -20,8 +20,10 @@
                                     <GoPlayBoard />
                                 </div>
                             </el-tab-pane>
-                            <el-tab-pane label="挑战AI" class="settings">AI</el-tab-pane>
-                            <el-tab-pane label="自由对弈" class="settings">自由</el-tab-pane>
+                            <el-tab-pane label="挑战AI" class="settings" :disabled="$store.state.gogame.status === 'playing' ? true : false">
+                                <AISettings/>
+                            </el-tab-pane>
+                            <el-tab-pane label="自由对弈" class="settings" :disabled="$store.state.gogame.status === 'playing' ? true : false">自由</el-tab-pane>
                         </el-tabs>
                     </div>
                 </div>
@@ -34,6 +36,7 @@
 import { GoBoard } from '@/assets/scripts/GoBoard';
 import GoMatchBoard from '@/components/go/GoMatchBoard.vue'
 import GoPlayBoard from '@/components/go/GoPlayBoard.vue'
+import AISettings from './AISettings.vue';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
@@ -42,6 +45,7 @@ export default {
     components: {
         GoMatchBoard,
         GoPlayBoard,
+        AISettings,
     },
 
     setup() {
@@ -57,17 +61,6 @@ export default {
             canvas
         }
     },
-
-    data() {
-        return {
-            activeName: 'first'
-        }
-    },
-    methods: {
-        handleClick(tab, event) {
-            console.log(tab, event);
-        }
-    }
 }
 
 </script>
@@ -84,7 +77,7 @@ export default {
 
 canvas {
     background-color: #c28b69;
-    border: 1px solid #522;
+    border: 2px solid #9d6746;
     margin-top: 20px;
     margin-left: 50px;
     display: inline-block;
@@ -101,6 +94,6 @@ canvas {
 }
 
 .play-board {
-    background-color: antiquewhite;
+    background-color: rgb(238, 237, 237);
 }
 </style>
