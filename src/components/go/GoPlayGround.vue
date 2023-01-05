@@ -53,7 +53,7 @@ export default {
         let parent = ref(null);
         let canvas = ref(null);
         onMounted(() => {
-            new GoBoard(canvas.value.getContext('2d'), parent.value, 19, 19, store)
+            new GoBoard(canvas.value.getContext('2d'), parent.value, 19, 19, store);
         })
 
         return {

@@ -61,7 +61,6 @@
 <script>
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
-import { onUnmounted } from 'vue';
 import { ref } from 'vue';
 
 export default {
@@ -87,13 +86,6 @@ export default {
             ctx.fill();
             ctx1.fill();
         })
-
-        onUnmounted(() => {
-            store.commit("updateGoGameStatus", "waiting");
-            store.commit("updateWhich", 0);
-            store.commit("updateCurrent", 0);
-        })
-
 
         const click_resign = () => {
             store.state.gogame.socket.send(JSON.stringify({
