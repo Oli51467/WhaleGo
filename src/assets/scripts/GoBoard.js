@@ -111,12 +111,16 @@ export class GoBoard extends GameObject {
         for (let i = 1; i <= 19; i++) {
             this.ctx.fillStyle = "black";
             this.ctx.font = "30px";
-            this.ctx.fillText(String.fromCharCode(64 + i), this.cell_len - 20, this.cell_len * i + 4);
+            this.ctx.fillText(i, this.cell_len - 20, this.cell_len * i + 4);
         }
         for (let i = 1; i <= 19; i++) {
             this.ctx.fillStyle = "black";
             this.ctx.font = "30px";
-            this.ctx.fillText(i, this.cell_len * i - 3, this.ctx.canvas.height - this.cell_len + 15);
+            let alp;
+            if (i >= 9) {
+                alp = String.fromCharCode(65 + i)
+            } else alp = String.fromCharCode(64 + i); 
+            this.ctx.fillText(alp, this.cell_len * i - 3, this.ctx.canvas.height - this.cell_len + 8);
         }
     }
 

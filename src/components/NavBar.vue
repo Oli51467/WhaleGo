@@ -15,7 +15,7 @@
                     </li>
                     <li class="nav-item">
                         <router-link v-bind:class="route_name == 'record' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'snakerecord' }">对战记录</router-link>
+                            :to="{ name: 'snakerecord' }">对局记录</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link v-bind:class="route_name == 'friend' ? 'nav-link active' : 'nav-link'"
