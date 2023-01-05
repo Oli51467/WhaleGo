@@ -33,7 +33,7 @@
                 <td> {{ record.record.createTime }}</td>
                 <td>
                     <button type="button" class="btn btn-primary"
-                        @click="open_record_video(record.record.id)">开始复盘</button>
+                        @click="open_record(record.record.id)">开始复盘</button>
                 </td>
             </tr>
         </tbody>
@@ -115,6 +115,10 @@ export default {
             })
         }
 
+        const open_record = recordId => {
+            console.log(recordId);
+        }
+
         pull_page(current_page);
 
         return {
@@ -123,6 +127,7 @@ export default {
             pages,
             records,
             update_pages,
+            open_record,
         }
     }
 }

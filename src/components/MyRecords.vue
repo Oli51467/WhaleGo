@@ -29,11 +29,11 @@
                 <td>
                     <span> {{ record.white_level }}</span>
                 </td>
-                <td> {{ record.result }}</td>
+                <td> {{ record.record.result }}</td>
                 <td> {{ record.record.createTime }}</td>
                 <td>
                     <button type="button" class="btn btn-primary"
-                        @click="open_record_video(record.record.id)">开始复盘</button>
+                        @click="open_record(record.record.id)">开始复盘</button>
                 </td>
             </tr>
         </tbody>
@@ -117,12 +117,28 @@ export default {
 
         pull_page(current_page);
 
+        const open_record = recordId => {
+            for (const record of records.value) {
+                if (record.record.id === recordId) {
+                    console.log(record.record.id, record.steps);
+                    // router.push({
+                    //     name: "record_video",
+                    //     params: {
+                    //         recordId
+                    //     }
+                    // })
+                    break;
+                }
+            }
+        }
+
         return {
             click_page,
             pull_page,
             pages,
             records,
             update_pages,
+            open_record,
         }
     }
 }

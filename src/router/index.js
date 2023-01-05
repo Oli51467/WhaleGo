@@ -43,8 +43,8 @@ const routes = [
     //     }
     // },
     {
-        path: '/snakerecord/',
-        name: 'snakerecord',
+        path: '/record/',
+        name: 'record',
         component: RecordIndexView,
         meta: {
             requestAuth: true,

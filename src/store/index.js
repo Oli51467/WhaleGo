@@ -1,8 +1,7 @@
 import { createStore } from 'vuex'
 import UserModule from './user'
-import GameModule from './game'
 import GoGameModule from './gogame'
-import SnakeRecord from './snake_record'
+import GameRecord from './record'
 
 export default createStore({
   state: {
@@ -15,8 +14,8 @@ export default createStore({
   },
   modules: {
     user: UserModule,
-    game: GameModule,
+    //game: GameModule,
     gogame: GoGameModule,
-    snake_record: SnakeRecord,
+    record: GameRecord,
   }
 })
