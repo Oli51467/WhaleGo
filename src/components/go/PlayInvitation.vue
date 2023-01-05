@@ -88,8 +88,8 @@ div.result-board {
     width: 30vw;
     background-color: rgba(50, 50, 50, 0.5);
     position: absolute;
-    top: 20vh;
-    left: 28vw;
+    top: 30%;
+    left: 35%;
     border: 2px solid black;
 }
 

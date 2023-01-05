@@ -2,10 +2,13 @@
     <div class="result-board">
         <div class="result-board-text"
             v-if="$store.state.gogame.loser === 'myself'">
-            Lose!
+            你输了!
         </div>
         <div class="result-board-text" v-else-if="$store.state.gogame.loser === 'oppo'">
-            Win!
+            你赢了!
+        </div>
+        <div class="result-board-text" v-else-if="$store.state.gogame.loser === 'draw'">
+            和棋！
         </div>
         <div class="result-board-btn">
             <button type="button" class="btn btn-success btn-lg" @click="return_to_match">再来一局！</button>

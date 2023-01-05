@@ -39,6 +39,7 @@ export default {
                 store.commit("updateGoOpponent", {
                     username: data.opponent_username,
                     avatar: data.opponent_avatar,
+                    userid: data.opponent_userid,
                 });
                 store.commit("updateGoGameStatus", "playing");
                 store.commit("updateBoard", data.game.board);
@@ -52,25 +53,31 @@ export default {
                 store.commit("updateWhich", 0);
                 store.commit("updateCurrent", 0);
                 store.commit("updateBoard", null);
-                if (store.state.user.id == data.loser) {
+                store.commit("updateRequestPlayerId", '');
+                if (data.loser === 'draw') {
+                    store.commit("updateGoLoser", "draw");
+                }
+                else if (store.state.user.id == data.loser) {
                     store.commit("updateGoLoser", "myself");
                 } else {
                     store.commit("updateGoLoser", "oppo");
-                }
+                } 
             } else if (data.event === 'play') {
                 if (data.valid === 'yes') {
                     store.commit("updateBoard", data.board);
                 }
                 store.commit("updateCurrent", data.current);
-            } else if (data.event === 'request_play') {
+            } else if (data.event === 'request_play') {     // 接受到一名玩家发出的邀请
                 store.commit("updateRequestUser", data.request_user);
                 store.commit("updateInvitePlayerId", data.request_user.id);
-            } else if (data.event === 'request_cancel') {
+            } else if (data.event === 'request_cancel') {   // 另一名玩家取消了邀请(对局邀请、和棋邀请)
                 store.commit("updateInvitePlayerId", '');
-            } else if (data.event === 'friend_refuse') {
+            } else if (data.event === 'request_draw') {    // 另一名玩家请求和棋
+                store.commit("updateInvitePlayerId", 'peace');
+            } else if (data.event === 'friend_refuse') {    // 另一名玩家拒绝了对局邀请
                 store.commit("updateRequestPlayerId", '');
                 store.commit("updateRefused", "yes");
-            } else if (data.event === 'ready') {
+            } else if (data.event === 'ready') {            // 另一名玩家接受了邀请 准备开始
                 store.commit("updateRequestPlayerId", '');
                 router.push({
                     name: 'goplay'

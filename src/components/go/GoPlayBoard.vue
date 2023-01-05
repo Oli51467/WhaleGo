@@ -48,10 +48,29 @@
                 <button type="button" class="btn btn-success btn-lg" disabled="true">形势判断</button>
             </div>
             <div class="col-3 func">
-                <button type="button" class="btn btn-secondary btn-lg" disabled="true">申请和棋</button>
+                <button type="button" class="btn btn-secondary btn-lg" @click="request_draw">申请和棋</button>
             </div>
             <div class="col-2 func">
-                <button type="button" class="btn btn-danger btn-lg" @click="click_resign">认输</button>
+                <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">认输</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <span>你确定认输吗？</span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-lg" style="margin-right: 200px"
+                                    data-bs-dismiss="modal" @click="click_resign">认输</button>
+                                <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal"
+                                    style="margin-right: 60px">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -95,8 +114,18 @@ export default {
             }));
         }
 
+        const request_draw = () => {
+            const oppo_id = store.state.gogame.opponent_userid;
+            store.commit("updateRequestPlayerId", oppo_id);        // 请求的对手的id
+            store.state.gogame.socket.send(JSON.stringify({
+                event: "request_draw",
+                friend_id: oppo_id,
+            }));
+        }
+
         return {
             click_resign,
+            request_draw,
             canvas,
             canvas1
         }
@@ -108,9 +137,11 @@ export default {
 .row {
     margin-top: 15px;
 }
+
 .card {
     background-color: rgb(238, 237, 237);
 }
+
 div.playboard {
     width: 40vw;
     margin: 0 auto;

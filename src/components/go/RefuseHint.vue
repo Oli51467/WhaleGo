@@ -2,7 +2,7 @@
     <div class="result-board">
         <div class="result-board-text">
             <span>
-                对方拒绝了您的邀请
+                对方拒绝了您的请求
             </span>
         </div>
         <div class="result-board-btn">
@@ -33,8 +33,9 @@ div.result-board {
     width: 30vw;
     background-color: rgba(50, 50, 50, 0.5);
     position: absolute;
-    top: 20vh;
-    left: 28vw;
+    top: 30%;
+    left: 35%;
+    z-index: 999;
 }
 
 div.result-board-text {

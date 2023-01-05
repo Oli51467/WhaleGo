@@ -4,6 +4,7 @@ const GoGameModule = {
         status: 'waiting',
         opponent_avatar: "",
         opponent_username: "",
+        opponent_userid: "",
         socket: null,
         loser: "none",
         current: 0, // 当前轮到哪一方
@@ -25,6 +26,7 @@ const GoGameModule = {
         updateGoOpponent(state, opponent) {
             state.opponent_username = opponent.username;
             state.opponent_avatar = opponent.avatar;
+            state.opponent_userid = opponent.userid;
         },
         updateGoLoser(state, loser) {
             state.loser = loser;
