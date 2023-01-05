@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import BattleIndexView from '../views/battle/BattleIndexView'
 import RecordIndexView from '../views/record/RecordIndexView'
+import RecordReviewView from '../views/record/RecordReviewView'
 import FriendIndexView from '../views/friend/FriendIndexView'
 import UserBotIndexView from '../views/user/bots/UserBotIndexView'
 import NotFoundView from '../views/error/NotFoundView'
@@ -34,14 +35,14 @@ const routes = [
             requestAuth: true,
         }
     },
-    // {
-    //     path: '/snakerecord/:recordId/',
-    //     name: 'record_video',
-    //     component: SnakeRecordVideo,
-    //     meta: {
-    //         requestAuth: true,
-    //     }
-    // },
+    {
+        path: '/record/:recordId/',
+        name: 'record_review',
+        component: RecordReviewView,
+        meta: {
+            requestAuth: true,
+        }
+    },
     {
         path: '/record/',
         name: 'record',

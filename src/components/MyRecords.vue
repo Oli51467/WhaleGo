@@ -60,6 +60,7 @@ import { useStore } from "vuex";
 import { ref } from "vue";
 import $ from 'jquery'
 import { API_URL } from "@/assets/apis/api";
+import router from '@/router';
 
 export default {
     setup() {
@@ -120,13 +121,19 @@ export default {
         const open_record = recordId => {
             for (const record of records.value) {
                 if (record.record.id === recordId) {
-                    console.log(record.record.id, record.steps);
-                    // router.push({
-                    //     name: "record_video",
-                    //     params: {
-                    //         recordId
-                    //     }
-                    // })
+                    store.commit("updateRecord", {
+                        ...record,
+                        steps: record.steps,
+                        record_result: record.record.result,
+                        record_time: record.record.createTime,
+                    });
+                    console.log(store.state.record.steps);
+                    router.push({
+                        name: "record_review",
+                        params: {
+                            recordId
+                        }
+                    })
                     break;
                 }
             }

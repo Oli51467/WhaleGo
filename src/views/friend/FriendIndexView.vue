@@ -2,7 +2,7 @@
     <ContentBase>
         <div class="container">
             <div class="card-body">
-                <el-tabs v-model="matchplay" type="border-card" @tab-click="handleClick" stretch=true tab-position="top"
+                <el-tabs type="border-card" :stretch=true tab-position="top"
                     class="play-board">
 
                     <el-tab-pane label="我的好友" class="settings">

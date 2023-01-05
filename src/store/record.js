@@ -1,8 +1,7 @@
 const GameRecord = {
     state: {
-        black_steps: "",
-        white_steps: "",
-        record_loser: "",
+        steps: "",
+        record_result: "",
         record_time: "",
         black_username: "",
         black_level: "",
@@ -16,9 +15,8 @@ const GameRecord = {
     },
     mutations: {
         updateRecord(state, record) {
-            state.black_steps = record.black_steps;
-            state.white_steps = record.white_steps;
-            state.record_loser = record.record_loser;
+            state.steps = record.steps;
+            state.record_result = record.record_result;
             state.record_time = record.record_time;
             state.black_username = record.black_username;
             state.black_avatar = record.black_avatar;
