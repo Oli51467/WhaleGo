@@ -1,18 +1,45 @@
 import { GameObject } from "./GameObject";
+import { Board } from "./BoardObject";
 
-export class GoBoard extends GameObject {
-    constructor(ctx, parent, rows, cols, store) {
+export class BoardRecord extends GameObject {
+    constructor(ctx, parent, rows, cols, steps, btn_proceed) {
         super();
         this.ctx = ctx;
         this.parent = parent;
         this.rows = rows;
         this.cols = cols;
-        this.store = store;
+        this.steps = {};
+        this.steps = steps;
+        this.btn_proceed = btn_proceed;
+        this.cur = 0;
         this.L = 0;
         this.cell_len = 0;
-        this.is_black = true;
+        this.g = [];
         this.virtual_x = -1;
         this.virtual_y = -1;
+        this.board = new Board(19, 19, 0);
+    }
+
+    proceed = () => {
+        if (this.cur >= this.steps.length) return;
+        const step = this.steps[this.cur ++].split(',');
+        const x = step[0];
+        const y = step[1];
+        let player = this.board.getPlayer();
+        this.board.play(x, y, player);
+        this.board.nextPlayer();
+        let last_turn = this.board.gameRecord.getLastTurn();    // 上一步走棋的回合记录
+        let last_board = last_turn.boardState;                  // 上一步走的棋盘状态
+        this.g = last_board;
+    }
+
+    init_board() {
+        for (let i = 1; i <= 19; i ++ ) {
+            this.g[i] = [];
+            for (let j = 1; j <= 19; j ++ ) {
+                this.g[i][j] = 0;
+            }
+        }
     }
 
     init_stars() {
@@ -23,53 +50,8 @@ export class GoBoard extends GameObject {
         }
     }
 
-    add_mouse_events() {
-        this.ctx.canvas.addEventListener("mousemove", this.handle_mousemove);
-        this.ctx.canvas.addEventListener("click", this.handle_mouseclick);
-    }
-
-    handle_mousemove = (e) => {
-        const g = this.store.state.gogame.board;
-        if (g == null) return;
-        let click_x = e.offsetX;
-        let click_y = e.offsetY;
-        let x = Math.floor(click_y / 32);
-        let y = Math.floor(click_x / 32);
-        if (x <= 0 || x > 19 || y <= 0 || y > 19 || g[x][y]) {
-            this.virtual_x = -1;
-            this.virtual_y = -1;
-            return;
-        }
-        this.virtual_x = y;
-        this.virtual_y = x;
-    }
-
-    handle_mouseclick = (e) => {
-        const g = this.store.state.gogame.board;
-        if (g == null) return;
-        let click_x = e.offsetX;
-        let click_y = e.offsetY;
-        let x = Math.floor(click_y / 32);
-        let y = Math.floor(click_x / 32);
-        this.virtual_x = -1; 
-        this.virtual_y = -1;
-        if (x <= 0 || x > 19 || y <= 0 || y > 19 || g[x][y]) return;
-        
-        this.store.state.gogame.socket.send(JSON.stringify({
-            event: "play",
-            x: x,
-            y: y,
-        }));
-        this.remove_mouse_events();
-    }
-
-    remove_mouse_events() {
-        this.ctx.canvas.removeEventListener("mousemove", this.handle_mousemove);
-        this.ctx.canvas.removeEventListener("click", this.handle_mouseclick);
-    }
-
     start() {
-        
+        this.init_board();
     }
 
     draw_virtual_stone(x, y) {
@@ -139,17 +121,17 @@ export class GoBoard extends GameObject {
         this.cell_len = parseInt(this.ctx.canvas.width / 20);
     }
 
-    draw_stones(x, y, color) {
+    draw_stones (x, y, color) {
         const center_x = x * this.cell_len;
         const center_y = y * this.cell_len;
         const r = this.cell_len / 2 * 0.9;
         if (color === 0) return;
-        else if (color === 1) {
+        else if (color == 1) {
             let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
             gradient.addColorStop(0, "#0a0a0a");
             gradient.addColorStop(1, "#4d4d4d");
             this.ctx.fillStyle = gradient;
-        } else if (color === 2) {
+        } else if (color == 2) {
             let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
             gradient.addColorStop(0, "#e6e6e6");
             gradient.addColorStop(1, "#ffffff");
@@ -165,23 +147,19 @@ export class GoBoard extends GameObject {
     }
 
     update() {
-        if (this.store.state.gogame.current == this.store.state.gogame.which && this.store.state.gogame.current !== 0) {
-            this.add_mouse_events();
-        } else this.remove_mouse_events();
         this.update_size();
         this.draw_lines();
         this.init_stars();
         this.draw_indexes();
+        this.btn_proceed.addEventListener('click', this.proceed);
         this.render();
     }
 
     render() {
-        const g = this.store.state.gogame.board;
-        if (g === null) return;
         for (let r = 1; r <= this.rows; r++) {
             for (let c = 1; c <= this.cols; c++) {
-                this.draw_stones(c, r, g[r][c]);
-                if (this.virtual_x != -1 && this.virtual_y != -1) this.draw_virtual_stone(this.virtual_x, this.virtual_y);
+                this.draw_stones(c, r, this.g[r][c]);
+                //if (this.virtual_x != -1 && this.virtual_y != -1) this.draw_virtual_stone(this.virtual_x, this.virtual_y);
             }
         }
     }

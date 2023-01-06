@@ -127,7 +127,7 @@ export default {
                         record_result: record.record.result,
                         record_time: record.record.createTime,
                     });
-                    console.log(store.state.record.steps);
+                    //console.log(store.state.record.steps);
                     router.push({
                         name: "record_review",
                         params: {
