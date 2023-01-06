@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import PlayRoomView from '../views/room/PlayRoomView'
+import PlayRoomView from '../views/community/PlayRoomView'
 import RecordIndexView from '../views/record/RecordIndexView'
 import RecordReviewView from '../views/record/RecordReviewView'
 import FriendIndexView from '../views/friend/FriendIndexView'
+import CommunityIndexView from '../views/community/CommunityIndexView'
 import UserBotIndexView from '../views/user/bots/UserBotIndexView'
 import NotFoundView from '../views/error/NotFoundView'
 import LoginView from '../views/user/account/LoginView'
 import RegisterView from '../views/user/account/RegisterView'
-import GoPlayView from '../views/battle/GoPlayView'
+import GoPlayView from '../views/play/GoPlayView'
 import store from '../store/index'
 
 const routes = [
@@ -55,6 +56,14 @@ const routes = [
         path: '/friend/',
         name: 'friend',
         component: FriendIndexView,
+        meta: {
+            requestAuth: true,
+        }
+    },
+    {
+        path: '/community/',
+        name: 'community',
+        component: CommunityIndexView,
         meta: {
             requestAuth: true,
         }

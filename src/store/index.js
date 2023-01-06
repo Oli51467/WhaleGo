@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import UserModule from './user'
-import GoGameModule from './gogame'
+import GoGameModule from './game'
 import GameRecord from './record'
 
 export default createStore({
@@ -14,7 +14,6 @@ export default createStore({
   },
   modules: {
     user: UserModule,
-    //game: GameModule,
     gogame: GoGameModule,
     record: GameRecord,
   }

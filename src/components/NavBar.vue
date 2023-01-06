@@ -4,17 +4,25 @@
             <router-link class="navbar-brand" :to="{ name: 'goplay' }">AI Space</router-link>
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <router-link v-bind:class="route_name == 'goplay' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'goplay' }">围棋</router-link>
+                    <li class="nav-item nv">
+                        <router-link v-bind:class="route_name == 'playroom' ? 'nav-link active' : 'nav-link'"
+                            :to="{ name: 'playroom' }">对局大厅</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item nv">
+                        <router-link v-bind:class="route_name == 'goplay' ? 'nav-link active' : 'nav-link'"
+                            :to="{ name: 'goplay' }">对弈</router-link>
+                    </li>
+                    <li class="nav-item nv">
                         <router-link v-bind:class="route_name == 'record' ? 'nav-link active' : 'nav-link'"
                             :to="{ name: 'record' }">对局记录</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item nv">
                         <router-link v-bind:class="route_name == 'friend' ? 'nav-link active' : 'nav-link'"
                             :to="{ name: 'friend' }">我的好友</router-link>
+                    </li>
+                    <li class="nav-item nv">
+                        <router-link v-bind:class="route_name == 'community' ? 'nav-link active' : 'nav-link'"
+                            :to="{ name: 'community' }">社区</router-link>
                     </li>
                     <li>
                         <div class="d-flex" style="margin: 0 15vw auto">
@@ -209,8 +217,7 @@ img {
     height: 30px
 }
 
-.text {
-    position: relative;
-    top: 2px;
+.nv {
+    margin-left: 9px;
 }
 </style>
