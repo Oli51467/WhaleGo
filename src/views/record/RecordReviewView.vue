@@ -12,7 +12,20 @@
                         <el-tabs type="border-card" :stretch=true
                             tab-position="top" class="play-board">
                             <el-tab-pane label="开始复盘" class="settings">
-                                <button ref="proceed" type="button" class="btn btn-light">Light</button>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <button ref="fast_undo" type="button" class="btn btn-light">快退</button>
+                                    </div>
+                                    <div class="col-3">
+                                        <button ref="undo" type="button" class="btn btn-light">后退</button>
+                                    </div>
+                                    <div class="col-3">
+                                        <button ref="proceed" type="button" class="btn btn-light">前进</button>
+                                    </div>
+                                    <div class="col-3">
+                                        <button ref="fast_proceed" type="button" class="btn btn-light">快进</button>
+                                    </div>
+                                </div>
                             </el-tab-pane>
                         </el-tabs>
                     </div>
@@ -37,15 +50,22 @@ export default {
         let parent = ref(null);
         let canvas = ref(null);
         let proceed = ref(null);
+        let fast_proceed = ref(null);
+        let undo = ref(null);
+        let fast_undo = ref(null);
         const steps = store.state.record.steps;
         onMounted(() => {
-            new BoardRecord(canvas.value.getContext('2d'), parent.value, 19, 19, steps, proceed.value);
+            new BoardRecord(canvas.value.getContext('2d'), parent.value, 19, 19, steps, 
+            proceed.value, fast_proceed.value, undo.value, fast_undo.value);
         })
 
         return {
             parent,
             canvas,
             proceed,
+            fast_proceed,
+            undo,
+            fast_undo,
         }
     },
 }

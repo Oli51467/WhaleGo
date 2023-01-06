@@ -2,7 +2,7 @@ import { GameObject } from "./GameObject";
 import { Board } from "./BoardObject";
 
 export class BoardRecord extends GameObject {
-    constructor(ctx, parent, rows, cols, steps, btn_proceed) {
+    constructor(ctx, parent, rows, cols, steps, btn_proceed, btn_fast_proceed, btn_undo, btn_fast_undo) {
         super();
         this.ctx = ctx;
         this.parent = parent;
@@ -11,7 +11,11 @@ export class BoardRecord extends GameObject {
         this.steps = {};
         this.steps = steps;
         this.btn_proceed = btn_proceed;
+        this.btn_fast_proceed = btn_fast_proceed;
+        this.btn_undo = btn_undo;
+        this.btn_fast_undo = btn_fast_undo;
         this.cur = 0;
+        this.size = this.steps.length;
         this.L = 0;
         this.cell_len = 0;
         this.g = [];
@@ -20,25 +24,46 @@ export class BoardRecord extends GameObject {
         this.board = new Board(19, 19, 0);
     }
 
-    proceed = () => {
-        if (this.cur >= this.steps.length) return;
-        const step = this.steps[this.cur ++].split(',');
-        const x = step[0];
-        const y = step[1];
-        let player = this.board.getPlayer();
-        this.board.play(x, y, player);
-        this.board.nextPlayer();
-        let last_turn = this.board.gameRecord.getLastTurn();    // 上一步走棋的回合记录
-        let last_board = last_turn.boardState;                  // 上一步走的棋盘状态
-        this.g = last_board;
+    click_proceed = () => {
+        if (this.cur < this.size) this.cur ++;
     }
 
+    click_fast_proceed = () => {
+        for (let i = 0; i < 5; i ++ ) {
+            this.click_proceed();
+        }
+    }
+
+    click_undo = () => {
+        if (this.cur > 0) this.cur --;
+    }
+
+    click_fast_undo = () => {
+        for (let i = 0; i < 5; i ++ ) {
+            this.click_undo();
+        }
+    }
+
+
     init_board() {
-        for (let i = 1; i <= 19; i ++ ) {
+        for (let i = 0; i <= 400; i ++ ) {
             this.g[i] = [];
             for (let j = 1; j <= 19; j ++ ) {
-                this.g[i][j] = 0;
+                this.g[i][j] = [];
+                for (let k = 1; k <= 19; k ++ ) {
+                    this.g[i][j][k] = 0;
+                }
             }
+        }
+        for (let i = 1; i <= this.steps.length; i ++ ) {
+            const step = this.steps[i - 1].split(',');
+            const x = step[0], y = step[1];
+            let player = this.board.getPlayer();
+            this.board.play(x, y, player);
+            this.board.nextPlayer();
+            const last_turn = this.board.gameRecord.getLastTurn();    // 上一步走棋的回合记录
+            const last_board = last_turn.boardState;                  // 上一步走的棋盘状态
+            this.g[i] = last_board;
         }
     }
 
@@ -52,6 +77,10 @@ export class BoardRecord extends GameObject {
 
     start() {
         this.init_board();
+        this.btn_proceed.addEventListener('click', this.click_proceed);
+        this.btn_fast_proceed.addEventListener('click', this.click_fast_proceed);
+        this.btn_undo.addEventListener('click', this.click_undo);
+        this.btn_fast_undo.addEventListener('click', this.click_fast_undo);
     }
 
     draw_virtual_stone(x, y) {
@@ -143,7 +172,7 @@ export class BoardRecord extends GameObject {
     }
 
     on_destory() {
-        this.clear_board();
+        //this.clear_board();
     }
 
     update() {
@@ -151,14 +180,13 @@ export class BoardRecord extends GameObject {
         this.draw_lines();
         this.init_stars();
         this.draw_indexes();
-        this.btn_proceed.addEventListener('click', this.proceed);
         this.render();
     }
 
     render() {
         for (let r = 1; r <= this.rows; r++) {
             for (let c = 1; c <= this.cols; c++) {
-                this.draw_stones(c, r, this.g[r][c]);
+                this.draw_stones(c, r, this.g[this.cur][r][c]);
                 //if (this.virtual_x != -1 && this.virtual_y != -1) this.draw_virtual_stone(this.virtual_x, this.virtual_y);
             }
         }
