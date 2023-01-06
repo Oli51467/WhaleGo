@@ -111,7 +111,7 @@
 
 <script>
 import ContentBase from '@/components/ContentBase.vue';
-import InteractiveComponents from '@/components/go/InteractiveComponents.vue';
+import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 import $ from 'jquery';
 import { API_URL } from "@/assets/apis/api";
 import { useStore } from "vuex";

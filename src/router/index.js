@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import BattleIndexView from '../views/battle/BattleIndexView'
+import PlayRoomView from '../views/room/PlayRoomView'
 import RecordIndexView from '../views/record/RecordIndexView'
 import RecordReviewView from '../views/record/RecordReviewView'
 import FriendIndexView from '../views/friend/FriendIndexView'
@@ -20,9 +20,9 @@ const routes = [
         }
     },
     {
-        path: '/battle/',
-        name: 'battle',
-        component: BattleIndexView,
+        path: '/playroom/',
+        name: 'playroom',
+        component: PlayRoomView,
         meta: {
             requestAuth: true,
         }

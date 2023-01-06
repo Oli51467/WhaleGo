@@ -29,7 +29,7 @@
 
 <script>
 import ContentBase from '@/components/ContentBase.vue';
-import InteractiveComponents from '@/components/go/InteractiveComponents.vue';
+import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 
 export default {
     name: 'UserBots',

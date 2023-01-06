@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import PlayRequest from '@/components/go/PlayRequest.vue';
-import PlayInvitation from '@/components/go/PlayInvitation.vue';
-import RefuseHint from '@/components/go/RefuseHint.vue';
+import PlayRequest from '@/components/popups/PlayRequest.vue';
+import PlayInvitation from '@/components/popups/PlayInvitation.vue';
+import RefuseHint from '@/components/popups/RefuseHint.vue';
 
 export default {
     components: {

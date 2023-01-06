@@ -5,11 +5,6 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <!--如果想在属性中使用表达式，则用冒号引一下-->
-                        <router-link v-bind:class="route_name == 'battle' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'battle' }">贪吃蛇</router-link>
-                    </li>
-                    <li class="nav-item">
                         <router-link v-bind:class="route_name == 'goplay' ? 'nav-link active' : 'nav-link'"
                             :to="{ name: 'goplay' }">围棋</router-link>
                     </li>
@@ -123,10 +118,6 @@ export default {
         let route_name = computed(() => route.name)
 
         const logout = () => {
-            // 取消匹配
-            // store.state.gogame.socket.send(JSON.stringify({
-            //     event: "cancel",
-            // }));
             store.dispatch("logout");
         }
 

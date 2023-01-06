@@ -17,7 +17,7 @@
 import ContentBase from "@/components/ContentBase.vue";
 import MyRecords from "@/components/MyRecords.vue";
 import RecordsLibrary from "@/components/RecordsLibrary.vue";
-import InteractiveComponents from '@/components/go/InteractiveComponents.vue';
+import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 
 export default {
     name: "RecordIndex",
