@@ -7,7 +7,7 @@ const GameRecord = {
         black_level: "",
         black_avatar: "",
         white_username: "",
-        while_level: "",
+        white_level: "",
         white_avatar: "",
     },
     getters: {
@@ -23,7 +23,7 @@ const GameRecord = {
             state.black_level = record.black_level;
             state.white_username = record.white_username;
             state.white_avatar = record.white_avatar;
-            state.while_level = record.while_level;
+            state.white_level = record.white_level;
         }
     },
 

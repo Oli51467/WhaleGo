@@ -20,8 +20,9 @@
                                                     <div class="col-1 user-avatar">
                                                         <img :src="$store.state.record.black_avatar" alt="">
                                                     </div>
-                                                    <div class="col-3 username">
-                                                        <span>{{ $store.state.record.black_username }} &nbsp;3段</span>
+                                                    <div class="col-4 username">
+                                                        <span>{{ $store.state.record.black_username }} &nbsp;
+                                                        {{ $store.state.record.black_level }}</span>
                                                     </div>
                                                     <div class="col-1 parent">
                                                         <canvas ref="canvas_black" tabindex="0" class="stone"></canvas>
@@ -40,9 +41,9 @@
                                                     <div class="col-1 user-avatar">
                                                         <img :src="$store.state.record.white_avatar" alt="">
                                                     </div>
-                                                    <div class="col-3 username">
+                                                    <div class="col-4 username">
                                                         <span> {{ $store.state.record.white_username }}
-                                                            &nbsp;3段</span>
+                                                            &nbsp; {{ $store.state.record.white_level }}</span>
                                                     </div>
                                                     <div class="col-1 parent">
                                                         <canvas ref="canvas_white" tabindex="0" class="stone"></canvas>
@@ -53,18 +54,22 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-3">
-                                        <button ref="fast_undo" type="button" class="btn btn-light">快退</button>
+                                <div class="row" style="margin-left:15vh">
+                                    <div class="col-2">
+                                        <img src="../../assets/images/icon_fast_undo.png" class="img-fluid" alt="..."
+                                            ref="fast_undo" style="cursor:pointer">
                                     </div>
-                                    <div class="col-3">
-                                        <button ref="undo" type="button" class="btn btn-light">后退</button>
+                                    <div class="col-2">
+                                        <img src="../../assets/images/icon_undo.png" class="img-fluid" alt="..."
+                                            ref="undo" style="cursor:pointer">
                                     </div>
-                                    <div class="col-3">
-                                        <button ref="proceed" type="button" class="btn btn-light">前进</button>
+                                    <div class="col-2">
+                                        <img src="../../assets/images/icon_proceed.png" class="img-fluid" alt="..."
+                                            ref="proceed" style="cursor:pointer">
                                     </div>
-                                    <div class="col-3">
-                                        <button ref="fast_proceed" type="button" class="btn btn-light">快进</button>
+                                    <div class="col-2">
+                                        <img src="../../assets/images/icon_fast_proceed.png" class="img-fluid" alt="..."
+                                            ref="fast_proceed" style="cursor:pointer">
                                     </div>
                                 </div>
                             </el-tab-pane>
@@ -128,11 +133,11 @@ export default {
 </script>
 
 <style scoped>
-
 div.reviewboard {
     width: 40vw;
     margin: 0 auto;
 }
+
 .goboard {
     width: 85vw;
     height: 85vh;
