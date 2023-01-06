@@ -178,14 +178,12 @@ export class GameTurn {
                     this.boardState[i][j] = 0;
                 }
             }
-            //this.boardState = new Array(args['width'] + 1).fill(0).map(v=>new Array(args['height'] + 1).fill(0));
             this.x = -1;
             this.y = -1;
             // 计算二维数组的hash
             this.hashCode = getDeepHashCode(this.boardState);
         } else {
             let width = args['prev'].boardState.length;
-            //let height = args['prev'].boardState[0].length;
             this.boardState = [];
             for (let i = 1; i <= 20; i ++ ) {
                 this.boardState[i] = [];
@@ -193,7 +191,6 @@ export class GameTurn {
                     this.boardState[i][j] = 0;
                 }
             }
-            //this.boardState = new Array(width + 1).fill(0).map(new Array(height + 1).fill(0));
             for (let i = 1; i < width; i++) {
                 this.boardState[i] = clone(args['prev'].boardState[i]);
             }
@@ -378,7 +375,7 @@ export class Board {
 
     // 判断一个坐标是否在棋盘内
     indexIsInBoard(x, y) {
-        return x > 0 && x < this.width && y > 0 && y < this.height;
+        return x > 0 && x <= this.width && y > 0 && y <= this.height;
     }
 
     // 判断一个Point对象是否在棋盘内
@@ -551,8 +548,8 @@ export class Board {
 
     // 移除棋盘上的所有棋子
     freeIntersections() {
-        for (let i = 1; i < this.width; i++) {
-            for (let j = 1; j < this.height; j++) {
+        for (let i = 1; i <= this.width; i++) {
+            for (let j = 1; j <= this.height; j++) {
                 let point = this.getPoint(i, j);
                 point.setGroup(null);
             }
@@ -561,8 +558,8 @@ export class Board {
 
     toString() {
         let board = "";
-        for (let i = 1; i < this.width; i++) {
-            for (let j = 1; j < this.height; j++) {
+        for (let i = 1; i <= this.width; i++) {
+            for (let j = 1; j <= this.height; j++) {
                 let cross = this.points[i][j];
                 if (cross.getGroup() === null) {
                     board += '· ';
