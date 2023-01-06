@@ -3,15 +3,56 @@
         <div class="row">
             <div class="col-7">
                 <div ref="parent" class="goboard">
-                    <canvas ref="canvas" tabindex="0"></canvas>
+                    <canvas ref="canvas" tabindex="0" class="review_board"></canvas>
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-5 reviewboard">
                 <div class="container">
                     <div class="card-body">
-                        <el-tabs type="border-card" :stretch=true
-                            tab-position="top" class="play-board">
+                        <el-tabs type="border-card" :stretch=true tab-position="top" class="play-board">
                             <el-tab-pane label="开始复盘" class="settings">
+
+                                <div class="row">
+                                    <div class="col-11">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-1 user-avatar">
+                                                        <img :src="$store.state.record.black_avatar" alt="">
+                                                    </div>
+                                                    <div class="col-3 username">
+                                                        <span>{{ $store.state.record.black_username }} &nbsp;3段</span>
+                                                    </div>
+                                                    <div class="col-1 parent">
+                                                        <canvas ref="canvas_black" tabindex="0" class="stone"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-11">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-1 user-avatar">
+                                                        <img :src="$store.state.record.white_avatar" alt="">
+                                                    </div>
+                                                    <div class="col-3 username">
+                                                        <span> {{ $store.state.record.white_username }}
+                                                            &nbsp;3段</span>
+                                                    </div>
+                                                    <div class="col-1 parent">
+                                                        <canvas ref="canvas_white" tabindex="0" class="stone"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="row">
                                     <div class="col-3">
                                         <button ref="fast_undo" type="button" class="btn btn-light">快退</button>
@@ -49,14 +90,26 @@ export default {
         const store = useStore();
         let parent = ref(null);
         let canvas = ref(null);
+        let canvas_black = ref(null);
+        let canvas_white = ref(null);
         let proceed = ref(null);
         let fast_proceed = ref(null);
         let undo = ref(null);
         let fast_undo = ref(null);
         const steps = store.state.record.steps;
         onMounted(() => {
-            new BoardRecord(canvas.value.getContext('2d'), parent.value, 19, 19, steps, 
-            proceed.value, fast_proceed.value, undo.value, fast_undo.value);
+            new BoardRecord(canvas.value.getContext('2d'), parent.value, 19, 19, steps,
+                proceed.value, fast_proceed.value, undo.value, fast_undo.value);
+            let ctx = canvas_black.value.getContext('2d');
+            let ctx1 = canvas_white.value.getContext('2d');
+            ctx.fillStyle = "black";
+            ctx1.fillStyle = "white";
+            ctx.beginPath();
+            ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+            ctx1.beginPath();
+            ctx1.arc(95, 50, 40, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx1.fill();
         })
 
         return {
@@ -66,6 +119,8 @@ export default {
             fast_proceed,
             undo,
             fast_undo,
+            canvas_black,
+            canvas_white,
         }
     },
 }
@@ -73,6 +128,11 @@ export default {
 </script>
 
 <style scoped>
+
+div.reviewboard {
+    width: 40vw;
+    margin: 0 auto;
+}
 .goboard {
     width: 85vw;
     height: 85vh;
@@ -82,7 +142,7 @@ export default {
     align-items: center;
 }
 
-canvas {
+.review_board {
     background-color: #c28b69;
     border: 2px solid #9d6746;
     margin-top: 20px;
@@ -96,11 +156,45 @@ canvas {
 .container {
     width: auto;
     margin-left: -100px;
-    margin-top: 10vh;
+    margin-top: 15px;
     margin-right: 100px;
 }
 
 .play-board {
     background-color: rgb(238, 237, 237);
+}
+
+div.user-avatar {
+    text-align: center;
+}
+
+div.user-avatar>img {
+    width: 4vh;
+    border-radius: 10%;
+}
+
+div.username {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+}
+
+.stone {
+    width: 150%;
+    margin: -5px auto;
+}
+
+.row {
+    margin-top: 15px;
+}
+
+.card {
+    background-color: rgb(238, 237, 237);
+}
+
+.parent {
+    width: 20%;
+    margin: 0 auto auto -100;
 }
 </style>

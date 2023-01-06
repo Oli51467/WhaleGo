@@ -401,7 +401,6 @@ export class Board {
     play(x, y, player) {
         let point = this.getPoint(x, y);
         if (point === null) {
-            console.log("error", "落子超出棋盘范围了 请重新落子！");
             return false;
         }
         return this.play_in_board(point, player, true);
@@ -506,10 +505,8 @@ export class Board {
         } else {
             if (this.actualPlayer == this.P1) {
                 this.actualPlayer = this.P2;
-                console.log("info->", "Changing player for P2");
             } else {
                 this.actualPlayer = this.P1;
-                console.log("info->", "Changing player for P1");
             }
         }
     }
@@ -578,41 +575,6 @@ export class Board {
         return board;
     }
 }
-
-// 将一个棋盘坐标(如D4)转化为行列坐标(如16 4)
-// let transform_indexes = function (index) {
-//     let alpha = index[0];
-//     let number = index.substring(1);
-//     let cnt = 1;
-//     for (var i = 0; i < 26; i++) {
-//         let c_ = String.fromCharCode((65 + i));
-//         if (c_ === 'I') {
-//             continue;
-//         }
-//         if (c_ === alpha) {
-//             break;
-//         }
-//         cnt += 1;
-//     }
-//     return { "x": 20 - parseInt(number), "y": cnt };
-// }
-
-// // 将行列坐标(如16 4)转化为棋盘坐标(D 4)
-// let get_index = function (x, y) {
-//     let cnt_ = 1;
-//     let position = "";
-//     for (let c = 0; c < 26; c++) {
-//         let c_ = String.fromCharCode((65 + c));
-//         if (c === 'I') continue;
-//         if (cnt_ === y) {
-//             position += c_;
-//             break;
-//         }
-//         cnt_ += 1;
-//     }
-//     position += (20 - x).toString();
-//     return position;
-// }
 
 // 复制一个对象
 let clone = function (obj) {
@@ -716,34 +678,5 @@ let set_update = function (set_a, set_b) {
 }
 
 
-// let main = function () {
-//     let board_play = new Board(19, 19, 0);
-//     // 模拟了一些落子位置
-//     let moves = ["D4", "D3", "C3", "C4", "E3", "E4", "D2", "D5", "E5", "D3", "D4"];
-//     for (let move of moves) {
-//         // 将这些落子位置转化成行列坐标
-//         let index_x = transform_indexes(move).x;
-//         let index_y = transform_indexes(move).y;
-//         let player = board_play.getPlayer();    // 获取当前走棋的玩家
-//         if (board_play.play(index_x, index_y, player) === true) {   // 若能正常落子
-//             console.log("info", "正常落子");
-//             board_play.nextPlayer();    // 下一位玩家落子
-//             let last_turn = board_play.gameRecord.getLastTurn();    // 上一步走棋的回合记录
-//             let last_board = last_turn.boardState;                  // 上一步走的棋盘状态
 //             let last_move = board_play.getPoint(last_turn.getX(), last_turn.getY()); // 上一步
 //             let captured_stones = board_play.capturedStones;    // 被吃的子的Set
-//             let result = new Array();
-//             for (let stones of captured_stones) {
-//                 // 将被吃子转化为棋盘坐标显示
-//                 result.push(get_index(stones.getX(), stones.getY()));
-//             }
-//             console.log("hashcode:", last_turn.hashCode);
-//             console.log("吃子:", result);
-//             console.log("lastBoard", last_board);
-//             console.log("上一步:", last_move);
-//         }
-//         else {
-//             console.log("这里不可以落子");
-//         }
-//     }
-// 

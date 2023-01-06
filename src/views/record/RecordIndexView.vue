@@ -1,6 +1,6 @@
 <template>
     <ContentBase>
-        <el-tabs v-model="matchplay" type="border-card" :stretch=true tab-position="top">
+        <el-tabs type="border-card" :stretch=true tab-position="top">
             <el-tab-pane label="我的棋谱">
                 <MyRecords/>
             </el-tab-pane>
