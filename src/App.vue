@@ -62,6 +62,7 @@ export default {
                 store.commit("updateBoard", null);
                 store.commit("updateRequestPlayerId", '');
                 store.commit("updateGoLoser", data.loser);
+                console.log(data.loser);
             } else if (data.event === 'play') {
                 if (data.valid === 'yes') {
                     store.commit("updateBoard", data.board);

@@ -1,16 +1,16 @@
 <template>
     <div class="result-board">
-        <div class="result-board-text" v-if="$store.state.gogame.loser === 1">
+        <div class="result-board-text" v-if="$store.state.gogame.loser == 1">
             白中盘胜
         </div>
-        <div class="result-board-text" v-else-if="$store.state.gogame.loser === 2">
+        <div class="result-board-text" v-else-if="$store.state.gogame.loser == 2">
             黑中盘胜
         </div>
         <div class="result-board-text" v-else-if="$store.state.gogame.loser === 'draw'">
             和棋！
         </div>
         <div class="result-board-btn">
-            <button type="button" class="btn btn-success btn-lg" @click="return_to_match">再来一局！</button>
+            <button type="button" class="btn btn-success btn-lg" @click="return_to_match">确定</button>
         </div>
     </div>
 
@@ -18,7 +18,6 @@
 
 <script>
 import { useStore } from 'vuex';
-import router from '@/router';
 
 export default {
     setup() {
@@ -26,9 +25,6 @@ export default {
         const return_to_match = () => {
             store.commit("updateGoGameStatus", "waiting");
             store.commit("updateGoLoser", "none");
-            router.push({
-                name: 'playhall',
-            });
         }
         return {
             return_to_match,

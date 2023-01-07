@@ -1,5 +1,4 @@
 <template>
-    <InteractiveComponents/>
     <div>
         <div class="row">
             <div class="col-7">
@@ -18,8 +17,8 @@
             </div>
         </div>
     </div>
-    <ResultBoard v-if="$store.state.gogame.loser === 'myself' || $store.state.gogame.loser === 'oppo'
-    || $store.state.gogame.loser === 'draw'" />
+    <InteractiveComponents/>
+    <ResultBoard v-if="$store.state.gogame.loser != 'none' " />
     <DrawRequest v-if="$store.state.user.invite_player_id === 'peace'"/>
 </template>
 
