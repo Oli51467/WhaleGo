@@ -1,4 +1,5 @@
 <template>
+    <InteractiveComponents/>
     <div>
         <div class="row">
             <div class="col-7">
@@ -23,6 +24,7 @@
 </template>
 
 <script>
+import InteractiveComponents from "@/components/popups/InteractiveComponents.vue";
 import ResultBoard from "@/components/popups/ResultBoard.vue";
 import DrawRequest from '@/components/popups/DrawRequest.vue';
 import { GoBoard } from '@/assets/scripts/GoBoard';
@@ -39,6 +41,7 @@ export default {
         ContentBase,
         ResultBoard,
         DrawRequest,
+        InteractiveComponents,
     },
 
     setup() {

@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <div class="row">
             <div class="col-11">
@@ -84,7 +84,11 @@
             </div>
         </div>
 
-        <div class="row" v-if="$store.state.gogame.which != 0">
+        <div class="row" v-if="$store.state.gogame.which == 0" style="margin: 0 auto">
+            <button class="btn btn-danger btn-lg leave" @click="leave_room">离开房间</button>
+        </div>
+
+        <div class="row" v-else>
             <div class="col-3 func">
                 <button type="button" class="btn btn-info btn-lg" disabled="true">申请数目</button>
             </div>
@@ -119,13 +123,14 @@
         </div>
     </div>
 
-    
+
 </template>
 
 <script>
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
+import router from '@/router';
 import $ from 'jquery';
 import { API_URL } from '@/assets/apis/api';
 
@@ -166,8 +171,8 @@ export default {
                 url: `${API_URL}/room/getUsers/`,
                 type: "get",
                 data: {
-                  user_id: store.state.user.id,
-                  room_id: props.roomId,
+                    user_id: store.state.user.id,
+                    room_id: props.roomId,
                 },
                 headers: {
                     Authorization: "Bearer " + store.state.user.token,
@@ -175,14 +180,13 @@ export default {
                 success(resp) {
                     users.value = resp;
                     store.commit("updateBoard", resp.board_state);
-                    console.log(users.value);
                 },
                 error(resp) {
                     console.log(resp);
                 }
             })
         }
-
+        //setInterval(pull_users_in_room, 1000);
         pull_users_in_room();
 
         const click_resign = () => {
@@ -202,15 +206,39 @@ export default {
             }));
         }
 
+        const leave_room = () => {
+            $.ajax({
+                url: `${API_URL}/room/leave/`,
+                type: "get",
+                data: {
+                    room_id: props.roomId,
+                    user_id: store.state.user.id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success() {
+                    router.push({
+                        name: 'playhall',
+                    })
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
         return {
             pull_users_in_room,
             click_resign,
             request_draw,
+            leave_room,
             canvas,
             canvas1,
             users,
         }
-    }
+    },
+    
 }
 </script>
 
@@ -257,6 +285,12 @@ div.username {
 .parent {
     width: 20%;
     margin: 0 auto auto -100;
+}
+
+.leave {
+    width: 15vh;
+    text-align: center;
+    margin: 0 auto auto 30vh;
 }
 
 canvas {

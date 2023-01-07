@@ -1,6 +1,6 @@
 <template>
-    <div>
         <ContentBase>
+            <InteractiveComponents/>
             <div class="title">
                 <span>对局大厅</span>
                 <hr />
@@ -45,12 +45,11 @@
                         </td>
                         <td>
                             <div class="user-info">
-                                <button class="btn btn-outline-light" v-if="game.state === '布局'"> {{ game.state }}
-                                </button>
-                                <button class="btn btn-outline-warning" v-if="game.state === '中盘'"> {{ game.state }}
-                                </button>
-                                <button class="btn btn-outline-danger" v-if="game.state === '官子'"> {{ game.state }}
-                                </button>
+                                <button class="btn btn-outline-success" v-if="game.state === '布局'"> {{ game.state }}/</button>
+                                <button class="btn btn-outline-warning" v-if="game.state === '中盘'"> {{ game.state }} </button>
+                                <button class="btn btn-outline-danger" v-if="game.state === '官子'"> {{ game.state }} </button>
+                                <button class="btn btn-outline-secondary" v-if="game.state === '已结束'"> {{ game.state }} </button>
+
                             </div>
                         </td>
                         <td>
@@ -62,11 +61,11 @@
                 </tbody>
             </table>
         </ContentBase>
-    </div>
 </template>
 
 <script>
 import { useStore } from 'vuex';
+import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 import ContentBase from '@/components/ContentBase.vue';
 import { ref } from "vue";
 import $ from 'jquery'
@@ -76,6 +75,7 @@ import router from '@/router';
 export default {
     components: {
         ContentBase,
+        InteractiveComponents,
     },
 
     setup() {

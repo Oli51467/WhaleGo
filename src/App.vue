@@ -61,14 +61,7 @@ export default {
                 store.commit("updateCurrent", 0);
                 store.commit("updateBoard", null);
                 store.commit("updateRequestPlayerId", '');
-                if (data.loser === 'draw') {
-                    store.commit("updateGoLoser", "draw");
-                }
-                else if (store.state.user.id == data.loser) {
-                    store.commit("updateGoLoser", "myself");
-                } else {
-                    store.commit("updateGoLoser", "oppo");
-                } 
+                store.commit("updateGoLoser", data.loser);
             } else if (data.event === 'play') {
                 if (data.valid === 'yes') {
                     store.commit("updateBoard", data.board);

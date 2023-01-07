@@ -1,11 +1,10 @@
 <template>
     <div class="result-board">
-        <div class="result-board-text"
-            v-if="$store.state.gogame.loser === 'myself'">
-            你输了!
+        <div class="result-board-text" v-if="$store.state.gogame.loser === 1">
+            白中盘胜
         </div>
-        <div class="result-board-text" v-else-if="$store.state.gogame.loser === 'oppo'">
-            你赢了!
+        <div class="result-board-text" v-else-if="$store.state.gogame.loser === 2">
+            黑中盘胜
         </div>
         <div class="result-board-text" v-else-if="$store.state.gogame.loser === 'draw'">
             和棋！
