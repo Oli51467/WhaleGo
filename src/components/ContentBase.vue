@@ -1,5 +1,4 @@
 <template>
-
     <div class="container">
         <div class="card">
             <div class="card-body">
@@ -21,7 +20,7 @@ export default {
   
 <style scoped>
 .container {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .card-body {

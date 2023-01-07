@@ -1,6 +1,6 @@
 <template>
     <ContentBase>
-        <el-tabs type="border-card" :stretch=true tab-position="top">
+        <el-tabs type="border-card" :stretch=true tab-position="top" class="base">
             <el-tab-pane label="我的棋谱">
                 <MyRecords/>
             </el-tab-pane>
@@ -36,8 +36,4 @@ export default {
 </script>
 
 <style scoped>
-img.record-user-avatar {
-    width: 4vh;
-    border-radius: 50%;
-}
 </style>

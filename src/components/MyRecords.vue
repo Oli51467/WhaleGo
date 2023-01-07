@@ -127,7 +127,6 @@ export default {
                         record_result: record.record.result,
                         record_time: record.record.createTime,
                     });
-                    //console.log(store.state.record.steps);
                     router.push({
                         name: "record_review",
                         params: {
@@ -155,5 +154,6 @@ export default {
 img.record-user-avatar {
     width: 4vh;
     border-radius: 50%;
+    margin: 0 auto;
 }
 </style>
