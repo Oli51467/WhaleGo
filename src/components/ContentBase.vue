@@ -3,7 +3,7 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <slot></slot>
+                <slot class="child"></slot>
                 <!--slot存放父组件传来的所有children-->
             </div>
         </div>
@@ -25,6 +25,7 @@ export default {
 }
 
 .card-body {
-    text-align: left;
+    text-align: center;
+    height: 85vh;
 }
 </style>

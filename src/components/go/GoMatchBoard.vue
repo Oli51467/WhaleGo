@@ -49,8 +49,8 @@
                 </div>
             </div>
         </div>
-        <div class="row" v-if="$store.state.gogame.status === 'waiting'">
-            <el-button type="success" round class="match" @click="click_match">开始匹配</el-button>
+        <div class="row" v-if="$store.state.gogame.status === 'waiting' || $store.state.gogame.status === 'playing'">
+            <el-button type="success" round class="match" @click="click_match" :disabled="$store.state.gogame.status === 'playing' ? true : false">开始匹配</el-button>
         </div>
         <div class="row" v-if="$store.state.gogame.status === 'matching'">
             <el-button type="info" round class="match" @click="click_match">取消匹配</el-button>

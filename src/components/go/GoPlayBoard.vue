@@ -19,6 +19,7 @@
                 </div>
             </div>
         </div>
+        
 
         <div class="row">
             <div class="col-11">
@@ -37,6 +38,49 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-11">
+                <!--所有在房间的人-->
+                <table class="table table-striped table-hover" style="text-align:center">
+                    <thead>
+                        <tr>
+                            <th>用户</th>
+                            <th>段位</th>
+                            <th>胜</th>
+                            <th>负</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="user in users" :key="user.user_id">
+                            <td>
+                                <div>
+                                    <img :src="user.user_avatar" alt="" class="user-avatar-guest">
+                                    &nbsp;
+                                    <span> {{ user.user_name }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="user-info">
+                                    <button class="btn btn-outline-info"> {{ user.user_level }} </button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="user-username">
+                                    <span> {{ user.user_lose }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="user-username">
+                                    <span> {{ user.user_win }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!--end-->
             </div>
         </div>
 
@@ -73,20 +117,31 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    
 </template>
 
 <script>
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
+import $ from 'jquery';
+import { API_URL } from '@/assets/apis/api';
 
 export default {
+    props: {
+        roomId: {
+            type: Object,
+            required: true,
+        }
+    },
+
     setup() {
         const store = useStore();
         let canvas = ref(null);
         let canvas1 = ref(null);
+        let users = ref([]);
 
         onMounted(() => {
             let ctx = canvas.value.getContext('2d');
@@ -106,6 +161,29 @@ export default {
             ctx1.fill();
         })
 
+        const pull_users_in_room = () => {
+            $.ajax({
+                url: `${API_URL}/room/getUsers/`,
+                type: "get",
+                data: {
+                  user_id: store.state.user.id,
+                  room_id: "84aacc",
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    users.value = resp;
+                    console.log(users.value);
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+        pull_users_in_room();
+
         const click_resign = () => {
             store.state.gogame.socket.send(JSON.stringify({
                 event: "play",
@@ -124,10 +202,12 @@ export default {
         }
 
         return {
+            pull_users_in_room,
             click_resign,
             request_draw,
             canvas,
-            canvas1
+            canvas1,
+            users,
         }
     }
 }
@@ -148,6 +228,12 @@ div.playboard {
 }
 
 div.user-avatar {
+    text-align: center;
+}
+
+.user-avatar-guest {
+    border-radius: 50%;
+    width: 4vh;
     text-align: center;
 }
 

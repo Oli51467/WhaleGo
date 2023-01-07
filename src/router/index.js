@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import PlayRoomView from '../views/community/PlayRoomView'
+import PlayHallView from '../views/community/PlayHallView'
+import PlayRoomView from '../views/play/PlayRoomView'
 import RecordIndexView from '../views/record/RecordIndexView'
 import RecordReviewView from '../views/record/RecordReviewView'
 import FriendIndexView from '../views/friend/FriendIndexView'
@@ -21,9 +22,9 @@ const routes = [
         }
     },
     {
-        path: '/playroom/',
-        name: 'playroom',
-        component: PlayRoomView,
+        path: '/playhall/',
+        name: 'playhall',
+        component: PlayHallView,
         meta: {
             requestAuth: true,
         }
@@ -32,6 +33,14 @@ const routes = [
         path: '/goplay/',
         name: 'goplay',
         component: GoPlayView,
+        meta: {
+            requestAuth: true,
+        }
+    },
+    {
+        path: '/playroom/:roomId/',
+        name: 'playroom',
+        component: PlayRoomView,
         meta: {
             requestAuth: true,
         }

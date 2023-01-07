@@ -7,8 +7,8 @@
 </template>
   
 <script>
-import GoPlayGround from '@/components/go/GoPlayGround.vue'
-import ResultBoard from '@/components/popups/ResultBoard.vue'
+import GoPlayGround from '@/components/go/GoPlayGround.vue';
+import ResultBoard from '@/components/popups/ResultBoard.vue';
 import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 import DrawRequest from '@/components/popups/DrawRequest.vue';
 

@@ -5,8 +5,8 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item nv">
-                        <router-link v-bind:class="route_name == 'playroom' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'playroom' }">对局大厅</router-link>
+                        <router-link v-bind:class="route_name == 'playhall' ? 'nav-link active' : 'nav-link'"
+                            :to="{ name: 'playhall' }">对局大厅</router-link>
                     </li>
                     <li class="nav-item nv">
                         <router-link v-bind:class="route_name == 'goplay' ? 'nav-link active' : 'nav-link'"
@@ -86,14 +86,20 @@
                                 <td>
                                     <span class="record-user-username"> {{ user.info.level }}</span>
                                 </td>
-                                <td v-if="user.info.username != $store.state.user.username && user.relation === 'stranger' || user.relation === 'follower'" >
-                                    <button type="button" style="margin-top:-4px" class="btn btn-success" @click="follow">关注</button>
+                                <td
+                                    v-if="user.info.username != $store.state.user.username && user.relation === 'stranger' || user.relation === 'follower'">
+                                    <button type="button" style="margin-top:-4px" class="btn btn-success"
+                                        @click="follow">关注</button>
                                 </td>
-                                <td v-else-if="user.info.username != $store.state.user.username && user.relation === 'followed'" >
-                                    <button type="button" style="margin-top:-4px" class="btn btn-secondary" @click="unfollow">已关注</button>
+                                <td
+                                    v-else-if="user.info.username != $store.state.user.username && user.relation === 'followed'">
+                                    <button type="button" style="margin-top:-4px" class="btn btn-secondary"
+                                        @click="unfollow">已关注</button>
                                 </td>
-                                <td v-else-if="user.info.username != $store.state.user.username && user.relation === 'friend'" >
-                                    <button type="button" style="margin-top:-4px" class="btn btn-secondary" @click="unfollow">互相关注</button>
+                                <td
+                                    v-else-if="user.info.username != $store.state.user.username && user.relation === 'friend'">
+                                    <button type="button" style="margin-top:-4px" class="btn btn-secondary"
+                                        @click="unfollow">互相关注</button>
                                 </td>
                             </tr>
                             <tr v-else>
@@ -126,6 +132,10 @@ export default {
         let route_name = computed(() => route.name)
 
         const logout = () => {
+            store.commit("updateWhich", 0);
+            store.commit("updateCurrent", 0);
+            store.commit("updateBoard", null);
+            store.commit("updateRequestPlayerId", '');
             store.dispatch("logout");
         }
 
@@ -218,6 +228,6 @@ img {
 }
 
 .nv {
-    margin-left: 9px;
+    margin-left: 4px;
 }
 </style>

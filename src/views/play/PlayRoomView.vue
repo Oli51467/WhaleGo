@@ -9,50 +9,52 @@
             <div class="col-5">
                 <div class="container">
                     <div class="card-body">
-                        <el-tabs v-model="matchplay" type="border-card" :stretch=true
-                            tab-position="top" class="play-board">
-                            <el-tab-pane label="匹配对手" class="settings">
-                                <div>
-                                    <GoMatchBoard />
-                                </div>
-                            </el-tab-pane>
-                            <el-tab-pane label="挑战AI" class="settings" :disabled="$store.state.gogame.status === 'playing' ? true : false">
-                                <AISettings/>
-                            </el-tab-pane>
-                            <el-tab-pane label="自由对弈" class="settings" :disabled="$store.state.gogame.status === 'playing' ? true : false">自由</el-tab-pane>
-                        </el-tabs>
+                        <ContentBase>
+                            <GoPlayBoard :roomId="roomId"/>
+                        </ContentBase>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <ResultBoard v-if="$store.state.gogame.loser === 'myself' || $store.state.gogame.loser === 'oppo'
+    || $store.state.gogame.loser === 'draw'" />
+    <DrawRequest v-if="$store.state.user.invite_player_id === 'peace'"/>
 </template>
 
 <script>
-import { BoardIndex } from '@/assets/scripts/BoardIndex';
-import GoMatchBoard from '@/components/go/GoMatchBoard.vue'
-import AISettings from './AISettings.vue';
+import ResultBoard from "@/components/popups/ResultBoard.vue";
+import DrawRequest from '@/components/popups/DrawRequest.vue';
+import { GoBoard } from '@/assets/scripts/GoBoard';
+import ContentBase from '@/components/ContentBase.vue';
+import GoPlayBoard from '@/components/go/GoPlayBoard.vue';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
     components: {
-        GoMatchBoard,
-        AISettings,
+        GoPlayBoard,
+        ContentBase,
+        ResultBoard,
+        DrawRequest,
     },
 
     setup() {
         const store = useStore();
+        const route = useRouter();
+        const roomId = route.currentRoute.value.params.roomId;
         let parent = ref(null);
         let canvas = ref(null);
         onMounted(() => {
-            new BoardIndex(canvas.value.getContext('2d'), parent.value, 19, 19, store);
+            new GoBoard(canvas.value.getContext('2d'), parent.value, 19, 19, store);
         })
 
         return {
             parent,
-            canvas
+            canvas,
+            roomId,
         }
     },
 }
@@ -81,13 +83,9 @@ canvas {
 }
 
 .container {
-    width: auto;
-    margin-left: -100px;
+    width: 40vw;
+    margin-left: -50px;
     margin-top: 15px;
     margin-right: 100px;
-}
-
-.play-board {
-    background-color: rgb(238, 237, 237);
 }
 </style>

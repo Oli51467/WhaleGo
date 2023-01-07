@@ -36,6 +36,13 @@ export default {
         socket.onmessage = msg => {
             const data = JSON.parse(msg.data);
             if (data.event === "start") {
+                const roomId = data.game.room_id;
+                router.push({
+                    name: 'playroom',
+                    params: {
+                        roomId
+                    }
+                })
                 store.commit("updateGoOpponent", {
                     username: data.opponent_username,
                     avatar: data.opponent_avatar,
@@ -79,9 +86,6 @@ export default {
                 store.commit("updateRefused", "yes");
             } else if (data.event === 'ready') {            // 另一名玩家接受了邀请 准备开始
                 store.commit("updateRequestPlayerId", '');
-                router.push({
-                    name: 'goplay'
-                })
             }
         }
         socket.onclose = () => {
