@@ -16,7 +16,7 @@ const routes = [
     {
         path: '/',
         name: "home",
-        redirect: "/goplay/",
+        redirect: "/playhall/",
         meta: {
             requestAuth: true,
         }

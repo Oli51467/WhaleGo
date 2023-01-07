@@ -54,7 +54,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="user in users" :key="user.user_id">
+                        <tr v-for="user in users.items" :key="user.user_id">
                             <td>
                                 <div>
                                     <img :src="user.user_avatar" alt="" class="user-avatar-guest">
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="$store.state.gogame.which != 0">
             <div class="col-3 func">
                 <button type="button" class="btn btn-info btn-lg" disabled="true">申请数目</button>
             </div>
@@ -137,7 +137,7 @@ export default {
         }
     },
 
-    setup() {
+    setup(props) {
         const store = useStore();
         let canvas = ref(null);
         let canvas1 = ref(null);
@@ -167,13 +167,14 @@ export default {
                 type: "get",
                 data: {
                   user_id: store.state.user.id,
-                  room_id: "84aacc",
+                  room_id: props.roomId,
                 },
                 headers: {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
                     users.value = resp;
+                    store.commit("updateBoard", resp.board_state);
                     console.log(users.value);
                 },
                 error(resp) {

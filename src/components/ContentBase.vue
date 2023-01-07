@@ -26,6 +26,6 @@ export default {
 
 .card-body {
     text-align: center;
-    height: 85vh;
+    height: auto;
 }
 </style>

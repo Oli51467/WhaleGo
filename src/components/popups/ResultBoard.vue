@@ -19,6 +19,7 @@
 
 <script>
 import { useStore } from 'vuex';
+import router from '@/router';
 
 export default {
     setup() {
@@ -26,6 +27,9 @@ export default {
         const return_to_match = () => {
             store.commit("updateGoGameStatus", "waiting");
             store.commit("updateGoLoser", "none");
+            router.push({
+                name: 'playhall',
+            });
         }
         return {
             return_to_match,

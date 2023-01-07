@@ -55,7 +55,7 @@
                         </td>
                         <td>
                             <div class="user-info">
-                                <button class="btn btn-primary"> 观战</button>
+                                <button class="btn btn-primary" @click="watch_game(game.id)"> 观战</button>
                             </div>
                         </td>
                     </tr>
@@ -71,6 +71,8 @@ import ContentBase from '@/components/ContentBase.vue';
 import { ref } from "vue";
 import $ from 'jquery'
 import { API_URL } from "@/assets/apis/api";
+import router from '@/router';
+
 export default {
     components: {
         ContentBase,
@@ -97,8 +99,19 @@ export default {
 
         pull_game_in_process();
 
+        const watch_game = (roomId) => {
+            store.commit("updateGoBoard", null);
+            router.push({
+                name: 'playroom',
+                params: {
+                    roomId,
+                }
+            })
+        }
+
         return {
             pull_game_in_process,
+            watch_game,
             games,
         }
     }
