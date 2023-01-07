@@ -33,7 +33,7 @@
                 <td> {{ record.record.createTime }}</td>
                 <td>
                     <button type="button" class="btn btn-primary"
-                        @click="open_record(record.record.id)">开始复盘</button>
+                        @click="open_record(record.record.id)">复盘</button>
                 </td>
             </tr>
         </tbody>

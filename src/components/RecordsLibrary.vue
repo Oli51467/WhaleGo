@@ -29,7 +29,7 @@
                 <td>
                     <span> {{ record.white_level }}</span>
                 </td>
-                <td> {{ record.result }}</td>
+                <td> {{ record.record.result }}</td>
                 <td> {{ record.record.createTime }}</td>
                 <td>
                     <button type="button" class="btn btn-primary"

@@ -45,14 +45,14 @@
                     </td>
                     <td>
                         <div class="user-info">
-                            <button class="btn btn-outline-success" v-if="game.state === '布局'"> {{
-                                game.state
-                            }}</button>
-                            <button class="btn btn-outline-warning" v-if="game.state === '中盘'"> {{ game.state }}
+                            <button class="btn btn-outline-success" v-if="game.state === '布局'">
+                                {{ game.state }}
                             </button>
-                            <button class="btn btn-outline-danger" v-if="game.state === '官子'"> {{ game.state }}
+                            <button class="btn btn-outline-warning" v-else-if="game.state === '中盘'"> {{ game.state }}
                             </button>
-                            <button class="btn btn-outline-secondary" v-if="game.state === '已结束'"> {{ game.state }}
+                            <button class="btn btn-outline-danger" v-else-if="game.state === '官子'"> {{ game.state }}
+                            </button>
+                            <button class="btn btn-outline-secondary" v-else> {{ game.state }}
                             </button>
 
                         </div>
@@ -88,7 +88,7 @@ export default {
         let games = ref([]);
 
         onMounted(() => {
-            
+
         })
 
         const pull_rooms = () => {
