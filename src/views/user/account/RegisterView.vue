@@ -94,7 +94,7 @@ export default {
                             success() {
                                 store.dispatch("getInfo", {
                                     success() {
-                                        router.push({ name: 'battle' });
+                                        router.push({ name: 'playhall' });
                                         console.log(store.state.user);
                                     },
                                     error() {

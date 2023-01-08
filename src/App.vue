@@ -26,7 +26,7 @@ export default {
             localStorage.setItem('store', JSON.stringify(this.$store.state))
         })
         let socket = null;
-        const goSocketUrl = `ws://127.0.0.1:3000/go/websocket/${this.$store.state.user.token}`;
+        const goSocketUrl = `wss://app2074.acapp.acwing.com.cn/go/websocket/${this.$store.state.user.token}/`;
         const store = this.$store;
         socket = new WebSocket(goSocketUrl);
         socket.onopen = () => {
@@ -98,5 +98,6 @@ export default {
 body {
     background-image: url('@/assets/images/background.png');
     background-size: cover;
+    z-index: -999;
 }
 </style>

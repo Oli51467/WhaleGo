@@ -6,7 +6,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item nv">
                         <router-link v-bind:class="route_name == 'playhall' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'playhall' }">对局大厅</router-link>
+                            :to="{ name: 'playhall' }">大厅</router-link>
                     </li>
                     <li class="nav-item nv">
                         <router-link v-bind:class="route_name == 'goplay' ? 'nav-link active' : 'nav-link'"
@@ -14,11 +14,11 @@
                     </li>
                     <li class="nav-item nv">
                         <router-link v-bind:class="route_name == 'record' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'record' }">对局记录</router-link>
+                            :to="{ name: 'record' }">棋谱</router-link>
                     </li>
                     <li class="nav-item nv">
                         <router-link v-bind:class="route_name == 'friend' ? 'nav-link active' : 'nav-link'"
-                            :to="{ name: 'friend' }">我的好友</router-link>
+                            :to="{ name: 'friend' }">好友</router-link>
                     </li>
                     <li class="nav-item nv">
                         <router-link v-bind:class="route_name == 'community' ? 'nav-link active' : 'nav-link'"
@@ -30,6 +30,15 @@
                                 style="width: 15vw" v-model="user_search">
                             <button class="btn btn-outline-success" type="submit" data-bs-toggle="modal"
                                 data-bs-target="#search" @click="search_user">搜索</button>
+                                
+                        </div>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item nv">
+                        <div>
+                            <img src="@/assets/images/message.png" @click="click2chat" />
                         </div>
                     </li>
                 </ul>
@@ -114,9 +123,12 @@
             </div>
         </div>
     </div>
+
+    <ChatBody v-if="chat == true"/>
 </template>
     
 <script>
+import ChatBody from './chat/ChatBody.vue';
 import { useRoute } from 'vue-router';
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
@@ -124,11 +136,15 @@ import { API_URL } from '@/assets/apis/api';
 import $ from 'jquery'
 
 export default {
+    components: {
+        ChatBody,
+    },
     setup() {
         const route = useRoute();
         const store = useStore();
         let user_search = ref('');
         let user = ref([]);
+        let chat = ref();
         let route_name = computed(() => route.name)
 
         const logout = () => {
@@ -205,14 +221,20 @@ export default {
             })
         }
 
+        const click2chat = () => {
+            chat = true;
+        }
+
         return {
             route_name,
             user_search,
             user,
+            chat,
             search_user,
             logout,
             follow,
             unfollow,
+            click2chat,
         }
     },
     name: "NavBar"
@@ -222,12 +244,15 @@ export default {
     
 <style scoped>
 img {
-    border-radius: 50%;
-    width: 30px;
-    height: 30px
+    width: 4vh;
+    height: 4vh;
+    margin-right: 10px;
+    cursor: pointer;
 }
 
-.nv {
-    margin-left: 4px;
+.chatbody {
+    height: 50vh;
+    width: 50vh;
+    display: inline;
 }
 </style>

@@ -82,9 +82,9 @@ canvas {
 
 .container {
     width: auto;
-    margin-left: -100px;
+    margin-left: -70px;
     margin-top: 15px;
-    margin-right: 100px;
+    margin-right: 20px;
 }
 
 .play-board {
