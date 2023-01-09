@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <router-link class="navbar-brand" :to="{ name: 'goplay' }">AI Space</router-link>
+            <router-link class="navbar-brand title" :to="{ name: 'goplay' }">AI Space</router-link>
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item nv">
@@ -24,24 +24,19 @@
                         <router-link v-bind:class="route_name == 'community' ? 'nav-link active' : 'nav-link'"
                             :to="{ name: 'community' }">社区</router-link>
                     </li>
-                    <li>
-                        <div class="d-flex" style="margin: 0 15vw auto">
-                            <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search"
-                                style="width: 15vw" v-model="user_search">
-                            <button class="btn btn-outline-success" type="submit" data-bs-toggle="modal"
-                                data-bs-target="#search" @click="search_user">搜索</button>
-                                
-                        </div>
-                    </li>
                 </ul>
 
-                <ul class="navbar-nav navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item nv">
+                <!-- <ul class="navbar-nav">
+                    <li class="nav-item">
                         <div>
                             <img src="@/assets/images/message.png" @click="click2chat" />
                         </div>
                     </li>
-                </ul>
+                </ul> -->
+                <div class="d-flex search">
+                    <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search" v-model="user_search">
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#search" @click="search_user">Search</button>
+                </div>
 
                 <!--若用户已登录则展示用户信息菜单-->
                 <ul class="navbar-nav" v-if="$store.state.user.is_login">
@@ -124,7 +119,7 @@
         </div>
     </div>
 
-    <ChatBody v-if="chat == true"/>
+    <ChatBody v-if="chat == true" />
 </template>
     
 <script>
@@ -250,9 +245,15 @@ img {
     cursor: pointer;
 }
 
-.chatbody {
-    height: 50vh;
-    width: 50vh;
-    display: inline;
+.nv {
+    margin-left: 1vw;
+}
+
+.title {
+    margin-left: -2vw;
+}
+
+.search {
+    margin: 0 auto;
 }
 </style>

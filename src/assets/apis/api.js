@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { post } from 'jquery';
 
-const API_URL = "https://app2074.acapp.acwing.com.cn/api";
+const API_URL = "http://127.0.0.1:3000/api";
 
 class Apis {
     getToken = (data) => {
