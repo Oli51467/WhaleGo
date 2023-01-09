@@ -2,9 +2,6 @@ const GoGameModule = {
     state: {
         board: null,
         status: 'waiting',
-        opponent_avatar: "",
-        opponent_username: "",
-        opponent_userid: "",
         socket: null,
         loser: "none",
         room_id: "",
@@ -23,11 +20,6 @@ const GoGameModule = {
         },
         updateGoSocket(state, socket) {
             state.socket = socket;
-        },
-        updateGoOpponent(state, opponent) {
-            state.opponent_username = opponent.username;
-            state.opponent_avatar = opponent.avatar;
-            state.opponent_userid = opponent.userid;
         },
         updateGoLoser(state, loser) {
             state.loser = loser;

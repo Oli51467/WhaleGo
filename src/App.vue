@@ -43,11 +43,6 @@ export default {
                         roomId
                     }
                 })
-                store.commit("updateGoOpponent", {
-                    username: data.opponent_username,
-                    avatar: data.opponent_avatar,
-                    userid: data.opponent_userid,
-                });
                 store.commit("updateGoGameStatus", "playing");
                 store.commit("updateBoard", data.game.board);
                 store.commit("updateRoomId", data.game.room_id);

@@ -2,8 +2,7 @@
     <ContentBase>
         <div class="container">
             <div class="card-body">
-                <el-tabs type="border-card" :stretch=true tab-position="top"
-                    class="play-board">
+                <el-tabs type="border-card" :stretch=true tab-position="top" class="play-board">
 
                     <el-tab-pane label="我的好友" class="settings">
                         <table class="table table-striped table-hover" style="text-align:center">
@@ -36,10 +35,14 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <button type="button" style="margin-top:-4px"
+                                        <button type="button" style="margin-top:-4px" v-if="friend.status === 'stand'"
                                             v-bind:class="friend.state == 1 ? 'btn btn-primary' : 'btn btn-secondary'"
                                             v-bind:disabled="friend.state == 1 && $store.state.user.request_player_id == '' ? false : true"
                                             @click="invite_play($store.state.user.id, friend.id)">邀请对局</button>
+                                        <button type="button" style="margin-top:-4px" v-else-if="friend.status === 'playing'"
+                                            class="btn btn-secondary" disabled="true">对局中</button>
+                                        <button type="button" style="margin-top:-4px" v-else-if="friend.status === 'matching'"
+                                            class="btn btn-secondary" disabled="true">匹配中</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -105,7 +108,7 @@
                 </el-tabs>
             </div>
         </div>
-        <InteractiveComponents/>
+        <InteractiveComponents />
     </ContentBase>
 </template>
 
