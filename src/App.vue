@@ -50,6 +50,7 @@ export default {
                 });
                 store.commit("updateGoGameStatus", "playing");
                 store.commit("updateBoard", data.game.board);
+                store.commit("updateRoomId", data.game.room_id);
                 store.commit("updateCurrent", 1);
                 if (data.game.black_id == store.state.user.id) { // 执黑
                     store.commit("updateWhich", 1);
@@ -59,15 +60,17 @@ export default {
             } else if (data.event === "result") {
                 store.commit("updateWhich", 0);
                 store.commit("updateCurrent", 0);
-                store.commit("updateBoard", null);
+                store.commit("updateRoomId", null);
                 store.commit("updateRequestPlayerId", '');
                 store.commit("updateGoLoser", data.loser);
-                console.log(data.loser);
+                store.commit("updateGoGameStatus", "waiting");
             } else if (data.event === 'play') {
                 if (data.valid === 'yes') {
                     store.commit("updateBoard", data.board);
                 }
-                store.commit("updateCurrent", data.current);
+                if (data.room_id == store.state.gogame.room_id) {
+                    store.commit("updateCurrent", data.current);
+                }
             } else if (data.event === 'request_play') {     // 接受到一名玩家发出的邀请
                 store.commit("updateRequestUser", data.request_user);
                 store.commit("updateInvitePlayerId", data.request_user.id);

@@ -6,10 +6,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-1 user-avatar">
-                                <img :src="$store.state.user.avatar" alt="">
+                                <img :src="users.black_avatar" alt="">
                             </div>
                             <div class="col-3 username">
-                                <span>{{ $store.state.user.username }} &nbsp;3段</span>
+                                <span>{{ users.black_username }} &nbsp;{{ users.black_level }}</span>
                             </div>
                             <div class="col-1 parent">
                                 <canvas ref="canvas" tabindex="0"></canvas>
@@ -27,10 +27,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-1 user-avatar">
-                                <img :src="$store.state.gogame.opponent_avatar" alt="">
+                                <img :src="users.white_avatar" alt="">
                             </div>
                             <div class="col-3 username">
-                                <span> {{ $store.state.gogame.opponent_username }} &nbsp;3段</span>
+                                <span> {{ users.white_username }} &nbsp;{{ users.white_level }}</span>
                             </div>
                             <div class="col-1 parent">
                                 <canvas ref="canvas1" tabindex="0"></canvas>
@@ -41,48 +41,7 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-11">
-                <!--所有在房间的人-->
-                <table class="table table-striped table-hover" style="text-align:center">
-                    <thead>
-                        <tr>
-                            <th>用户</th>
-                            <th>段位</th>
-                            <th>胜</th>
-                            <th>负</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="user in users.items" :key="user.user_id">
-                            <td>
-                                <div>
-                                    <img :src="user.user_avatar" alt="" class="user-avatar-guest">
-                                    &nbsp;
-                                    <span> {{ user.user_name }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <button class="btn btn-outline-info"> {{ user.user_level }} </button>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="user-username">
-                                    <span> {{ user.user_lose }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="user-username">
-                                    <span> {{ user.user_win }}</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <!--end-->
-            </div>
-        </div>
+        <RoomUserList :roomId="roomId"/>
 
         <div class="row" v-if="$store.state.gogame.which == 0" style="margin: 0 auto">
             <button class="btn btn-danger btn-lg leave" @click="leave_room">离开房间</button>
@@ -100,10 +59,10 @@
             </div>
             <div class="col-2 func">
                 <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">认输</button>
+                    data-bs-target="#resign">认输</button>
 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                <div class="modal fade" id="resign" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -127,14 +86,20 @@
 </template>
 
 <script>
+import RoomUserList from '../RoomUserList.vue'
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import router from '@/router';
 import $ from 'jquery';
 import { API_URL } from '@/assets/apis/api';
+import { onBeforeRouteLeave } from "vue-router";
+import { ElMessageBox } from 'element-plus';
 
 export default {
+    components: {
+        RoomUserList,
+    },
     props: {
         roomId: {
             type: Object,
@@ -147,17 +112,13 @@ export default {
         let canvas = ref(null);
         let canvas1 = ref(null);
         let users = ref([]);
+        let flag = ref(null);
 
         onMounted(() => {
             let ctx = canvas.value.getContext('2d');
             let ctx1 = canvas1.value.getContext('2d');
-            if (store.state.gogame.which == 1) {
-                ctx.fillStyle = "black";
-                ctx1.fillStyle = "white";
-            } else {
-                ctx.fillStyle = "white";
-                ctx1.fillStyle = "black";
-            }
+            ctx.fillStyle = "black";
+            ctx1.fillStyle = "white";
             ctx.beginPath();
             ctx.arc(95, 50, 40, 0, 2 * Math.PI);
             ctx1.beginPath();
@@ -166,9 +127,9 @@ export default {
             ctx1.fill();
         })
 
-        const pull_users_in_room = () => {
+        const get_board_in_room = () => {
             $.ajax({
-                url: `${API_URL}/room/getUsers/`,
+                url: `${API_URL}/room/getBoard/`,
                 type: "get",
                 data: {
                     user_id: store.state.user.id,
@@ -178,6 +139,11 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
+                    if (resp.event === 'empty_room') {
+                        router.push({
+                            name: '404',
+                        })
+                    }
                     users.value = resp;
                     store.commit("updateBoard", resp.board_state);
                 },
@@ -185,9 +151,8 @@ export default {
                     console.log(resp);
                 }
             })
-        }
-        //setInterval(pull_users_in_room, 1000);
-        pull_users_in_room();
+        };
+        get_board_in_room();
 
         const click_resign = () => {
             store.state.gogame.socket.send(JSON.stringify({
@@ -207,6 +172,7 @@ export default {
         }
 
         const leave_room = () => {
+            flag.value = false;
             $.ajax({
                 url: `${API_URL}/room/leave/`,
                 type: "get",
@@ -228,8 +194,26 @@ export default {
             })
         }
 
+        onBeforeRouteLeave((to, from, next) => {
+            if (store.state.gogame.which != 0) {
+                ElMessageBox.confirm("您的棋局还未下完，是否认输？", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        click_resign();
+                    })
+                    .catch(() => {
+                        console.log("111");
+                    });
+            } else {
+                next();
+            }
+        })
+
         return {
-            pull_users_in_room,
+            get_board_in_room,
             click_resign,
             request_draw,
             leave_room,
@@ -238,7 +222,6 @@ export default {
             users,
         }
     },
-    
 }
 </script>
 
@@ -257,12 +240,6 @@ div.playboard {
 }
 
 div.user-avatar {
-    text-align: center;
-}
-
-.user-avatar-guest {
-    border-radius: 50%;
-    width: 4vh;
     text-align: center;
 }
 

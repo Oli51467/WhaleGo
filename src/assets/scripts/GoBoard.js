@@ -1,7 +1,7 @@
 import { GameObject } from "./GameObject";
 
 export class GoBoard extends GameObject {
-    constructor(ctx, parent, rows, cols, store) {
+    constructor(ctx, parent, rows, cols, store, room_id) {
         super();
         this.ctx = ctx;
         this.parent = parent;
@@ -13,6 +13,7 @@ export class GoBoard extends GameObject {
         this.is_black = true;
         this.virtual_x = -1;
         this.virtual_y = -1;
+        this.room_id = room_id;
     }
 
     init_stars() {
@@ -60,6 +61,7 @@ export class GoBoard extends GameObject {
             event: "play",
             x: x,
             y: y,
+            room_id: this.room_id,
         }));
         this.remove_mouse_events();
     }
@@ -166,7 +168,7 @@ export class GoBoard extends GameObject {
     }
 
     update() {
-        if (this.store.state.gogame.current == this.store.state.gogame.which && this.store.state.gogame.current !== 0) {
+        if (this.store.state.gogame.current == this.store.state.gogame.which && this.room_id === this.store.state.gogame.room_id) {
             this.add_mouse_events();
         } else this.remove_mouse_events();
         this.update_size();

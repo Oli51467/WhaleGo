@@ -88,10 +88,6 @@ export default {
         let games = ref([]);
 
         onMounted(() => {
-
-        })
-
-        const pull_rooms = () => {
             $.ajax({
                 url: `${API_URL}/game/getInProcess/`,
                 type: "get",
@@ -105,8 +101,7 @@ export default {
                     console.log(resp);
                 }
             })
-        }
-        pull_rooms();
+        })
 
         const watch_game = (roomId) => {
             store.commit("updateGoBoard", null);
@@ -120,7 +115,6 @@ export default {
 
         return {
             watch_game,
-            pull_rooms,
             games,
         }
     }

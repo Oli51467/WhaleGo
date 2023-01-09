@@ -7,6 +7,7 @@ const GoGameModule = {
         opponent_userid: "",
         socket: null,
         loser: "none",
+        room_id: "",
         current: 0, // 当前轮到哪一方
         which: 0,   // 自己是哪一方
     },
@@ -37,6 +38,9 @@ const GoGameModule = {
         updateWhich(state, which) {
             state.which = which;
         },
+        updateRoomId(state, room_id) {
+            state.room_id = room_id;
+        }
     },
 
     actions: {
