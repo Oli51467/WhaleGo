@@ -26,3 +26,4 @@ package.json
 vue.config.js
 babel.config.js
 jsconfig.json
+reload.sh
