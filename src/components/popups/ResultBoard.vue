@@ -6,7 +6,7 @@
         <div class="result-board-text" v-else-if="$store.state.gogame.loser == 2">
             黑中盘胜
         </div>
-        <div class="result-board-text" v-else-if="$store.state.gogame.loser === 'draw'">
+        <div class="result-board-text" v-else-if="$store.state.gogame.loser == -2">
             和棋！
         </div>
         <div class="result-board-btn">

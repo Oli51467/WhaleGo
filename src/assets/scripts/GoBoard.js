@@ -33,8 +33,9 @@ export class GoBoard extends GameObject {
         if (g == null) return;
         let click_x = e.offsetX;
         let click_y = e.offsetY;
-        let x = Math.floor(click_y / 32);
-        let y = Math.floor(click_x / 32);
+        console.log(this.ctx.canvas.width, this.ctx.canvas.height, this.L, this.cell_len);
+        let x = Math.floor(click_y / this.cell_len);
+        let y = Math.floor(click_x / this.cell_len);
         if (x <= 0 || x > 19 || y <= 0 || y > 19 || g[x][y]) {
             this.virtual_x = -1;
             this.virtual_y = -1;
@@ -49,8 +50,8 @@ export class GoBoard extends GameObject {
         if (g == null) return;
         let click_x = e.offsetX;
         let click_y = e.offsetY;
-        let x = Math.floor(click_y / 32);
-        let y = Math.floor(click_x / 32);
+        let x = Math.floor(click_y / this.cell_len);
+        let y = Math.floor(click_x / this.cell_len);
         this.virtual_x = -1; 
         this.virtual_y = -1;
         if (x <= 0 || x > 19 || y <= 0 || y > 19 || g[x][y]) return;
@@ -73,8 +74,8 @@ export class GoBoard extends GameObject {
     }
 
     draw_virtual_stone(x, y) {
-        const center_x = x * this.cell_len;
-        const center_y = y * this.cell_len;
+        const center_x = (x) * this.cell_len;
+        const center_y = (y) * this.cell_len;
         const r = this.cell_len / 2 * 0.9;
         if (this.store.state.gogame.current == 1 && this.store.state.gogame.which == 1 || this.store.state.gogame.current == 0) {
             let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
@@ -98,10 +99,10 @@ export class GoBoard extends GameObject {
 
         for (let i = 1; i <= 19; i++) {
             this.ctx.moveTo(this.cell_len, this.cell_len * i);
-            this.ctx.lineTo(this.ctx.canvas.width * 0.944, this.cell_len * i);
+            this.ctx.lineTo(this.cell_len * 19, this.cell_len * i);
             this.ctx.stroke();
             this.ctx.moveTo(this.cell_len * i, this.cell_len);
-            this.ctx.lineTo(this.cell_len * i, this.ctx.canvas.height * 0.944);
+            this.ctx.lineTo(this.cell_len * i, this.cell_len * 19);
             this.ctx.stroke();
         }
     }
