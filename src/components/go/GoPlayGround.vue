@@ -9,7 +9,7 @@
             <div class="col-5">
                 <div class="container">
                     <div class="card-body">
-                        <el-tabs v-model="matchplay" type="border-card" :stretch=true
+                        <el-tabs type="border-card" :stretch=true
                             tab-position="top" class="play-board">
                             <el-tab-pane label="匹配对手" class="settings">
                                 <div>

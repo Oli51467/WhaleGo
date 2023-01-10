@@ -102,7 +102,7 @@ export default {
     },
     props: {
         roomId: {
-            type: Object,
+            type: String,
             required: true,
         }
     },

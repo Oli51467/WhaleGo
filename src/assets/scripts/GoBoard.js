@@ -168,7 +168,7 @@ export class GoBoard extends GameObject {
     }
 
     update() {
-        if (this.store.state.gogame.current == this.store.state.gogame.which && this.room_id === this.store.state.gogame.room_id) {
+        if (this.store.state.gogame.current == this.store.state.gogame.which && this.room_id == this.store.state.gogame.room_id) {
             this.add_mouse_events();
         } else this.remove_mouse_events();
         this.update_size();

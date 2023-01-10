@@ -77,7 +77,7 @@
             </div>
         </div>
         <div class="row">
-            <el-button type="success" round class="match" @click="click_match">开始挑战</el-button>
+            <el-button type="success" round class="match">开始挑战</el-button>
         </div>
     </div>
 </template>

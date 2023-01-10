@@ -43,9 +43,10 @@ export default {
                         roomId
                     }
                 })
+                store.commit("updateOpponentId", data.opponent_userid);
                 store.commit("updateGoGameStatus", "playing");
                 store.commit("updateBoard", data.game.board);
-                store.commit("updateRoomId", data.game.room_id);
+                store.commit("updateRoomId", roomId);
                 store.commit("updateCurrent", 1);
                 if (data.game.black_id == store.state.user.id) { // 执黑
                     store.commit("updateWhich", 1);

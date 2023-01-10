@@ -53,7 +53,7 @@ import { API_URL } from '@/assets/apis/api';
 export default {
     props: {
         roomId: {
-            type: Object,
+            type: String,
             required: true,
         }
     },
