@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import ContentBase from '@/components/ContentBase.vue';
+import ContentBase from '@/components/base/ContentBase.vue';
 import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 import $ from 'jquery';
 import { API_URL } from "@/assets/apis/api";

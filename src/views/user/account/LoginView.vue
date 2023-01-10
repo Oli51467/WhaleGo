@@ -21,7 +21,7 @@
 </template>
   
 <script>
-import ContentBase from '@/components/ContentBase'
+import ContentBase from '@/components/base/ContentBase'
 import { useStore } from 'vuex';
 import { ref } from 'vue'
 import router from '@/router';

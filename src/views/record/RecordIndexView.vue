@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import ContentBase from "@/components/ContentBase.vue";
-import MyRecords from "@/components/MyRecords.vue";
-import RecordsLibrary from "@/components/RecordsLibrary.vue";
+import ContentBase from "@/components/base/ContentBase.vue";
+import MyRecords from "@/components/record/MyRecords.vue";
+import RecordsLibrary from "@/components/record/RecordsLibrary.vue";
 import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 
 export default {

@@ -47,7 +47,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <router-link class="dropdown-item" :to="{ name: 'user_bots' }">个人中心</router-link>
+                                <router-link class="dropdown-item" :to="{ name: 'user_index', params:{userId:$store.state.user.id }}">个人中心</router-link>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -123,7 +123,7 @@
 </template>
     
 <script>
-import ChatBody from './chat/ChatBody.vue';
+import ChatBody from '../chat/ChatBody.vue';
 import { useRoute } from 'vue-router';
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';

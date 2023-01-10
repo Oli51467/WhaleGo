@@ -71,7 +71,7 @@
 <script>
 import { useStore } from 'vuex';
 import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
-import ContentBase from '@/components/ContentBase.vue';
+import ContentBase from '@/components/base/ContentBase.vue';
 import { onMounted, ref } from "vue";
 import $ from 'jquery'
 import { API_URL } from "@/assets/apis/api";

@@ -26,7 +26,7 @@
   
   
 <script>
-import ContentBase from '@/components/ContentBase'
+import ContentBase from '@/components/base/ContentBase'
 import $ from 'jquery'
 import { useStore } from 'vuex'
 import { ref } from 'vue'

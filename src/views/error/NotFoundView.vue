@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ContentBase from '@/components/ContentBase';
+import ContentBase from '@/components/base/ContentBase';
 
 export default {
   name: 'NotFound',

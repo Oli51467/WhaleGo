@@ -27,7 +27,7 @@ import InteractiveComponents from "@/components/popups/InteractiveComponents.vue
 import ResultBoard from "@/components/popups/ResultBoard.vue";
 import DrawRequest from '@/components/popups/DrawRequest.vue';
 import { GoBoard } from '@/assets/scripts/GoBoard';
-import ContentBase from '@/components/ContentBase.vue';
+import ContentBase from '@/components/base/ContentBase.vue';
 import GoPlayBoard from '@/components/go/GoPlayBoard.vue';
 import { ref } from 'vue';
 import { useStore } from 'vuex';

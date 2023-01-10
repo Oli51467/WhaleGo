@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import RoomUserList from '../RoomUserList.vue'
+import RoomUserList from '../room/RoomUserList.vue'
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
