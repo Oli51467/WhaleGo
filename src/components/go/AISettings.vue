@@ -77,16 +77,28 @@
             </div>
         </div>
         <div class="row">
-            <el-button type="success" round class="match">开始挑战</el-button>
+            <el-button type="success" round class="match" @click="request_engine">开始挑战</el-button>
         </div>
     </div>
 </template>
 
 <script>
+import { useStore } from 'vuex';
 
 export default {
     setup() {
-        
+        const store = useStore();
+        const request_engine = () => {
+            store.state.gogame.socket.send(JSON.stringify({
+                event: "engine_play",
+                user_id: store.state.user.id,
+                level: 5,
+            }));
+        }
+
+        return {
+            request_engine,
+        }
     }
 }
 </script>
