@@ -147,7 +147,6 @@ export default {
                 for (let user of followed_users.value.users) {
                     user.follow = true
                 }
-                console.log(followed_users.value.users);
             },
             error(resp) {
                 console.log(resp);
@@ -162,7 +161,6 @@ export default {
             },
             success(resp) {
                 friends.value = resp;
-                console.log(friends.value.users);
             },
             error(resp) {
                 console.log(resp);
@@ -215,7 +213,7 @@ export default {
             }));
             request_play.alert('等待对方回应', {
                 confirmButtonText: '取消',
-                type: 'warning',
+                type: 'info',
                 center: true,
                 callback: () => {
                     store.state.gogame.socket.send(JSON.stringify({

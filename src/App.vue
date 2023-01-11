@@ -10,6 +10,7 @@ import NavBar from './components/base/NavBar.vue';
 import router from './router';
 import { request_play } from '@/views/friend/FriendIndexView.vue'
 import { request_draw_eb } from './components/go/GoPlayBoard.vue';
+import { go_resign } from './components/go/GoPlayBoard.vue';
 import { ElMessageBox } from 'element-plus';
 
 export default {
@@ -61,9 +62,14 @@ export default {
                 store.commit("updateWhich", 0);
                 store.commit("updateCurrent", 0);
                 store.commit("updateRoomId", null);
-                store.commit("updateGoLoser", data.loser);
                 store.commit("updateGoGameStatus", "waiting");
+                go_resign.close();
                 request_draw_eb.close();
+                ElMessageBox.alert(data.loser, {
+                    confirmButtonText: '确定',
+                    type: 'info',
+                    center: true,
+                })
             } else if (data.event === 'play') {
                 if (data.valid === 'yes') {
                     store.commit("updateBoard", data.board);
@@ -77,7 +83,12 @@ export default {
                     "  " + request.lose + "负    向您发来对局邀请", {
                     cancelButtonText: '同意',
                     confirmButtonText: '拒绝',
-                    type: 'warning',
+                    title: "对局邀请",
+                    showClose: false,
+                    closeOnClickModal: false,
+                    closeOnPressEscape: false,
+                    type: 'info',
+                    customClass: 'winClass',//弹窗样式
                     center: true
                 }).then(() => {
                     socket.send(JSON.stringify({
@@ -97,7 +108,11 @@ export default {
                 play_request.confirm("对方向您发来和棋请求", {
                     cancelButtonText: '同意',
                     confirmButtonText: '拒绝',
-                    type: 'warning',
+                    title: "和棋请求",
+                    type: 'info',
+                    closeOnClickModal: false,
+                    closeOnPressEscape: false,
+                    showClose: false,
                     center: true
                 }).then(() => {
                     socket.send(JSON.stringify({
@@ -116,7 +131,7 @@ export default {
                 request_draw_eb.close();
                 request_play.alert('对局拒绝了请求', {
                     confirmButtonText: '确定',
-                    type: 'warning',
+                    type: 'error',
                     center: true,
                 })
             } else if (data.event === 'ready') {            // 另一名玩家接受了邀请 准备开始
@@ -128,7 +143,7 @@ export default {
             store.commit("updateGoGameStatus", "waiting");
             store.commit("updateWhich", 0);
             store.commit("updateCurrent", 0);
-            store.commit("updateGoSocket", socket);
+            store.commit("updateSocket", socket);
         };
     },
 } 

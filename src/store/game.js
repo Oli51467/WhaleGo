@@ -3,7 +3,6 @@ const GoGameModule = {
         board: null,
         status: 'waiting',
         socket: null,
-        loser: "none",
         room_id: "",
         opponent_userid: "",
         current: 0, // 当前轮到哪一方
@@ -21,9 +20,6 @@ const GoGameModule = {
         },
         updateGoSocket(state, socket) {
             state.socket = socket;
-        },
-        updateGoLoser(state, loser) {
-            state.loser = loser;
         },
         updateCurrent(state, current) {
             state.current = current;

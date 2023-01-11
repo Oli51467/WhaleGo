@@ -58,26 +58,7 @@
                 <button type="button" class="btn btn-secondary btn-lg" @click="request_draw">申请和棋</button>
             </div>
             <div class="col-2 func">
-                <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal"
-                    data-bs-target="#resign">认输</button>
-
-                <!-- Modal -->
-                <div class="modal fade" id="resign" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <span>你确定认输吗？</span>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-lg" style="margin-right: 200px"
-                                    data-bs-dismiss="modal" @click="click_resign">认输</button>
-                                <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal"
-                                    style="margin-right: 60px">取消</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-danger btn-lg" @click="click_resign">认输</button>
             </div>
         </div>
     </div>
@@ -97,6 +78,7 @@ import { onBeforeRouteLeave } from "vue-router";
 import { ElMessageBox } from 'element-plus';
 
 export let request_draw_eb = ElMessageBox;
+export let go_resign = ElMessageBox;
 export default {
     components: {
         RoomUserList,
@@ -156,11 +138,19 @@ export default {
         get_board_in_room();
 
         const click_resign = () => {
-            store.state.gogame.socket.send(JSON.stringify({
-                event: "play",
-                x: -1,
-                y: -1,
-            }));
+            go_resign.confirm('是否确定认输？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                store.state.gogame.socket.send(JSON.stringify({
+                    event: "play",
+                    x: -1,
+                    y: -1,
+                }));
+            }).catch(() => {
+
+            });
         }
 
         const request_draw = () => {
@@ -170,7 +160,7 @@ export default {
             }));
             request_draw_eb.alert('等待对方回应', {
                 confirmButtonText: '取消',
-                type: 'warning',
+                type: 'info',
                 center: true,
                 callback: () => {
                     store.state.gogame.socket.send(JSON.stringify({
@@ -224,8 +214,8 @@ export default {
 
         return {
             get_board_in_room,
-            click_resign,
             request_draw,
+            click_resign,
             leave_room,
             canvas,
             canvas1,

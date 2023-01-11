@@ -17,11 +17,9 @@
             </div>
         </div>
     </div>
-    <ResultBoard v-if="$store.state.gogame.loser != 'none' " />
 </template>
 
 <script>
-import ResultBoard from "@/components/popups/ResultBoard.vue";
 import { GoBoard } from '@/assets/scripts/GoBoard';
 import ContentBase from '@/components/base/ContentBase.vue';
 import GoPlayBoard from '@/components/go/GoPlayBoard.vue';
@@ -34,7 +32,6 @@ export default {
     components: {
         GoPlayBoard,
         ContentBase,
-        ResultBoard,
     },
 
     setup() {
