@@ -9,8 +9,8 @@
                             <tbody>
                                 <tr v-for="friend in friends.users" :key="friend.id">
                                     <td>
-                                        <router-link :to="{ name: 'user_index', params:{userId:friend.id }}">
-                                            <img :src="friend.avatar" alt="" class="user-avatar"/>
+                                        <router-link :to="{ name: 'user_index', params: { userId: friend.id } }">
+                                            <img :src="friend.avatar" alt="" class="user-avatar" />
                                         </router-link>
                                         &nbsp;
                                         <span class="user-info"> {{ friend.username }}</span>
@@ -41,10 +41,12 @@
                                             v-bind:class="friend.state == 1 ? 'btn btn-primary' : 'btn btn-secondary'"
                                             v-bind:disabled="friend.state == 1 && $store.state.user.request_player_id == '' ? false : true"
                                             @click="invite_play($store.state.user.id, friend.id)">邀请对局</button>
-                                        <button type="button" style="margin-top:-4px" v-else-if="friend.status === 'playing'"
-                                            class="btn btn-secondary" disabled="true">对局中</button>
-                                        <button type="button" style="margin-top:-4px" v-else-if="friend.status === 'matching'"
-                                            class="btn btn-secondary" disabled="true">匹配中</button>
+                                        <button type="button" style="margin-top:-4px"
+                                            v-else-if="friend.status === 'playing'" class="btn btn-secondary"
+                                            disabled="true">对局中</button>
+                                        <button type="button" style="margin-top:-4px"
+                                            v-else-if="friend.status === 'matching'" class="btn btn-secondary"
+                                            disabled="true">匹配中</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -110,23 +112,22 @@
                 </el-tabs>
             </div>
         </div>
-        <InteractiveComponents />
     </ContentBase>
 </template>
 
 <script>
 import ContentBase from '@/components/base/ContentBase.vue';
-import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 import $ from 'jquery';
 import { API_URL } from "@/assets/apis/api";
 import { useStore } from "vuex";
 import { ref } from 'vue';
+import { ElMessageBox } from 'element-plus';
 
+export let request_play = ElMessageBox;
 export default {
     // 存放templates中用到的其他组件
     components: {
         ContentBase,
-        InteractiveComponents,
     },
 
     setup() {
@@ -134,9 +135,6 @@ export default {
         let followed_users = ref([]);
         let followers = ref([]);
         let friends = ref([]);
-        store.commit("updateRequestPlayerId", '');
-        store.commit("updateInvitePlayerId", '');
-        store.commit("updateRefused", '');
 
         $.ajax({
             url: `${API_URL}/user/getFollowed/`,
@@ -210,13 +208,24 @@ export default {
         }
 
         const invite_play = (userId, friendId) => {
-            store.commit("updateRequestPlayerId", friendId);        // 请求的对手的id
             store.state.gogame.socket.send(JSON.stringify({
                 event: "request_play",
                 request_id: userId,
                 friend_id: friendId,
             }));
+            request_play.alert('等待对方回应', {
+                confirmButtonText: '取消',
+                type: 'warning',
+                center: true,
+                callback: () => {
+                    store.state.gogame.socket.send(JSON.stringify({
+                        event: "request_cancel",
+                        friend_id: friendId,
+                    }));
+                }
+            })
         }
+
 
         return {
             followed_users,

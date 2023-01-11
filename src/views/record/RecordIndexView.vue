@@ -8,7 +8,6 @@
                 <RecordsLibrary/>
             </el-tab-pane>
         </el-tabs>
-        <InteractiveComponents />
 
     </ContentBase>
 </template>
@@ -17,7 +16,6 @@
 import ContentBase from "@/components/base/ContentBase.vue";
 import MyRecords from "@/components/record/MyRecords.vue";
 import RecordsLibrary from "@/components/record/RecordsLibrary.vue";
-import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 
 export default {
     name: "RecordIndex",
@@ -26,7 +24,6 @@ export default {
         ContentBase,
         MyRecords,
         RecordsLibrary,
-        InteractiveComponents,
     },
 
     setup() {

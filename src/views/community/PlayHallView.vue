@@ -1,6 +1,5 @@
 <template>
     <ContentBase>
-        <InteractiveComponents />
         <div class="title">
             <span>对局大厅</span>
             <hr />
@@ -70,7 +69,6 @@
 
 <script>
 import { useStore } from 'vuex';
-import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 import ContentBase from '@/components/base/ContentBase.vue';
 import { onMounted, ref } from "vue";
 import $ from 'jquery'
@@ -80,7 +78,6 @@ import router from '@/router';
 export default {
     components: {
         ContentBase,
-        InteractiveComponents,
     },
 
     setup() {

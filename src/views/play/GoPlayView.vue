@@ -1,5 +1,4 @@
 <template>
-    <InteractiveComponents/>
     <GoPlayGround />
     <ResultBoard v-if="$store.state.gogame.loser === 'myself' || $store.state.gogame.loser === 'oppo'
     || $store.state.gogame.loser === 'draw'" />
@@ -9,7 +8,6 @@
 <script>
 import GoPlayGround from '@/components/go/GoPlayGround.vue';
 import ResultBoard from '@/components/popups/ResultBoard.vue';
-import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 import DrawRequest from '@/components/popups/DrawRequest.vue';
 
 export default {
@@ -18,7 +16,6 @@ export default {
     components: {
         GoPlayGround,
         ResultBoard,
-        InteractiveComponents,
         DrawRequest,
     },
 

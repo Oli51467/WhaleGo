@@ -1,6 +1,5 @@
 <template>
     <ContentBase>
-        <InteractiveComponents />
         <div class="container">
             <div class="row">
                 <div class="col-3">
@@ -24,7 +23,6 @@
 
 <script>
 import ContentBase from '@/components/base/ContentBase.vue';
-import InteractiveComponents from '@/components/popups/InteractiveComponents.vue';
 import UserInfo from '@/components/user/UserInfo.vue';
 import $ from 'jquery';
 import { ref } from 'vue';
@@ -37,7 +35,6 @@ export default {
     // 存放templates中用到的其他组件
     components: {
         ContentBase,
-        InteractiveComponents,
         UserInfo,
     },
 

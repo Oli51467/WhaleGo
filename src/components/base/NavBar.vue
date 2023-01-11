@@ -146,7 +146,6 @@ export default {
             store.commit("updateWhich", 0);
             store.commit("updateCurrent", 0);
             store.commit("updateBoard", null);
-            store.commit("updateRequestPlayerId", '');
             store.dispatch("logout");
         }
 

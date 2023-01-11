@@ -17,13 +17,11 @@
             </div>
         </div>
     </div>
-    <InteractiveComponents/>
     <ResultBoard v-if="$store.state.gogame.loser != 'none' " />
     <DrawRequest v-if="$store.state.user.invite_player_id === 'peace'"/>
 </template>
 
 <script>
-import InteractiveComponents from "@/components/popups/InteractiveComponents.vue";
 import ResultBoard from "@/components/popups/ResultBoard.vue";
 import DrawRequest from '@/components/popups/DrawRequest.vue';
 import { GoBoard } from '@/assets/scripts/GoBoard';
@@ -40,7 +38,6 @@ export default {
         ContentBase,
         ResultBoard,
         DrawRequest,
-        InteractiveComponents,
     },
 
     setup() {

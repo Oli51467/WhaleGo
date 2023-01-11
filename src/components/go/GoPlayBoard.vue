@@ -164,7 +164,7 @@ export default {
 
         const request_draw = () => {
             const oppo_id = store.state.gogame.opponent_userid;
-            store.commit("updateRequestPlayerId", oppo_id);        // 请求的对手的id
+            //store.commit("updateRequestPlayerId", oppo_id);        // 请求的对手的id
             store.state.gogame.socket.send(JSON.stringify({
                 event: "request_draw",
                 friend_id: oppo_id,

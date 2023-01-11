@@ -8,12 +8,6 @@ const UserModule = {
         avatar: "",
         token: "",
         is_login: false,
-        show_login_page: true,
-        has_invitation: false,
-        request_player_id: "",
-        invite_player_id: "",
-        refused: "",
-        request_user: [],
     },
     getters: {
     },
@@ -35,21 +29,6 @@ const UserModule = {
             state.token = "";
             state.is_login = false;
         },
-        updateInvitation(state, has_invitation) {
-            state.has_invitation = has_invitation;
-        },
-        updateRequestPlayerId(state, request_player_id) {
-            state.request_player_id = request_player_id;
-        },
-        updateInvitePlayerId(state, invite_player_id) {
-            state.invite_player_id = invite_player_id;
-        },
-        updateRefused(state, refused) {
-            state.refused = refused;
-        },
-        updateRequestUser(state, request_user) {
-            state.request_user = request_user;
-        }
     },
     actions: {
         // context为上下文 用户点击登陆时调用
