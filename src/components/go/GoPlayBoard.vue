@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <RoomUserList :roomId="roomId"/>
+        <RoomUserList :roomId="roomId" />
 
         <div class="row" v-if="$store.state.gogame.which == 0" style="margin: 0 auto">
             <button class="btn btn-danger btn-lg leave" @click="leave_room">离开房间</button>
@@ -96,6 +96,7 @@ import { API_URL } from '@/assets/apis/api';
 import { onBeforeRouteLeave } from "vue-router";
 import { ElMessageBox } from 'element-plus';
 
+export let request_draw_eb = ElMessageBox;
 export default {
     components: {
         RoomUserList,
@@ -163,12 +164,21 @@ export default {
         }
 
         const request_draw = () => {
-            const oppo_id = store.state.gogame.opponent_userid;
-            //store.commit("updateRequestPlayerId", oppo_id);        // 请求的对手的id
             store.state.gogame.socket.send(JSON.stringify({
                 event: "request_draw",
-                friend_id: oppo_id,
+                friend_id: store.state.gogame.opponent_userid,
             }));
+            request_draw_eb.alert('等待对方回应', {
+                confirmButtonText: '取消',
+                type: 'warning',
+                center: true,
+                callback: () => {
+                    store.state.gogame.socket.send(JSON.stringify({
+                        event: "request_cancel",
+                        friend_id: store.state.gogame.opponent_userid,
+                    }));
+                }
+            })
         }
 
         const leave_room = () => {

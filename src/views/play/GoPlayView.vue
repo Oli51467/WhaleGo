@@ -2,13 +2,11 @@
     <GoPlayGround />
     <ResultBoard v-if="$store.state.gogame.loser === 'myself' || $store.state.gogame.loser === 'oppo'
     || $store.state.gogame.loser === 'draw'" />
-    <DrawRequest v-if="$store.state.user.invite_player_id === 'peace'"/>
 </template>
   
 <script>
 import GoPlayGround from '@/components/go/GoPlayGround.vue';
 import ResultBoard from '@/components/popups/ResultBoard.vue';
-import DrawRequest from '@/components/popups/DrawRequest.vue';
 
 export default {
     name: 'RecordIndex',
@@ -16,7 +14,6 @@ export default {
     components: {
         GoPlayGround,
         ResultBoard,
-        DrawRequest,
     },
 
     setup() {

@@ -9,8 +9,8 @@ import 'bootstrap/dist/js/bootstrap.js'
 import NavBar from './components/base/NavBar.vue';
 import router from './router';
 import { request_play } from '@/views/friend/FriendIndexView.vue'
+import { request_draw_eb } from './components/go/GoPlayBoard.vue';
 import { ElMessageBox } from 'element-plus';
-// import { ElMessageBox } from 'element-plus';
 
 export default {
     components: {
@@ -36,7 +36,6 @@ export default {
         socket.onopen = () => {
             console.log("GoGame Socket Connnected!");
             store.commit("updateGoSocket", socket);
-
         }
         socket.onmessage = msg => {
             const data = JSON.parse(msg.data);
@@ -64,6 +63,7 @@ export default {
                 store.commit("updateRoomId", null);
                 store.commit("updateGoLoser", data.loser);
                 store.commit("updateGoGameStatus", "waiting");
+                request_draw_eb.close();
             } else if (data.event === 'play') {
                 if (data.valid === 'yes') {
                     store.commit("updateBoard", data.board);
@@ -73,31 +73,48 @@ export default {
                 }
             } else if (data.event === 'request_play') {     // 接受到一名玩家发出的邀请
                 const request = data.request_user;
-                play_request.confirm(request.username + "   " + request.level + "  " + request.win + "胜" +
+                play_request.confirm("用户 " + request.username + "   " + request.level + "  " + request.win + "胜" +
                     "  " + request.lose + "负    向您发来对局邀请", {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning',
-                        center: true
-                    }).then(() => {
-                        socket.send(JSON.stringify({
-                            event: "accept_invitation",
-                            user_id: store.state.user.id,
-                            friend_id: data.request_user.id,
-                        }));
-                    }).catch(() => {
-                        socket.send(JSON.stringify({
-                            event: "refuse_invitation",
-                            friend_id: data.request_user.id,
-                        }));
-                    })
+                    cancelButtonText: '同意',
+                    confirmButtonText: '拒绝',
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                    socket.send(JSON.stringify({
+                        event: "refuse_invitation",
+                        friend_id: data.request_user.id,
+                    }));
+                }).catch(() => {
+                    socket.send(JSON.stringify({
+                        event: "accept_invitation",
+                        user_id: store.state.user.id,
+                        friend_id: data.request_user.id,
+                    }));
+                })
             } else if (data.event === 'request_cancel') {   // 另一名玩家取消了邀请(对局邀请、和棋邀请)
                 play_request.close();
             } else if (data.event === 'request_draw') {    // 另一名玩家请求和棋
-                //store.commit("updateInvitePlayerId", 'peace');
+                play_request.confirm("对方向您发来和棋请求", {
+                    cancelButtonText: '同意',
+                    confirmButtonText: '拒绝',
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                    socket.send(JSON.stringify({
+                        event: "refuse_invitation",
+                        friend_id: store.state.gogame.opponent_userid,
+                    }));
+                }).catch(() => {
+                    socket.send(JSON.stringify({
+                        event: "accept_draw",
+                        user_id: store.state.user.id,
+                        friend_id: store.state.gogame.opponent_userid,
+                    }));
+                })
             } else if (data.event === 'friend_refuse') {    // 另一名玩家拒绝了对局邀请
                 request_play.close();
-                request_play.alert('对局拒绝了邀请', {
+                request_draw_eb.close();
+                request_play.alert('对局拒绝了请求', {
                     confirmButtonText: '确定',
                     type: 'warning',
                     center: true,
@@ -113,9 +130,6 @@ export default {
             store.commit("updateCurrent", 0);
             store.commit("updateGoSocket", socket);
         };
-        return {
-            socket,
-        }
     },
 } 
 </script>
