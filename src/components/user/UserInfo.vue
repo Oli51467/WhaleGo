@@ -38,29 +38,33 @@
         <span style="text-align:left">最近来访</span>
     </div>
     <div class="row">
-        <div class="col-2" v-for="guest in user.guests.slice(0, 6)" :key="guest.guests_id">
-            <img :src="guest.guests_avatar" alt="" class="guests_avatar">
+        <div class="col-2" v-for="guest in user.guests_front" :key="guest.guests_id">
+            <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
+            style="cursor:pointer"/>
         </div>
     </div>
     <div class="row">
-        <div class="col-2" v-for="guest in user.guests.slice(0, 6)" :key="guest.guests_id">
+        <div class="col-2" v-for="guest in user.guests_front" :key="guest.guests_id">
             <span class="guests">{{ guest.guests_username }}</span>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-2" v-for="guest in user.guests.slice(6, 12)" :key="guest.guests_id">
-            <img :src="guest.guests_avatar" alt="" class="guests_avatar">
+        <div class="col-2" v-for="guest in user.guests_back" :key="guest.guests_id">
+            <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
+            style="cursor:pointer"/>
         </div>
     </div>
     <div class="row">
-        <div class="col-2" v-for="guest in user.guests.slice(6, 12)" :key="guest.guests_id">
+        <div class="col-2" v-for="guest in user.guests_back" :key="guest.guests_id">
             <span class="guests">{{ guest.guests_username }}</span>
         </div>
     </div>
+
 </template>
 
 <script>
-
+import { useRouter } from 'vue-router';
 export default {
     props: {
         user: {
@@ -70,7 +74,20 @@ export default {
     },
 
     setup() {
+        const route = useRouter();
+        const click_profile = (user_id) => {
+            let routeData = route.resolve({
+                name: 'user_index',
+                params: {
+                    userId: user_id,
+                }
+            })
+            window.open(routeData.href, '_blank');
+        }
 
+        return {
+            click_profile,
+        }
     }
 }
 </script>
@@ -92,12 +109,15 @@ export default {
 }
 
 .guests {
-    white-space:nowrap;/*强制单行显示*/
-    text-overflow:ellipsis;/*超出部分省略号表示*/
-    overflow:hidden;/*超出部分隐藏*/
-    width: 3vw;/*设置显示的最大宽度*/
-    display:inline-block;
-    vertical-align: top 
-
+    white-space: nowrap;
+    /*强制单行显示*/
+    text-overflow: ellipsis;
+    /*超出部分省略号表示*/
+    overflow: hidden;
+    /*超出部分隐藏*/
+    width: 3vw;
+    /*设置显示的最大宽度*/
+    display: inline-block;
+    vertical-align: top
 }
 </style>
