@@ -9,7 +9,9 @@
                             <tbody>
                                 <tr v-for="friend in friends.users" :key="friend.id">
                                     <td>
-                                        <img :src="friend.avatar" alt="" class="user-avatar">
+                                        <router-link :to="{ name: 'user_index', params:{userId:friend.id }}">
+                                            <img :src="friend.avatar" alt="" class="user-avatar"/>
+                                        </router-link>
                                         &nbsp;
                                         <span class="user-info"> {{ friend.username }}</span>
                                     </td>
