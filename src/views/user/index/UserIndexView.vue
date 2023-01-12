@@ -1,45 +1,47 @@
 <template>
-    <ContentBase>
-        <div class="container">
-            <div class="row">
-                <div class="col-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-3" style="margin-top:2vh">
+                <ContentBase>
                     <UserInfo :user="user" />
-                </div>
-                <div class="col-9" style="margin-top:2vh">
-                    <div class="card">
-                        <div class="card-body">
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="post-tab" data-bs-toggle="tab"
-                                        data-bs-target="#post-tab-pane" type="button" role="tab"
-                                        aria-controls="post-tab-pane" aria-selected="true">帖子</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="record-tab" data-bs-toggle="tab"
-                                        data-bs-target="#record-tab-pane" type="button" role="tab"
-                                        aria-controls="record-tab-pane" aria-selected="false">棋谱</button>
-                                </li>
-                                <div class="d-flex flex-row-reverse">
+                </ContentBase>
+            </div>
+            <div class="col-9" style="margin-top:3vh">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs justify-content-end" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="post-tab" data-bs-toggle="tab"
+                                    data-bs-target="#post-tab-pane" type="button" role="tab"
+                                    aria-controls="post-tab-pane" aria-selected="true">帖子</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="record-tab" data-bs-toggle="tab"
+                                    data-bs-target="#record-tab-pane" type="button" role="tab"
+                                    aria-controls="record-tab-pane" aria-selected="false">棋谱</button>
+                            </li>
+                            <li class="flex-sm-fill nav-item" style="margin-left:45vw">
+                                <div>
                                     <button type="button" class="btn btn-success"
                                         v-if="userId === $store.state.user.id">发帖</button>
                                 </div>
-                            </ul>
-                            <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="post-tab-pane" role="tabpanel"
-                                    aria-labelledby="post-tab" tabindex="0">
-                                    <UserPosts :userId="userId" />
-                                </div>
-                                <div class="tab-pane fade" id="record-tab-pane" role="tabpanel"
-                                    aria-labelledby="record-tab" tabindex="0">
-                                    ...
-                                </div>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="post-tab-pane" role="tabpanel"
+                                aria-labelledby="post-tab" tabindex="0">
+                                <UserPosts :userId="userId" :user="user"/>
+                            </div>
+                            <div class="tab-pane fade" id="record-tab-pane" role="tabpanel" aria-labelledby="record-tab"
+                                tabindex="0">
+                                ...
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </ContentBase>
+    </div>
 </template>
 
 <script>

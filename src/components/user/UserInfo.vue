@@ -33,22 +33,22 @@
         </div>
     </div>
     <div class="row" style="margin-top:20px;font-weight: 700;">
-        <span style="text-align:left">最近来访</span>
+        <span class="info" style="text-align:left">最近来访</span>
     </div>
     <div class="row">
-        <div class="col-2" v-for="guest in user.guests_front" :key="guest.guests_id">
+        <div class="col-2 info" v-for="guest in user.guests_front" :key="guest.guests_id">
             <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
                 style="cursor:pointer" />
         </div>
     </div>
     <div class="row">
-        <div class="col-2" v-for="guest in user.guests_front" :key="guest.guests_id">
+        <div class="col-2 info" v-for="guest in user.guests_front" :key="guest.guests_id">
             <span class="guests">{{ guest.guests_username }}</span>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-2" v-for="guest in user.guests_back" :key="guest.guests_id">
+        <div class="col-2 info" v-for="guest in user.guests_back" :key="guest.guests_id">
             <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
                 style="cursor:pointer" />
         </div>
@@ -117,5 +117,9 @@ export default {
     /*设置显示的最大宽度*/
     display: inline-block;
     vertical-align: top
+}
+
+.info {
+    margin-left:0.4vw;
 }
 </style>

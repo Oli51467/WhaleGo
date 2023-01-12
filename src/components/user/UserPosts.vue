@@ -4,10 +4,12 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-3 d-flex">
-                            <span id="tag">帖子</span>
+                        <div class="col-4 d-flex">
+                            <img :src="user.user_avatar" id="user_avatar"/> &nbsp;&nbsp;&nbsp;
+                            <span id="tag">{{ user.username }}</span> &nbsp;&nbsp;&nbsp;
+                            <span id="post_time"> {{ post.modifyTime }}</span>
                         </div>
-                        <div class="col-9 d-flex flex-row-reverse">
+                        <div class="col-8 d-flex flex-row-reverse">
                             <span class="title">{{ post.title }}</span>
                         </div>
                     </div>
@@ -34,6 +36,10 @@ export default {
     props: {
         userId: {
             type: String,
+            required: true,
+        },
+        user: {
+            type: Object,
             required: true,
         }
     },
@@ -84,5 +90,20 @@ export default {
 #tag {
     font-weight: 500;
     font-size: medium;
+    text-align: center;
+    margin-top: 0.2vh;
+}
+
+#user_avatar {
+    width: 2vw;
+    border-radius: 50%;
+}
+
+#post_time {
+    color:  gray;
+    font-weight: 400;
+    font-size: medium;
+    text-align: center;
+    margin-top: 0.2vh;
 }
 </style>
