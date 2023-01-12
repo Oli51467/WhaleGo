@@ -20,7 +20,7 @@
                                     data-bs-target="#record-tab-pane" type="button" role="tab"
                                     aria-controls="record-tab-pane" aria-selected="false">棋谱</button>
                             </li>
-                            <li class="flex-sm-fill nav-item" style="margin-left:45vw">
+                            <li class="flex-sm-fill nav-item" style="margin-left:35vw; float: right;">
                                 <div>
                                     <button type="button" class="btn btn-success"
                                         v-if="userId === $store.state.user.id">发帖</button>

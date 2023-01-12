@@ -2,7 +2,7 @@
     <div class="row">
         <div class="card-body" style="width: 100%;">
             <!--存储用户头像 字符串里是表达式要加:-->
-            <img :src="user.user_avatar" alt="" style="width: 75%; text-align: center;">
+            <img :src="user.user_avatar" alt="" style="width: 80%; text-align: center;">
         </div>
     </div>
     <hr />

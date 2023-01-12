@@ -1,15 +1,19 @@
 <template>
     <div class="card-body">
-        <div v-for="post in posts" :key="post.id" style="margin-top:3vh">
+        <div v-for="post in posts" :key="post.id" style="margin-top:2.5vh">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-4 d-flex">
-                            <img :src="user.user_avatar" id="user_avatar"/> &nbsp;&nbsp;&nbsp;
-                            <span id="tag">{{ user.username }}</span> &nbsp;&nbsp;&nbsp;
-                            <span id="post_time"> {{ post.modifyTime }}</span>
+                            <img :src="user.user_avatar" id="user_avatar" /> &nbsp;&nbsp;&nbsp;
+                            <span id="tag">{{ user.username }}</span> &nbsp;
+                            <span id="post_time"> 发布于&nbsp;{{ post.modifyTime }}</span>
                         </div>
                         <div class="col-8 d-flex flex-row-reverse">
+                            <button type="button" class="btn btn-outline-danger op"
+                                v-if="userId === $store.state.user.id">删除</button>
+                                <button type="button" class="btn btn-outline-primary op"
+                                v-if="userId === $store.state.user.id">修改</button>
                             <span class="title">{{ post.title }}</span>
                         </div>
                     </div>
@@ -17,7 +21,6 @@
                     <div class="card">
                         <div class="card-body content">
                             <span id="content">{{ post.content }}</span>
-                            <!-- <button v-if="is_me" type="button" class="btn btn-danger btn-sm" @click="deletePost(post.id)">删除</button> -->
                         </div>
                     </div>
                 </div>
@@ -81,6 +84,7 @@ export default {
 .title {
     font-weight: 900;
     font-size: medium;
+    margin-top: 1vh;
 }
 
 .content {
@@ -96,14 +100,19 @@ export default {
 
 #user_avatar {
     width: 2vw;
+    height: 2vw;
     border-radius: 50%;
 }
 
 #post_time {
-    color:  gray;
+    color: gray;
     font-weight: 400;
     font-size: medium;
     text-align: center;
     margin-top: 0.2vh;
+}
+
+.op {
+    margin-left: 1vw;
 }
 </style>
