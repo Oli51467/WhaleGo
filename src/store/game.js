@@ -18,7 +18,7 @@ const GoGameModule = {
         updateGoGameStatus(state, status) {
             state.status = status;
         },
-        updateGoSocket(state, socket) {
+        updateSocket(state, socket) {
             state.socket = socket;
         },
         updateCurrent(state, current) {

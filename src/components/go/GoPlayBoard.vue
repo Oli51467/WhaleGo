@@ -202,7 +202,11 @@ export default {
                     type: "warning"
                 })
                     .then(() => {
-                        click_resign();
+                        store.state.gogame.socket.send(JSON.stringify({
+                            event: "play",
+                            x: -1,
+                            y: -1,
+                        }));
                     })
                     .catch(() => {
                         console.log("111");

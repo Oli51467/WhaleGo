@@ -7,22 +7,19 @@
                 </div>
             </div>
             <div class="col-5">
-                <div class="container">
-                    <div class="card-body">
-                        <el-tabs type="border-card" :stretch=true
-                            tab-position="top" class="play-board">
-                            <el-tab-pane label="匹配对手" class="settings">
-                                <div>
-                                    <GoMatchBoard />
-                                </div>
-                            </el-tab-pane>
-                            <el-tab-pane label="挑战AI" class="settings" :disabled="$store.state.gogame.status === 'playing' ? true : false">
-                                <AISettings/>
-                            </el-tab-pane>
-                            <el-tab-pane label="自由对弈" class="settings" :disabled="$store.state.gogame.status === 'playing' ? true : false">自由</el-tab-pane>
-                        </el-tabs>
-                    </div>
-                </div>
+                <el-tabs type="border-card" :stretch=true tab-position="top" class="play-board">
+                    <el-tab-pane label="匹配对手" class="settings">
+                        <div>
+                            <GoMatchBoard />
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="挑战AI" class="settings"
+                        :disabled="$store.state.gogame.status === 'playing' ? true : false">
+                        <AISettings />
+                    </el-tab-pane>
+                    <el-tab-pane label="自由对弈" class="settings"
+                        :disabled="$store.state.gogame.status === 'playing' ? true : false">自由</el-tab-pane>
+                </el-tabs>
             </div>
         </div>
     </div>
@@ -88,6 +85,9 @@ canvas {
 }
 
 .play-board {
-    background-color: rgb(238, 237, 237);
+    background-color: rgb(230, 231, 234);
+    width: auto;
+    margin: 2vh 5vw auto -7vw;
+    box-shadow: 3px 3px 3px #b9b9b9;
 }
 </style>

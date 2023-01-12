@@ -36,7 +36,7 @@ export default {
         socket = new WebSocket(goSocketUrl);
         socket.onopen = () => {
             console.log("GoGame Socket Connnected!");
-            store.commit("updateGoSocket", socket);
+            store.commit("updateSocket", socket);
         }
         socket.onmessage = msg => {
             const data = JSON.parse(msg.data);
@@ -151,7 +151,7 @@ export default {
 
 <style>
 body {
-    background-image: url('@/assets/images/background.png');
+    background-image: url('@/assets/images/bgi.png');
     background-size: cover;
     z-index: -999;
 }
