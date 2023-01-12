@@ -1,10 +1,8 @@
 <template>
     <div class="row">
-        <div class="card">
-            <div class="card-body" style="width: 90%; margin: 0 auto;">
-                <!--存储用户头像 字符串里是表达式要加:-->
-                <img :src="user.user_avatar" alt="" style="width: 100%; text-align: center;">
-            </div>
+        <div class="card-body" style="width: 100%;">
+            <!--存储用户头像 字符串里是表达式要加:-->
+            <img :src="user.user_avatar" alt="" style="width: 75%; text-align: center;">
         </div>
     </div>
     <hr />
@@ -40,7 +38,7 @@
     <div class="row">
         <div class="col-2" v-for="guest in user.guests_front" :key="guest.guests_id">
             <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
-            style="cursor:pointer"/>
+                style="cursor:pointer" />
         </div>
     </div>
     <div class="row">
@@ -52,7 +50,7 @@
     <div class="row">
         <div class="col-2" v-for="guest in user.guests_back" :key="guest.guests_id">
             <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
-            style="cursor:pointer"/>
+                style="cursor:pointer" />
         </div>
     </div>
     <div class="row">
