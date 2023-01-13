@@ -20,7 +20,7 @@ export default {
   
 <style scoped>
 .container {
-    margin-top: 10px;
+    margin-top: 1vh;
 }
 
 .card-body {
