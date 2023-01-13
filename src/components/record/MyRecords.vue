@@ -32,8 +32,7 @@
                 <td> {{ record.record.result }}</td>
                 <td> {{ record.record.createTime }}</td>
                 <td>
-                    <button type="button" class="btn btn-primary"
-                        @click="open_record(record.record.id)">复盘</button>
+                    <button type="button" class="btn btn-primary" @click="open_record(record.record.id)">复盘</button>
                 </td>
             </tr>
         </tbody>
@@ -60,11 +59,12 @@ import { useStore } from "vuex";
 import { ref } from "vue";
 import $ from 'jquery'
 import { API_URL } from "@/assets/apis/api";
-import router from '@/router';
+import { useRouter } from 'vue-router';
 
 export default {
     setup() {
         const store = useStore();
+        const route = useRouter();
         let records = ref([]);
         let pages = ref([]);
         let current_page = 0;
@@ -127,12 +127,13 @@ export default {
                         record_result: record.record.result,
                         record_time: record.record.createTime,
                     });
-                    router.push({
-                        name: "record_review",
+                    let routeData = route.resolve({
+                        name: 'record_review',
                         params: {
                             recordId
                         }
                     })
+                    window.open(routeData.href, '_blank');
                     break;
                 }
             }

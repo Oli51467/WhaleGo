@@ -24,7 +24,7 @@
                                 <UserPosts :userId="userId" :user="user" />
                             </div>
                             <div class="tab-pane fade" id="record-tab-pane" role="tabpanel" tabindex="0">
-                                ...
+                                <MyRecords/>
                             </div>
                         </div>
                     </div>
@@ -38,6 +38,7 @@
 import ContentBase from '@/components/base/ContentBase.vue';
 import UserInfo from '@/components/user/UserInfo.vue';
 import UserPosts from '@/components/user/UserPosts.vue'
+import MyRecords from '@/components/record/MyRecords.vue';
 import $ from 'jquery';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
@@ -51,6 +52,7 @@ export default {
         ContentBase,
         UserInfo,
         UserPosts,
+        MyRecords,
     },
 
     setup() {
