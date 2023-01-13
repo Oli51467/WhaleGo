@@ -1,37 +1,10 @@
 <template>
     <div class="card-body">
         <div style="height:fit-content" class="d-flex flex-row-reverse">
-            <button type="button" class="btn btn-sm btn-outline-success op" data-bs-toggle="modal" data-bs-target="#postapost"
-                v-if="userId === $store.state.user.id">发帖</button>
+            <button type="button" class="btn btn-sm btn-outline-success op" data-bs-toggle="modal"
+                data-bs-target="#postapost" v-if="is_me">发帖</button>
         </div>
 
-        <div class="modal fade" id="postapost" tabindex="-1">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="post_title">发布帖子</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="post_title" class="form-label">请填写标题</label>
-                            <input v-model="post.title" type="text" class="form-control" id="post_title"
-                                placeholder="请填写标题">
-                        </div>
-                        <div class="mb-3">
-                            <label for="post_content" class="form-label">这次要分享什么呢？</label>
-                            <textarea v-model="post.content" class="form-control" id="post_content" rows="15"
-                                placeholder="请填写内容"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="error_message">{{ post.error_message }}</div>
-                        <button type="button" class="btn btn-primary" @click="post_a_post">发布</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div v-for="post in posts" :key="post.id" style="margin-top:3vh">
             <div class="card">
                 <div class="card-body">
@@ -42,12 +15,61 @@
                             <span id="post_time"> 发布于&nbsp;{{ post.modifyTime }}</span>
                         </div>
                         <div class="col-8 d-flex flex-row-reverse">
-                            <button type="button" class="btn btn-outline-danger op"
-                                v-if="userId === $store.state.user.id">删除</button>
-                            <button type="button" class="btn btn-outline-primary op"
-                                v-if="userId === $store.state.user.id">修改</button>
+                            <button type="button" class="btn btn-outline-danger op" v-if="is_me" data-bs-toggle="modal"
+                                :data-bs-target="'#remove_post_modal_' + post.id">删除</button>
+                            <button type="button" class="btn btn-outline-primary op" v-if="is_me" data-bs-toggle="modal"
+                                :data-bs-target="'#update_post_modal_' + post.id">修改</button>
                             <span class="title">{{ post.title }}</span>
                         </div>
+                        <!--删除帖子的提示模态框-->
+                        <div class="modal fade" :id="'remove_post_modal_' + post.id" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <img src="@/assets/images/fire.png"
+                                            style="width:4vh; height: 4vh; margin: 0 auto;" />
+                                    </div>
+                                    <div class="modal-body" style="margin: 0 auto">
+                                        <span style="text-align:center; color:red">你确定删除吗</span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger"
+                                            @click="click_remove_a_post(post.id)">删除</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">取消</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--修改帖子模态框-->
+                        <div class="modal fade" :id="'update_post_modal_' + post.id" tabindex="-1">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="post_title">编辑帖子</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="post_title" class="form-label">请填写标题</label>
+                                            <input v-model="post.title" type="text" class="form-control" id="post_title"
+                                                placeholder="请填写标题">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="post_content" class="form-label">写点什么</label>
+                                            <textarea v-model="post.content" class="form-control" id="post_content"
+                                                rows="15" placeholder="请填写内容"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="error_message">{{ post.error_message }}</div>
+                                        <button type="button" class="btn btn-primary" @click="update_a_post(post)">保存修改</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal" @click="pull_all_posts">取消</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <hr />
                     <div class="card">
@@ -55,6 +77,34 @@
                             <span id="content">{{ post.content }}</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--发帖模态框-->
+    <div class="modal fade" id="postapost" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="post_title">发布帖子</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="post_title" class="form-label">请填写标题</label>
+                        <input v-model="add_post.title" type="text" class="form-control" id="post_title"
+                            placeholder="请填写标题">
+                    </div>
+                    <div class="mb-3">
+                        <label for="post_content" class="form-label">写点什么</label>
+                        <textarea v-model="add_post.content" class="form-control" id="post_content" rows="15"
+                            placeholder="请填写内容"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="error_message">{{ add_post.error_message }}</div>
+                    <button type="button" class="btn btn-primary" @click="post_a_post">发布</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                 </div>
             </div>
         </div>
@@ -67,7 +117,7 @@ import $ from 'jquery';
 import { useStore } from 'vuex';
 import { API_URL } from '@/assets/apis/api';
 import { Modal } from 'bootstrap/dist/js/bootstrap';
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 
 export default {
     props: {
@@ -83,8 +133,9 @@ export default {
 
     setup(props) {
         const store = useStore();
+        const is_me = computed(() => props.userId === store.state.user.id);
         let posts = ref([]);
-        const post = reactive({
+        const add_post = reactive({
             title: "",
             content: "",
             error_message: "",
@@ -102,6 +153,7 @@ export default {
                 },
                 success(resp) {
                     posts.value = resp;
+                    posts.value.reverse();
                     console.log(posts.value);
                 },
                 error(resp) {
@@ -113,11 +165,64 @@ export default {
         pull_all_posts();
 
         const post_a_post = () => {
-            post.error_message = "";
+            add_post.error_message = "";
             $.ajax({
                 url: `${API_URL}/post/add/`,
                 type: "post",
                 data: {
+                    title: add_post.title,
+                    content: add_post.content,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    if (resp.msg === 'success') {
+                        add_post.title = "";
+                        add_post.content = "";
+                        Modal.getInstance("#postapost").hide();
+                        pull_all_posts();
+                    } else {
+                        add_post.error_message = resp.msg;
+                    }
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+        const click_remove_a_post = (post_id) => {
+            $.ajax({
+                url: `${API_URL}/post/remove/`,
+                type: "post",
+                data: {
+                    post_id: post_id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    if (resp.msg === 'success') {
+                        Modal.getInstance("#remove_post_modal_" + post_id).hide();
+                        pull_all_posts();
+                    } else {
+                        console.log(resp);
+                    }
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+        const update_a_post = (post) => {
+            add_post.error_message = "";
+            $.ajax({
+                url: `${API_URL}/post/update/`,
+                type: "post",
+                data: {
+                    post_id: post.id,
                     title: post.title,
                     content: post.content,
                 },
@@ -126,9 +231,7 @@ export default {
                 },
                 success(resp) {
                     if (resp.msg === 'success') {
-                        post.title = "";
-                        post.content = "";
-                        Modal.getInstance("#postapost").hide();
+                        Modal.getInstance("#update_post_modal_" + post.id).hide();
                         pull_all_posts();
                     } else {
                         post.error_message = resp.msg;
@@ -142,9 +245,12 @@ export default {
 
         return {
             posts,
-            post,
+            add_post,
+            is_me,
             pull_all_posts,
             post_a_post,
+            click_remove_a_post,
+            update_a_post,
         }
     },
 
