@@ -9,12 +9,12 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-4 d-flex">
+                        <div class="col-6 d-flex">
                             <img :src="user.user_avatar" id="user_avatar" /> &nbsp;&nbsp;&nbsp;
-                            <span id="tag">{{ user.username }}</span> &nbsp;
+                            <span id="tag">{{ user.username }}</span> &nbsp;&nbsp;&nbsp;
                             <span id="post_time"> 发布于&nbsp;{{ post.modifyTime }}</span>
                         </div>
-                        <div class="col-8 d-flex flex-row-reverse">
+                        <div class="col-6 d-flex flex-row-reverse">
                             <button type="button" class="btn btn-outline-danger op" v-if="is_me" data-bs-toggle="modal"
                                 :data-bs-target="'#remove_post_modal_' + post.id">删除</button>
                             <button type="button" class="btn btn-outline-primary op" v-if="is_me" data-bs-toggle="modal"
@@ -62,9 +62,10 @@
                                     </div>
                                     <div class="modal-footer">
                                         <div class="error_message">{{ post.error_message }}</div>
-                                        <button type="button" class="btn btn-primary" @click="update_a_post(post)">保存修改</button>
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal" @click="pull_all_posts">取消</button>
+                                        <button type="button" class="btn btn-primary"
+                                            @click="update_a_post(post)">保存修改</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                            @click="pull_all_posts">取消</button>
                                     </div>
                                 </div>
                             </div>

@@ -137,7 +137,7 @@ export default {
         let friends = ref([]);
 
         $.ajax({
-            url: `${API_URL}/user/getFollowed/`,
+            url: `${API_URL}/friend/getFollowed/`,
             type: "get",
             headers: {
                 Authorization: "Bearer " + store.state.user.token,
@@ -154,7 +154,7 @@ export default {
         })
 
         $.ajax({
-            url: `${API_URL}/user/getFriends/`,
+            url: `${API_URL}/friend/get/`,
             type: "get",
             headers: {
                 Authorization: "Bearer " + store.state.user.token,
@@ -169,7 +169,7 @@ export default {
 
         const unfollow = (user) => {
             $.ajax({
-                url: `${API_URL}/user/unfollow/`,
+                url: `${API_URL}/friend/unfollow/`,
                 type: "post",
                 data: {
                     username: user.username,
@@ -188,7 +188,7 @@ export default {
 
         const follow = (user) => {
             $.ajax({
-                url: `${API_URL}/user/follow/`,
+                url: `${API_URL}/friend/follow/`,
                 type: "post",
                 data: {
                     username: user.username,

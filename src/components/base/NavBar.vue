@@ -41,13 +41,15 @@
                 <!--若用户已登录则展示用户信息菜单-->
                 <ul class="navbar-nav" v-if="$store.state.user.is_login">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             {{ $store.state.user.username }}
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <router-link class="dropdown-item" :to="{ name: 'user_index', params:{userId:$store.state.user.id }}">个人中心</router-link>
+                                <router-link class="dropdown-item" :to="{ name: 'user_index', params:{userId:$store.state.user.id }}">我的空间</router-link>
+                            </li>
+                            <li>
+                                <router-link class="dropdown-item" :to="{ name: 'update_info', params:{userId:$store.state.user.id }}">个人信息</router-link>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -171,7 +173,7 @@ export default {
 
         const follow = () => {
             $.ajax({
-                url: `${API_URL}/user/follow/`,
+                url: `${API_URL}/friend/follow/`,
                 type: "post",
                 data: {
                     username: user_search.value,
@@ -194,7 +196,7 @@ export default {
 
         const unfollow = () => {
             $.ajax({
-                url: `${API_URL}/user/unfollow/`,
+                url: `${API_URL}/friend/unfollow/`,
                 type: "post",
                 data: {
                     username: user_search.value,

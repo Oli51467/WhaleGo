@@ -9,6 +9,7 @@ import UserIndexView from '../views/user/index/UserIndexView'
 import NotFoundView from '../views/error/NotFoundView'
 import LoginView from '../views/user/account/LoginView'
 import RegisterView from '../views/user/account/RegisterView'
+import UpdateUserInfoView from '../views/user/index/UpdateUserInfoView'
 import GoPlayView from '../views/play/GoPlayView'
 import store from '../store/index'
 
@@ -99,6 +100,14 @@ const routes = [
         component: RegisterView,
         meta: {
             requestAuth: false,
+        }
+    },
+    {
+        path: '/user/update/:userId',
+        name: 'update_info',
+        component: UpdateUserInfoView,
+        meta: {
+            requestAuth: true,
         }
     },
     {

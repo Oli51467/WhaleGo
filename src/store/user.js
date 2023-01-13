@@ -22,6 +22,9 @@ const UserModule = {
         updateToken(state, token) {
             state.token = token;
         },
+        updateUsername(state, username) {
+            state.username = username;
+        },
         logout(state) {
             state.id = "";
             state.username = "";
@@ -82,7 +85,34 @@ const UserModule = {
 
         logout(context) {
             context.commit("logout");
+        },
+
+        update_password(context, data) {
+            $.ajax({
+                type: "POST",
+                url: `${API_URL}/user/updatePassword/`,
+                data: {
+                    oldPassword: data.old_password,
+                    newPassword: data.new_password,
+                    confirmPassword: data.confirm_password,
+                },
+                headers: {
+                    authorization: "Bearer " + context.state.token,
+                },
+                success(resp) {
+                    if (resp.msg === "success") {
+                        context.commit("updateToken", resp.token);
+                        data.success(resp);
+                    } else {
+                        data.error(resp);
+                    }
+                },
+                error(resp) {
+                    data.error(resp);
+                },
+            });
         }
+
     },
     modules: {
     }
