@@ -7,6 +7,7 @@ const UserModule = {
         username: "",
         avatar: "",
         token: "",
+        profile: "",
         is_login: false,
     },
     getters: {
@@ -22,8 +23,9 @@ const UserModule = {
         updateToken(state, token) {
             state.token = token;
         },
-        updateUsername(state, username) {
-            state.username = username;
+        updateUser(state, user) {
+            state.username = user.username;
+            state.profile = user.profile;
         },
         logout(state) {
             state.id = "";

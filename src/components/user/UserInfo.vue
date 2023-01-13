@@ -9,6 +9,9 @@
     <div class="row">
         <span id="username"> {{ user.username }}</span>
     </div>
+    <div class="row">
+        <span id="profile"> {{ user.profile }}</span>
+    </div>
     <hr />
     <div class="row">
         <div class="col-4 count-info">
@@ -94,6 +97,13 @@ export default {
 #username {
     font-size: larger;
     font-weight: 700;
+    text-align: center;
+}
+
+#profile {
+    font-size: medium;
+    font-weight: 400;
+    color: gray;
     text-align: center;
 }
 

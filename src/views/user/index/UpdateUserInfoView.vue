@@ -27,20 +27,19 @@
                             <label for="username" class="col-sm-2 col-form-label user-info"
                                 style="float: right;">用户名：</label>
                             <div class="col-sm-10">
-                                <input v-model="username" type="text" class="form-control" id="username" maxlength="30">
+                                <input v-model="username" type="text" class="form-control" id="username" maxlength="15">
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="description" class="col-sm-2 col-form-label user-info">个人简介</label>
+                            <label for="profile" class="col-sm-2 col-form-label user-info">个人简介</label>
                             <div class="col-sm-10">
-                                <textarea v-model="description" class="form-control" id="description"
-                                    rows="4"></textarea>
+                                <input v-model="profile" type="text" class="form-control" id="profile" rows="1" maxlength="30"/>
                             </div>
                         </div>
 
                         <div class="d-grid gap-2 col-2 mx-auto">
-                            <button @click="update_user"
-                                type="button" class="btn btn-primary">更新信息</button>
+                            <button @click="update_user" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#updateInfo">更新信息</button>
                         </div>
                         <div class="modal fade" id="updateInfo" tabindex="-1">
                             <div class="modal-dialog modal-sm">
@@ -55,7 +54,6 @@
                                         <span class="error_message">{{ error_message }}</span>
                                     </div>
                                     <div class="modal-footer mx-auto">
-
                                         <button type="button"
                                             :class="isSuccess ? 'btn btn-success btn-sm' : 'btn btn-danger btn-sm'"
                                             style="width: 60px;" data-bs-dismiss="modal">确认</button>
@@ -117,8 +115,8 @@
                                         </div>
                                         <div class="modal-footer">
                                             <span class="error_message">{{ error_message }}</span>
-                                            <button @click="update_password" type="button" data-bs-toggle="modal" data-bs-target="#updateInfo"
-                                                class="btn btn-primary">确认</button>
+                                            <button @click="update_password" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#updateInfo" class="btn btn-primary">确认</button>
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">取消</button>
                                         </div>
@@ -148,7 +146,7 @@ export default {
     },
     setup() {
         const store = useStore();
-        let description = ref("");
+        let profile = ref("");
         let username = ref("");
         let error_message = ref("");
         let updatePassword = reactive({
@@ -166,7 +164,7 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
-                    //description.value = resp.description;
+                    profile.value = resp.profile;
                     username.value = resp.username;
                 }
             });
@@ -176,24 +174,26 @@ export default {
             error_message.value = "";
             $.ajax({
                 type: "POST",
-                url: `${API_URL}/user/updateUsername/`,
+                url: `${API_URL}/user/updateInfo/`,
                 headers: {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 data: {
                     username: username.value,
-                    // description: description.value
+                    profile: profile.value
                 },
                 success(resp) {
+                    console.log(resp.msg);
                     if (resp.msg === "success") {
                         isSuccess.value = true;
-                        store.commit("updateUsername", username.value);
-                        username.value = "";
-                        // store.state.user.description = description.value;
+                        store.commit("updateUser", {
+                            username: username.value,
+                            profile: profile.value,
+                        });
                     } else {
                         isSuccess.value = false;
                         username.value = store.state.user.username;
-                        // description.value = store.state.user.description;
+                        profile.value = store.state.user.profile;
                         error_message.value = resp.msg;
                     }
                 }
@@ -225,7 +225,7 @@ export default {
         user_info();
 
         return {
-            description,
+            profile,
             username,
             updatePassword,
             error_message,
