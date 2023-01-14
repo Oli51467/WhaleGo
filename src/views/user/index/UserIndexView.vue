@@ -3,28 +3,35 @@
         <div class="row">
             <div class="col-3" style="margin-top:1vh">
                 <ContentBase>
-                    <UserInfo :user="user" />
+                    <UserInfo :guests="guests" :userId="userId"/>
                 </ContentBase>
             </div>
             <div class="col-9" style="margin-top:2vh">
                 <div class="card">
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="post-tab" data-bs-toggle="tab"
+                            <li class="nav-item tab-index" role="presentation">
+                                <button class="nav-link active tab-btn" id="post-tab" data-bs-toggle="tab"
                                     data-bs-target="#post-tab-pane" type="button" role="tab">帖子</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="record-tab" data-bs-toggle="tab"
+                            <li class="nav-item tab-index" role="presentation">
+                                <button class="nav-link tab-btn" id="record-tab" data-bs-toggle="tab"
                                     data-bs-target="#record-tab-pane" type="button" role="tab">棋谱</button>
+                            </li>
+                            <li class="nav-item tab-index" role="presentation">
+                                <button class="nav-link tab-btn" id="data-tab" data-bs-toggle="tab"
+                                    data-bs-target="#data-tab-pane" type="button" role="tab">数据</button>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="post-tab-pane" role="tabpanel" tabindex="0">
-                                <UserPosts :userId="userId" :user="user" />
+                                <UserPosts :userId="userId" :guests="guests" />
                             </div>
                             <div class="tab-pane fade" id="record-tab-pane" role="tabpanel" tabindex="0">
                                 <MyRecords/>
+                            </div>
+                            <div class="tab-pane fade" id="data-tab-pane" role="tabpanel" tabindex="0">
+                                data
                             </div>
                         </div>
                     </div>
@@ -59,7 +66,7 @@ export default {
         const store = useStore();
         const route = useRouter();
         const userId = route.currentRoute.value.params.userId;
-        let user = ref([]);
+        let guests = ref([]);
         const pull_user_info = () => {
             $.ajax({
                 url: `${API_URL}/user/getFollowedAndFollowersCount/`,
@@ -71,7 +78,7 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
-                    user.value = resp;
+                    guests.value = resp;
                 },
                 error(resp) {
                     console.log(resp);
@@ -81,7 +88,7 @@ export default {
         pull_user_info();
 
         return {
-            user,
+            guests,
             userId,
         }
     }
@@ -89,4 +96,15 @@ export default {
 </script>
 
 <style scoped>
+.tab-index:hover {
+    background-color: rgb(198, 194, 194, 0.3);
+}
+
+.tab-index {
+    border-radius: 6%;
+}
+
+.tab-btn {
+    color: rgb(109, 109, 238);
+}
 </style>

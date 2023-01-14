@@ -2,16 +2,16 @@
     <div class="card-body">
         <div style="height:fit-content" class="d-flex flex-row-reverse">
             <button type="button" class="btn btn-sm btn-outline-success op" data-bs-toggle="modal"
-                data-bs-target="#postapost" v-if="is_me">发帖</button>
+                data-bs-target="#postapost" v-if="is_me" style="margin-top:-6.5vh; height: max-content;">发帖</button>
         </div>
 
-        <div v-for="post in posts" :key="post.id" style="margin-top:3vh">
-            <div class="card">
+        <div v-for="post in posts" :key="post.id" style="margin-top:3vh" :id="'post_id_' + post.id">
+            <div class="card post-card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-6 d-flex">
-                            <img :src="user.user_avatar" id="user_avatar" /> &nbsp;&nbsp;&nbsp;
-                            <span id="tag">{{ user.username }}</span> &nbsp;&nbsp;&nbsp;
+                            <img :src="guests.user_avatar" id="user_avatar" /> &nbsp;&nbsp;&nbsp;
+                            <span id="tag">{{ guests.username }}</span> &nbsp;&nbsp;&nbsp;
                             <span id="post_time"> 发布于&nbsp;{{ post.modifyTime }}</span>
                         </div>
                         <div class="col-6 d-flex flex-row-reverse">
@@ -126,7 +126,7 @@ export default {
             type: String,
             required: true,
         },
-        user: {
+        guests: {
             type: Object,
             required: true,
         }
@@ -293,6 +293,10 @@ export default {
 .op {
     margin-left: 1vw;
     box-shadow: 2px 2px 2px #b9b9b9;
+}
+
+.post-card {
+    box-shadow: 1px 1px 1px #b9b9b9;
 }
 
 div.error_message {

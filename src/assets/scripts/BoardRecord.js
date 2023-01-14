@@ -161,9 +161,9 @@ export class BoardRecord extends GameObject {
             gradient.addColorStop(1, "#4d4d4d");
             this.ctx.fillStyle = gradient;
         } else if (color == 2) {
-            let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
-            gradient.addColorStop(0, "#e6e6e6");
-            gradient.addColorStop(1, "#ffffff");
+            let gradient = this.ctx.createRadialGradient(center_x, center_y, r, center_x, center_y, 0);
+            gradient.addColorStop(0.05, "#4d4d4d");
+            gradient.addColorStop(0.1, "#ffffff");
             this.ctx.fillStyle = gradient;
         }
         this.ctx.beginPath();

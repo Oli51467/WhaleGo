@@ -10,7 +10,7 @@
                 <div class="container">
                     <div class="card-body">
                         <el-tabs type="border-card" :stretch=true tab-position="top" class="play-board">
-                            <el-tab-pane label="开始复盘" class="settings">
+                            <el-tab-pane label="复盘" class="settings">
 
                                 <div class="row">
                                     <div class="col-11">

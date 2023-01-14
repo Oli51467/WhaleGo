@@ -2,15 +2,15 @@
     <div class="row">
         <div class="card-body" style="width: 100%;">
             <!--存储用户头像 字符串里是表达式要加:-->
-            <img :src="user.user_avatar" alt="" style="width: 80%; text-align: center;">
+            <img :src="guests.user_avatar" alt="" style="width: 80%; text-align: center;">
         </div>
     </div>
     <hr />
     <div class="row">
-        <span id="username"> {{ user.username }}</span>
+        <span id="username"> {{ guests.username }}</span>
     </div>
     <div class="row">
-        <span id="profile"> {{ user.profile }}</span>
+        <span id="profile"> {{ guests.profile }}</span>
     </div>
     <hr />
     <div class="row">
@@ -26,38 +26,60 @@
     </div>
     <div class="row">
         <div class="col-4">
-            {{ user.followed_count }}
+            {{ guests.followed_count }}
         </div>
         <div class="col-4">
-            {{ user.followers_count }}
+            {{ guests.followers_count }}
         </div>
         <div class="col-4">
-            {{ user.guests_count }}
+            {{ guests.guests_count }}
+        </div>
+    </div>
+    <div class="row follow-op" v-if="!is_me">
+        <div class="col-6 d-flex flex-row-reverse">
+            <el-button type="success" size="" style="display:inline-block;text-align: center;"
+                v-if="guests.id != $store.state.user.id && relation === 'stranger' || relation === 'follower'"
+                @click="follow">
+                关注
+            </el-button>
+            <el-button type="info" size="" style="display:inline-block;text-align: center;"
+                v-else-if="guests.id != $store.state.user.id && relation === 'followed'"
+                @click="unfollow">
+                已关注
+            </el-button>
+            <el-button type="info" size="" style="display:inline-block;text-align: center;"
+                v-else-if="guests.id != $store.state.user.id && relation === 'friend'"
+                @click="unfollow">
+                互相关注
+            </el-button>
+        </div>
+        <div class="col-6 d-flex">
+            <el-button type="info" size="" style="display:inline-block;text-align: center;">发消息</el-button>
         </div>
     </div>
     <div class="row" style="margin-top:20px;font-weight: 700;">
         <span class="info" style="text-align:left">最近来访</span>
     </div>
     <div class="row">
-        <div class="col-2 info" v-for="guest in user.guests_front" :key="guest.guests_id">
+        <div class="col-2 info" v-for="guest in guests.guests_front" :key="guest.guests_id">
             <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
                 style="cursor:pointer" />
         </div>
     </div>
     <div class="row">
-        <div class="col-2 info" v-for="guest in user.guests_front" :key="guest.guests_id">
+        <div class="col-2 info" v-for="guest in guests.guests_front" :key="guest.guests_id">
             <span class="guests">{{ guest.guests_username }}</span>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-2 info" v-for="guest in user.guests_back" :key="guest.guests_id">
+        <div class="col-2 info" v-for="guest in guests.guests_back" :key="guest.guests_id">
             <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
                 style="cursor:pointer" />
         </div>
     </div>
     <div class="row">
-        <div class="col-2" v-for="guest in user.guests_back" :key="guest.guests_id">
+        <div class="col-2" v-for="guest in guests.guests_back" :key="guest.guests_id">
             <span class="guests">{{ guest.guests_username }}</span>
         </div>
     </div>
@@ -66,16 +88,30 @@
 
 <script>
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+import { ref } from 'vue';
+import { API_URL } from '@/assets/apis/api';
+import $ from 'jquery';
+
 export default {
     props: {
-        user: {
+        guests: {
             type: Object,
+            required: true,
+        },
+        userId: {
+            type: String,
             required: true,
         }
     },
 
-    setup() {
+    setup(props) {
         const route = useRouter();
+        const store = useStore();
+        const is_me = computed(() => props.userId === store.state.user.id);
+        let relation = ref();
+
         const click_profile = (user_id) => {
             let routeData = route.resolve({
                 name: 'user_index',
@@ -86,8 +122,80 @@ export default {
             window.open(routeData.href, '_blank');
         }
 
+        const get_relation = () => {
+            $.ajax({
+                url: `${API_URL}/friend/getRelationship/`,
+                type: "get",
+                data: {
+                    search_id: props.userId,
+                    user_id: store.state.user.id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    relation.value = resp.relation;
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+        get_relation();
+
+        const follow = () => {
+            $.ajax({
+                url: `${API_URL}/friend/follow/`,
+                type: "post",
+                data: {
+                    username: props.guests.username,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success() {
+                    if (relation.value === 'stranger') {
+                        relation.value = 'followed';
+                    } else if (relation.value === 'follower') {
+                        relation.value = 'friend';
+                    }
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+        const unfollow = () => {
+            $.ajax({
+                url: `${API_URL}/friend/unfollow/`,
+                type: "post",
+                data: {
+                    username: props.guests.username,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success() {
+                    if (relation.value === 'friend') {
+                        relation.value = 'follower';
+                    } else if (relation.value === 'followed') {
+                        relation.value = 'stranger';
+                    }
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+
         return {
+            is_me,
             click_profile,
+            follow,
+            unfollow,
+            relation,
         }
     }
 }
@@ -130,6 +238,13 @@ export default {
 }
 
 .info {
-    margin-left:0.4vw;
+    margin-left: 0.4vw;
+}
+
+.follow-op {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 2vh;
 }
 </style>

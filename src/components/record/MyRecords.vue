@@ -32,7 +32,7 @@
                 <td> {{ record.record.result }}</td>
                 <td> {{ record.record.createTime }}</td>
                 <td>
-                    <button type="button" class="btn btn-primary" @click="open_record(record.record.id)">复盘</button>
+                    <button type="button op" class="btn btn-outline-primary op" @click="open_record(record.record.id)">复盘</button>
                 </td>
             </tr>
         </tbody>
@@ -156,5 +156,9 @@ img.record-user-avatar {
     width: 4vh;
     border-radius: 50%;
     margin: 0 auto;
+}
+
+.op {
+    box-shadow: 2px 2px 2px #b9b9b9;
 }
 </style>
