@@ -71,6 +71,12 @@ export default {
                     center: true,
                 })
             } else if (data.event === 'play') {
+                if (data.last_x != -1 && data.last_y != -1){
+                    store.commit("updateLastStep", {
+                    last_x: data.last_x,
+                    last_y: data.last_y,
+                    })
+                }
                 if (data.valid === 'yes') {
                     store.commit("updateBoard", data.board);
                 }

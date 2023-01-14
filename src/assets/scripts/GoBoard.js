@@ -162,6 +162,16 @@ export class GoBoard extends GameObject {
         this.ctx.fill();
     }
 
+    draw_red_point(x, y) {
+        const center_x = x * this.cell_len;
+        const center_y = y * this.cell_len;
+        const r = this.cell_len / 2 * 0.9;
+        this.ctx.fillStyle = "red";
+        this.ctx.beginPath();
+        this.ctx.arc(center_x, center_y, r / 3, 0, Math.PI * 2);
+        this.ctx.fill();
+    }
+
     on_destory() {
         this.clear_board();
     }
@@ -179,10 +189,13 @@ export class GoBoard extends GameObject {
 
     render() {
         const g = this.store.state.gogame.board;
+        const last_x = this.store.state.gogame.last_x;
+        const last_y = this.store.state.gogame.last_y;
         if (g === null) return;
         for (let r = 1; r <= this.rows; r++) {
             for (let c = 1; c <= this.cols; c++) {
                 this.draw_stones(c, r, g[r][c]);
+                if (last_x != -1 && last_y != -1) this.draw_red_point(last_y, last_x);
                 if (this.virtual_x != -1 && this.virtual_y != -1) this.draw_virtual_stone(this.virtual_x, this.virtual_y);
             }
         }

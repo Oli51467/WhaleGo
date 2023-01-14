@@ -171,6 +171,16 @@ export class BoardRecord extends GameObject {
         this.ctx.fill();
     }
 
+    draw_red_point(x, y) {
+        const center_x = x * this.cell_len;
+        const center_y = y * this.cell_len;
+        const r = this.cell_len / 2 * 0.9;
+        this.ctx.fillStyle = "red";
+        this.ctx.beginPath();
+        this.ctx.arc(center_x, center_y, r / 3, 0, Math.PI * 2);
+        this.ctx.fill();
+    }
+
     on_destory() {
         //this.clear_board();
     }
@@ -187,7 +197,8 @@ export class BoardRecord extends GameObject {
         for (let r = 1; r <= this.rows; r++) {
             for (let c = 1; c <= this.cols; c++) {
                 this.draw_stones(c, r, this.g[this.cur][r][c]);
-                //if (this.virtual_x != -1 && this.virtual_y != -1) this.draw_virtual_stone(this.virtual_x, this.virtual_y);
+                if (this.cur == 0) break;
+                this.draw_red_point(this.steps[this.cur - 1].split(',')[1], this.steps[this.cur - 1].split(',')[0]);
             }
         }
     }
