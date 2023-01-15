@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import NavBar from './components/base/NavBar.vue';
 import router from './router';
-import { request_play } from '@/views/friend/FriendIndexView.vue'
+import { request_play } from '@/components/friend/MyFriendPage.vue'
 import { request_draw_eb } from './components/go/GoPlayBoard.vue';
 import { go_resign } from './components/go/GoPlayBoard.vue';
 import { ElMessageBox } from 'element-plus';
@@ -63,6 +63,10 @@ export default {
                 store.commit("updateCurrent", 0);
                 store.commit("updateRoomId", null);
                 store.commit("updateGoGameStatus", "waiting");
+                store.commit("updateLastStep", {
+                    last_x: -1,
+                    last_y: -1,
+                })
                 go_resign.close();
                 request_draw_eb.close();
                 ElMessageBox.alert(data.loser, {
@@ -71,10 +75,10 @@ export default {
                     center: true,
                 })
             } else if (data.event === 'play') {
-                if (data.last_x != -1 && data.last_y != -1){
+                if (data.last_x != -1 && data.last_y != -1) {
                     store.commit("updateLastStep", {
-                    last_x: data.last_x,
-                    last_y: data.last_y,
+                        last_x: data.last_x,
+                        last_y: data.last_y,
                     })
                 }
                 if (data.valid === 'yes') {
@@ -142,6 +146,10 @@ export default {
                 })
             } else if (data.event === 'ready') {            // 另一名玩家接受了邀请 准备开始
                 request_play.close();
+                store.commit("updateLastStep", {
+                    last_x: -1,
+                    last_y: -1,
+                })
             }
         }
         socket.onclose = () => {
@@ -149,7 +157,7 @@ export default {
             store.commit("updateGoGameStatus", "waiting");
             store.commit("updateWhich", 0);
             store.commit("updateCurrent", 0);
-            store.commit("updateSocket", socket);
+            store.commit("updateSocket", null);
         };
     },
 } 

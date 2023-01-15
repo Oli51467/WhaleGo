@@ -18,7 +18,9 @@
                         <AISettings />
                     </el-tab-pane>
                     <el-tab-pane label="自由对弈" class="settings"
-                        :disabled="$store.state.gogame.status === 'playing' ? true : false">自由</el-tab-pane>
+                        :disabled="$store.state.gogame.status === 'playing' ? true : false">
+                        <FreePlay/>
+                    </el-tab-pane>
                 </el-tabs>
             </div>
         </div>
@@ -28,6 +30,7 @@
 <script>
 import { BoardIndex } from '@/assets/scripts/BoardIndex';
 import GoMatchBoard from '@/components/go/GoMatchBoard.vue'
+import FreePlay from './FreePlay.vue';
 import AISettings from './AISettings.vue';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
@@ -37,6 +40,7 @@ export default {
     components: {
         GoMatchBoard,
         AISettings,
+        FreePlay,
     },
 
     setup() {

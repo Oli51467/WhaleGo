@@ -120,12 +120,9 @@
             </div>
         </div>
     </div>
-
-    <ChatBody v-if="chat == true" />
 </template>
     
 <script>
-import ChatBody from '../chat/ChatBody.vue';
 import { useRoute } from 'vue-router';
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
@@ -134,14 +131,13 @@ import $ from 'jquery'
 
 export default {
     components: {
-        ChatBody,
+        
     },
     setup() {
         const route = useRoute();
         const store = useStore();
         let user_search = ref('');
         let user = ref([]);
-        let chat = ref();
         let route_name = computed(() => route.name)
 
         const logout = () => {
@@ -217,20 +213,14 @@ export default {
             })
         }
 
-        const click2chat = () => {
-            chat = true;
-        }
-
         return {
             route_name,
             user_search,
             user,
-            chat,
             search_user,
             logout,
             follow,
             unfollow,
-            click2chat,
         }
     },
     name: "NavBar"
