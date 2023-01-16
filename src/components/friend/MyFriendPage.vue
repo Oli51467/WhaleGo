@@ -33,13 +33,13 @@
                     </td>
                     <td>
                         <button type="button" style="margin-top:-4px" v-if="friend.status === 'stand'"
-                            v-bind:class="friend.state == 1 ? 'btn btn-primary' : 'btn btn-secondary'"
+                            v-bind:class="friend.state == 1 ? 'btn btn-outline-primary' : 'btn btn-outline-secondary'"
                             v-bind:disabled="friend.state == 1 && $store.state.user.request_player_id == '' ? false : true"
                             @click="invite_play($store.state.user.id, friend.id)">邀请对局</button>
                         <button type="button" style="margin-top:-4px" v-else-if="friend.status === 'playing'"
-                            class="btn btn-secondary" disabled="true">对局中</button>
+                            class="btn btn-outline-secondary" disabled="true">对局中</button>
                         <button type="button" style="margin-top:-4px" v-else-if="friend.status === 'matching'"
-                            class="btn btn-secondary" disabled="true">匹配中</button>
+                            class="btn btn-outline-secondary" disabled="true">匹配中</button>
                     </td>
                 </tr>
             </tbody>

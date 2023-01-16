@@ -58,7 +58,7 @@
                     </td>
                     <td>
                         <div class="user-info">
-                            <button class="btn btn-primary" @click="watch_game(game.id)"> 观战</button>
+                            <button class="btn btn-outline-primary" @click="watch_game(game.id)"> 观战</button>
                         </div>
                     </td>
                 </tr>

@@ -44,22 +44,22 @@
         <RoomUserList :roomId="roomId" />
 
         <div class="row" v-if="$store.state.gogame.which == 0" style="margin: 0 auto">
-            <button class="btn btn-danger btn-lg leave" @click="leave_room">离开房间</button>
+            <button class="btn btn-outline-danger btn-lg leave" @click="leave_room">离开房间</button>
         </div>
 
         <div class="row" v-else>
             <div class="col-3 func">
-                <button type="button" class="btn btn-info btn-lg" disabled="true">申请数目</button>
+                <button type="button" class="btn btn-outline-info btn-lg" disabled="true">申请数目</button>
             </div>
             <div class="col-3 func">
-                <button type="button" class="btn btn-success btn-lg" :disabled="regret" 
+                <button type="button" class="btn btn-outline-secondary btn-lg" @click="request_draw">申请和棋</button>
+            </div>
+            <div class="col-3 func">
+                <button type="button" class="btn btn-outline-success btn-lg" :disabled="regret" 
                 @click="request_regret">申请悔棋</button>
             </div>
-            <div class="col-3 func">
-                <button type="button" class="btn btn-secondary btn-lg" @click="request_draw">申请和棋</button>
-            </div>
             <div class="col-2 func">
-                <button type="button" class="btn btn-danger btn-lg" @click="click_resign">认输</button>
+                <button type="button" class="btn btn-outline-danger btn-lg" @click="click_resign">认输</button>
             </div>
         </div>
     </div>

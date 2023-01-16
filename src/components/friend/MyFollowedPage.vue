@@ -24,10 +24,10 @@
                         </span>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-secondary" style="margin-top:-4px" @click="unfollow(user)"
+                        <button type="button" class="btn btn-outline-secondary" style="margin-top:-4px" @click="unfollow(user)"
                             v-if="user.follow === true">取消关注</button>
 
-                        <button type="button" class="btn btn-success" style="margin-top:-4px" @click="follow(user)"
+                        <button type="button" class="btn btn-outline-success" style="margin-top:-4px" @click="follow(user)"
                             v-else>关注</button>
                     </td>
                 </tr>
