@@ -58,12 +58,11 @@ export class BoardRecord extends GameObject {
         for (let i = 1; i <= this.steps.length; i ++ ) {
             const step = this.steps[i - 1].split(',');
             const x = step[0], y = step[1];
-            let player = this.board.getPlayer();
-            this.board.play(x, y, player);
-            this.board.nextPlayer();
-            const last_turn = this.board.gameRecord.getLastTurn();    // 上一步走棋的回合记录
-            const last_board = last_turn.boardState;                  // 上一步走的棋盘状态
-            this.g[i] = last_board;
+            this.board.play(parseInt(x), parseInt(y));
+            console.log(parseInt(x), parseInt(y));
+            // 这里一定要转化一下！！否则会直接把引用赋值
+            const t = JSON.parse(JSON.stringify(this.board.board));
+            this.g[i] = t;
         }
     }
 
@@ -182,7 +181,7 @@ export class BoardRecord extends GameObject {
     }
 
     on_destory() {
-        //this.clear_board();
+        this.board.clear();
     }
 
     update() {

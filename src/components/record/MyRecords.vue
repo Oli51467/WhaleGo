@@ -32,7 +32,8 @@
                 <td> {{ record.record.result }}</td>
                 <td> {{ record.record.createTime }}</td>
                 <td>
-                    <button type="button op" class="btn btn-outline-primary op" @click="open_record(record.record.id)">复盘</button>
+                    <button type="button op" class="btn btn-outline-primary op"
+                        @click="open_record(record.record.id)">复盘</button>
                 </td>
             </tr>
         </tbody>
@@ -127,13 +128,19 @@ export default {
                         record_result: record.record.result,
                         record_time: record.record.createTime,
                     });
-                    let routeData = route.resolve({
+                    route.push({
                         name: 'record_review',
                         params: {
                             recordId
                         }
                     })
-                    window.open(routeData.href, '_blank');
+                    // let routeData = route.resolve({
+                    //     name: 'record_review',
+                    //     params: {
+                    //         recordId
+                    //     }
+                    // })
+                    //window.open(routeData.href, '_blank');
                     break;
                 }
             }
