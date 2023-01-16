@@ -52,7 +52,8 @@
                 <button type="button" class="btn btn-info btn-lg" disabled="true">申请数目</button>
             </div>
             <div class="col-3 func">
-                <button type="button" class="btn btn-success btn-lg" disabled="true">形势判断</button>
+                <button type="button" class="btn btn-success btn-lg" :disabled="regret" 
+                @click="request_regret">申请悔棋</button>
             </div>
             <div class="col-3 func">
                 <button type="button" class="btn btn-secondary btn-lg" @click="request_draw">申请和棋</button>
@@ -70,7 +71,7 @@
 import RoomUserList from '../room/RoomUserList.vue'
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import router from '@/router';
 import $ from 'jquery';
 import { API_URL } from '@/assets/apis/api';
@@ -79,6 +80,7 @@ import { ElMessageBox } from 'element-plus';
 
 export let request_draw_eb = ElMessageBox;
 export let go_resign = ElMessageBox;
+export let request_regret_eb = ElMessageBox;
 export default {
     components: {
         RoomUserList,
@@ -96,6 +98,7 @@ export default {
         let canvas1 = ref(null);
         let users = ref([]);
         let flag = ref(null);
+        let regret = computed(() => store.state.gogame.which === store.state.gogame.current || store.state.gogame.which == 0)
 
         onMounted(() => {
             let ctx = canvas.value.getContext('2d');
@@ -171,6 +174,24 @@ export default {
             })
         }
 
+        const request_regret = () => {
+            store.state.gogame.socket.send(JSON.stringify({
+                event: "request_regret",
+                friend_id: store.state.gogame.opponent_userid,
+            }));
+            request_draw_eb.alert('等待对方回应', {
+                confirmButtonText: '取消',
+                type: 'info',
+                center: true,
+                callback: () => {
+                    store.state.gogame.socket.send(JSON.stringify({
+                        event: "request_cancel",
+                        friend_id: store.state.gogame.opponent_userid,
+                    }));
+                }
+            })
+        }
+
         const leave_room = () => {
             flag.value = false;
             $.ajax({
@@ -221,9 +242,11 @@ export default {
             request_draw,
             click_resign,
             leave_room,
+            request_regret,
             canvas,
             canvas1,
             users,
+            regret,
         }
     },
 }
