@@ -8,6 +8,12 @@
                         &nbsp;
                         <span class="user-info"> {{ user.username }}</span>
                     </td>
+                    <td v-if="user.state == 1">
+                        <span class="on">在线</span>
+                    </td>
+                    <td v-else>
+                        <span class="off">不在线</span>
+                    </td>
                     <td>
                         <span class="user-info">
                             {{ "棋力：" + user.level }}

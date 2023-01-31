@@ -6,7 +6,7 @@
                     <UserInfo :guests="guests" :userId="userId"/>
                 </ContentBase>
             </div>
-            <div class="col-9" style="margin-top:2vh">
+            <div class="col-9" style="margin-top:4vh; margin-bottom: 3vh;">
                 <div class="card">
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
