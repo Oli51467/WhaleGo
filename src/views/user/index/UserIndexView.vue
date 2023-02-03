@@ -12,7 +12,7 @@
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item tab-index" role="presentation">
                                 <button class="nav-link active tab-btn" id="post-tab" data-bs-toggle="tab"
-                                    data-bs-target="#post-tab-pane" type="button" role="tab">帖子</button>
+                                    data-bs-target="#post-tab-pane" type="button" role="tab">新鲜事</button>
                             </li>
                             <li class="nav-item tab-index" role="presentation">
                                 <button class="nav-link tab-btn" id="record-tab" data-bs-toggle="tab"

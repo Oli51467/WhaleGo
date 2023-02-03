@@ -2,7 +2,7 @@
     <div class="card-body">
         <div style="height:fit-content" class="d-flex flex-row-reverse">
             <button type="button" class="btn btn-sm btn-outline-success op" data-bs-toggle="modal"
-                data-bs-target="#postapost" v-if="is_me" style="margin-top:-6.5vh; height: max-content;">发帖</button>
+                data-bs-target="#postapost" v-if="is_me" style="margin-top:-6.5vh; height: max-content;">发新鲜事</button>
         </div>
 
         <div v-for="post in posts" :key="post.id" style="margin-top:3vh" :id="'post_id_' + post.id">
@@ -46,7 +46,7 @@
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="post_title">编辑帖子</h1>
+                                        <h1 class="modal-title fs-5" id="post_title">编辑新鲜事</h1>
                                     </div>
                                     <div class="modal-body">
                                         <div class="mb-3">
@@ -72,10 +72,20 @@
                         </div>
 
                     </div>
-                    <hr />
+                    <hr class="hr"/>
                     <div class="card">
                         <div class="card-body content">
                             <span id="content">{{ post.content }}</span>
+                        </div>
+                    </div>
+                    <hr class="hr"/>
+                    <div class="d-flex justify-content-evenly">
+                        <div class="stars">
+                            <img src="@/assets/images/gray_star.png" v-if="post.liked == 'false'"
+                            @click="star_a_post(post)">&nbsp;
+                            <img src="@/assets/images/red_star.png" v-else
+                            @click="unstar_a_post(post)">&nbsp;
+                            <span>{{ post.stars }}</span>
                         </div>
                     </div>
                 </div>
@@ -88,7 +98,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="post_title">发布帖子</h1>
+                    <h1 class="modal-title fs-5" id="post_title">发布新鲜事</h1>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -244,6 +254,49 @@ export default {
             })
         }
 
+        const star_a_post = (post) => {
+            $.ajax({
+                url: `${API_URL}/post/star/`,
+                type: "post",
+                data: {
+                    post_id: post.id,
+                    user_id: store.state.user.id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success() {
+                    post.stars ++;
+                    post.liked = 'true';
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+        const unstar_a_post = (post) => {
+            $.ajax({
+                url: `${API_URL}/post/unstar/`,
+                type: "post",
+                data: {
+                    post_id: post.id,
+                    user_id: store.state.user.id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success() {
+                    post.stars --;
+                    post.liked = 'false';
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+
         return {
             posts,
             add_post,
@@ -252,6 +305,8 @@ export default {
             post_a_post,
             click_remove_a_post,
             update_a_post,
+            star_a_post,
+            unstar_a_post,
         }
     },
 
@@ -302,5 +357,14 @@ export default {
 div.error_message {
     font-weight: 700;
     color: red;
+}
+
+.hr {
+    color: rgb(166, 163, 163, 0.5);
+}
+
+img {
+    width: 1.5vw;
+    cursor: pointer;
 }
 </style>
