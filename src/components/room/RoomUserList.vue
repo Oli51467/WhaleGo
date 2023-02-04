@@ -27,12 +27,12 @@
                         </td>
                         <td>
                             <div class="user-username">
-                                <span> {{ user.user_lose }}</span>
+                                <span> {{ user.user_win }}</span>
                             </div>
                         </td>
                         <td>
                             <div class="user-username">
-                                <span> {{ user.user_win }}</span>
+                                <span> {{ user.user_lose }}</span>
                             </div>
                         </td>
                     </tr>

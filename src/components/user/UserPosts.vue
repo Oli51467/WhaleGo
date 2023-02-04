@@ -166,7 +166,6 @@ export default {
                 success(resp) {
                     posts.value = resp;
                     posts.value.reverse();
-                    console.log(posts.value);
                 },
                 error(resp) {
                     console.log(resp);

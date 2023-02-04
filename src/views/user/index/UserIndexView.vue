@@ -31,7 +31,7 @@
                                 <MyRecords/>
                             </div>
                             <div class="tab-pane fade" id="data-tab-pane" role="tabpanel" tabindex="0">
-                                data
+                                <RecordsData :recentRecords="recent_records"/>
                             </div>
                         </div>
                     </div>
@@ -46,6 +46,7 @@ import ContentBase from '@/components/base/ContentBase.vue';
 import UserInfo from '@/components/user/UserInfo.vue';
 import UserPosts from '@/components/user/UserPosts.vue'
 import MyRecords from '@/components/record/MyRecords.vue';
+import RecordsData from '@/components/user/UserRecordsData.vue';
 import $ from 'jquery';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
@@ -60,6 +61,7 @@ export default {
         UserInfo,
         UserPosts,
         MyRecords,
+        RecordsData,
     },
 
     setup() {
@@ -67,6 +69,7 @@ export default {
         const route = useRouter();
         const userId = route.currentRoute.value.params.userId;
         let guests = ref([]);
+        let recent_records = ref("");
         const pull_user_info = () => {
             $.ajax({
                 url: `${API_URL}/user/getFollowedAndFollowersCount/`,
@@ -79,6 +82,7 @@ export default {
                 },
                 success(resp) {
                     guests.value = resp;
+                    recent_records.value = resp.recent_records;
                 },
                 error(resp) {
                     console.log(resp);
@@ -90,6 +94,7 @@ export default {
         return {
             guests,
             userId,
+            recent_records,
         }
     }
 }
