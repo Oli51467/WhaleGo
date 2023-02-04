@@ -35,7 +35,9 @@
                 </ul> -->
                 <div class="d-flex search">
                     <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search" v-model="user_search">
-                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#search" @click="search_user">Search</button>
+                    <button class="btn btn-outline-success text-nowrap" data-bs-toggle="modal" data-bs-target="#search" @click="search_user">
+                        搜索
+                    </button>
                 </div>
 
                 <!--若用户已登录则展示用户信息菜单-->

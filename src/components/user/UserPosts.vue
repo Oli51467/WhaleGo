@@ -85,7 +85,8 @@
                             @click="star_a_post(post)">&nbsp;
                             <img src="@/assets/images/red_star.png" v-else
                             @click="unstar_a_post(post)">&nbsp;
-                            <span>{{ post.stars }}</span>
+                            <span v-if="post.stars != 0">{{ post.stars }}</span>
+                            <span v-else>赞</span>
                         </div>
                     </div>
                 </div>

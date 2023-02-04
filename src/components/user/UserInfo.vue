@@ -5,6 +5,15 @@
             <img :src="guests.user_avatar" alt="" style="width: 80%; text-align: center;">
         </div>
     </div>
+    <div class="row justify-content-center d-flex">
+        <div class="level">
+            <span class="level-text">棋力:{{ guests.user_level }}</span>
+        </div>
+        &nbsp;
+        <div class="user-type">
+            <span class="type-text">普通用户</span>
+        </div>
+    </div>
     <hr />
     <div class="row">
         <span id="username"> {{ guests.username }}</span>
@@ -246,5 +255,36 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     margin-top: 2vh;
+}
+
+.level {
+    width: 6vw;
+    height: 3.5vh;
+    border-radius: 10px;
+    background-color: rgb(244, 213, 39);
+    border: 1px solid gold;
+    box-shadow: 1px 1px 3px rgb(123, 112, 49);
+    cursor: pointer;
+}
+
+.user-type {
+    width: 6vw;
+    height: 3.5vh;
+    border-radius: 10px;
+    background-color: silver;
+    box-shadow: 1px 1px 3px rgb(123, 112, 49);
+    cursor: pointer;
+}
+
+.level-text {
+    text-align: center;
+    color: rgb(131, 33, 33);
+    font-weight: 700;
+}
+
+.type-text {
+    text-align: center;
+    color: rgb(115, 19, 110);
+    font-weight: 700;
 }
 </style>

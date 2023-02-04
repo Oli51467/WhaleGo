@@ -21,6 +21,16 @@
                                     <span id="content">{{ post.content }}</span>
                                 </div>
                             </div>
+                            <hr class="hr" />
+                            <div class="d-flex justify-content-evenly">
+                                <div class="stars">
+                                    <img src="@/assets/images/gray_star.png" v-if="post.liked == 'false'"
+                                        @click="star_a_post(post)">&nbsp;
+                                    <img src="@/assets/images/red_star.png" v-else @click="unstar_a_post(post)">&nbsp;
+                                    <span v-if="post.stars != 0">{{ post.stars }}</span>
+                                    <span v-else>赞</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -64,8 +74,52 @@ export default {
         }
         pull_all_posts();
 
+        const star_a_post = (post) => {
+            $.ajax({
+                url: `${API_URL}/post/star/`,
+                type: "post",
+                data: {
+                    post_id: post.id,
+                    user_id: store.state.user.id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success() {
+                    post.stars ++;
+                    post.liked = 'true';
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+        const unstar_a_post = (post) => {
+            $.ajax({
+                url: `${API_URL}/post/unstar/`,
+                type: "post",
+                data: {
+                    post_id: post.id,
+                    user_id: store.state.user.id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success() {
+                    post.stars --;
+                    post.liked = 'false';
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
         return {
             pull_all_posts,
+            star_a_post,
+            unstar_a_post,
             posts,
         }
     }
@@ -77,6 +131,10 @@ export default {
     font-weight: 800;
     font-size: medium;
     margin-top: 1vh;
+}
+
+.hr {
+    color: rgb(166, 163, 163, 0.5);
 }
 
 .content {
@@ -104,12 +162,12 @@ export default {
     margin-top: 0.2vh;
 }
 
-.op {
-    margin-left: 1vw;
-    box-shadow: 2px 2px 2px #b9b9b9;
-}
-
 .post-card {
     box-shadow: 1px 1px 1px #b9b9b9;
+}
+
+img {
+    width: 1.5vw;
+    cursor: pointer;
 }
 </style>
