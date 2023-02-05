@@ -22,7 +22,7 @@
                                                     </div>
                                                     <div class="col-4 username">
                                                         <span>{{ $store.state.record.black_username }} &nbsp;
-                                                        {{ $store.state.record.black_level }}</span>
+                                                            {{ $store.state.record.black_level }}</span>
                                                     </div>
                                                     <div class="col-1 parent">
                                                         <canvas ref="canvas_black" tabindex="0" class="stone"></canvas>
@@ -50,28 +50,54 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="d-flex justify-content-around">
+                                        <el-button type="success" round style="width:10vw; height:5vh">开始试下</el-button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="d-flex justify-content-around">
+                                        <el-button type="danger" round style="width:10vw; height:5vh">结束试下</el-button>
                                     </div>
                                 </div>
 
-                                <div class="row" style="margin-left:15vh">
-                                    <div class="col-2">
-                                        <img src="../../assets/images/icon_fast_undo.png" class="img-fluid" alt="..."
-                                            ref="fast_undo" style="cursor:pointer">
-                                    </div>
-                                    <div class="col-2">
-                                        <img src="../../assets/images/icon_undo.png" class="img-fluid" alt="..."
-                                            ref="undo" style="cursor:pointer">
-                                    </div>
-                                    <div class="col-2">
-                                        <img src="../../assets/images/icon_proceed.png" class="img-fluid" alt="..."
-                                            ref="proceed" style="cursor:pointer">
-                                    </div>
-                                    <div class="col-2">
-                                        <img src="../../assets/images/icon_fast_proceed.png" class="img-fluid" alt="..."
-                                            ref="fast_proceed" style="cursor:pointer">
+                                <div class="row">
+                                    <div class="d-flex justify-content-evenly">
+                    
+                                        <div ref="fast_undo">
+                                            <el-button type="primary" class="op">
+                                                <img src="@/assets/images/icon_fast_undo.png" style="width:2vw"/>
+                                                &nbsp;
+                                                快退
+                                            </el-button>
+                                        </div>
+                                        <div ref="undo">
+                                            <el-button type="primary" class="op">
+                                                <img src="@/assets/images/icon_undo.png" style="width:2vw"/>
+                                                &nbsp;
+                                                后退
+                                            </el-button>
+                                        </div>
+                                        <div ref="proceed">
+                                            <el-button type="primary" class="op">
+                                                <img src="@/assets/images/icon_proceed.png" style="width:2vw"/>
+                                                &nbsp;
+                                                前进
+                                            </el-button>
+                                        </div>
+                                        <div ref="fast_proceed">
+                                            <el-button type="primary" class="op">
+                                                <img src="@/assets/images/icon_fast_proceed.png" style="width:2vw"/>
+                                                &nbsp;
+                                                快进
+                                            </el-button>
+                                        </div>
                                     </div>
                                 </div>
+
                             </el-tab-pane>
                         </el-tabs>
                     </div>
@@ -201,5 +227,9 @@ div.username {
 .parent {
     width: 20%;
     margin: 0 auto auto -100;
+}
+
+.op {
+    height: 5vh;
 }
 </style>
