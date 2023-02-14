@@ -83,7 +83,7 @@ export default {
                     clearInterval(pull_users_in_room);
                 }
             })
-        }, 2000);
+        }, 1000);
         
 
         return {

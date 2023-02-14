@@ -126,4 +126,9 @@ img.user-avatar {
     width: 4vh;
     border-radius: 50%;
 }
+
+.on {
+    color: green;
+    font-weight: 600;
+}
 </style>

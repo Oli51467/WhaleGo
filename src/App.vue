@@ -68,10 +68,6 @@ export default {
                 store.commit("updateCurrent", 0);
                 store.commit("updateRoomId", null);
                 store.commit("updateGoGameStatus", "waiting");
-                store.commit("updateLastStep", {
-                    last_x: -1,
-                    last_y: -1,
-                })
                 go_resign.close();
                 request_draw_eb.close();
                 ElMessageBox.alert(data.loser, {

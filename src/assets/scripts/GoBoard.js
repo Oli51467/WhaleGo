@@ -121,7 +121,7 @@ export class GoBoard extends GameObject {
             if (i >= 9) {
                 alp = String.fromCharCode(65 + i)
             } else alp = String.fromCharCode(64 + i); 
-            this.ctx.fillText(alp, this.cell_len * i - 3, this.ctx.canvas.height - this.cell_len + 8);
+            this.ctx.fillText(alp, this.cell_len * i, this.ctx.canvas.height - this.cell_len + 15);
         }
     }
 
