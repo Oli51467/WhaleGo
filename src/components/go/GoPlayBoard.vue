@@ -160,6 +160,7 @@ export default {
             store.state.gogame.socket.send(JSON.stringify({
                 event: "request_draw",
                 friend_id: store.state.gogame.opponent_userid,
+                which: store.state.gogame.which,
             }));
             request_draw_eb.alert('等待对方回应', {
                 confirmButtonText: '取消',
