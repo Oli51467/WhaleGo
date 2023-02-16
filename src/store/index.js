@@ -4,17 +4,17 @@ import GoGameModule from './game'
 import GameRecord from './record'
 
 export default createStore({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-    user: UserModule,
-    gogame: GoGameModule,
-    record: GameRecord,
-  }
+    state: {
+    },
+    getters: {
+    },
+    mutations: {
+    },
+    actions: {
+    },
+    modules: {
+        user: UserModule,
+        gogame: GoGameModule,
+        record: GameRecord,
+    }
 })

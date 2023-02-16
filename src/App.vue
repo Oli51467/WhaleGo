@@ -12,6 +12,7 @@ import { request_play } from '@/components/friend/MyFriendPage.vue'
 import { request_draw_eb, request_regret_eb } from './components/go/GoPlayBoard.vue';
 import { go_resign } from './components/go/GoPlayBoard.vue';
 import { ElMessageBox } from 'element-plus';
+import { WS_URL } from './assets/apis/api';
 
 export default {
     components: {
@@ -30,7 +31,7 @@ export default {
             localStorage.setItem('store', JSON.stringify(this.$store.state))
         })
         let socket = null;
-        const goSocketUrl = `ws://127.0.0.1:3000/go/websocket/${this.$store.state.user.token}/`;
+        const goSocketUrl = `${WS_URL}/${this.$store.state.user.token}/`;
         const store = this.$store;
         const play_request = ElMessageBox;
         socket = new WebSocket(goSocketUrl);
