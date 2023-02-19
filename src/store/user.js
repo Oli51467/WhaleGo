@@ -42,7 +42,7 @@ const UserModule = {
                 url: `${API_URL}/account/token/`,
                 type: "post",
                 data: {
-                    userName: userInfo.username, 
+                    username: userInfo.username, 
                     password: userInfo.password,
                 },
                 success(resp) {
