@@ -38,7 +38,7 @@
                 <!--若用户已登录则展示用户信息菜单-->
                 <ul class="navbar-nav" v-if="$store.state.user.is_login">
                     <el-badge :value="0" class="item">
-                        <el-button size="small">消息</el-button>
+                        <el-button size="small" @click="open_chat_body">消息</el-button>
                     </el-badge>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -119,13 +119,18 @@
             </div>
         </div>
     </div>
+
+    <div class="chat" ref="chat_body" v-show="show_chat">
+
+    </div>
 </template>
     
 <script>
 import { useRoute } from 'vue-router';
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { API_URL } from '@/assets/apis/api';
+import {ChatBody} from '@/assets/scripts/ChatBody';
 import $ from 'jquery'
 
 export default {
@@ -135,9 +140,15 @@ export default {
     setup() {
         const route = useRoute();
         const store = useStore();
+        let chat_body = ref(null);
         let user_search = ref('');
         let user = ref([]);
-        let route_name = computed(() => route.name)
+        let show_chat = ref(false);
+        let route_name = computed(() => route.name);
+
+        onMounted(() => {
+            new ChatBody(chat_body.value);
+        })
 
         const logout = () => {
             store.commit("updateWhich", 0);
@@ -212,14 +223,21 @@ export default {
             })
         }
 
+        const open_chat_body = () => {
+            show_chat.value = !show_chat.value;
+        }
+
         return {
             route_name,
             user_search,
             user,
+            chat_body,
+            show_chat,
             search_user,
             logout,
             follow,
             unfollow,
+            open_chat_body,
         }
     },
     name: "NavBar"
@@ -250,5 +268,17 @@ img {
 .item {
     margin-top: 8px;
     margin-right: 50px;
+}
+
+.chat {
+    width: 60vw;
+    height: 55vh;
+    background-color: whitesmoke;
+    border-radius: 15px;
+    position: absolute;
+    top:20%;
+    left:20%;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.7);
+    z-index: 999;
 }
 </style>

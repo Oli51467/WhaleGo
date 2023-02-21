@@ -91,8 +91,6 @@ export default {
 
     setup(props) {
         const store = useStore();
-        let canvas = ref(null);
-        let canvas1 = ref(null);
         let users = ref([]);
         let flag = ref(null);
         let regret = computed(() => store.state.gogame.which === store.state.gogame.current || store.state.gogame.which == 0)
@@ -232,8 +230,6 @@ export default {
             click_resign,
             leave_room,
             request_regret,
-            canvas,
-            canvas1,
             users,
             regret,
         }
