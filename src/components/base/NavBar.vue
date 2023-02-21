@@ -120,35 +120,28 @@
         </div>
     </div>
 
-    <div class="chat" ref="chat_body" v-show="show_chat">
-
-    </div>
+    <ChatBox @open_chat_body="open_chat_body" :show_chat="show_chat"></ChatBox>
 </template>
     
 <script>
 import { useRoute } from 'vue-router';
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { API_URL } from '@/assets/apis/api';
-import {ChatBody} from '@/assets/scripts/ChatBody';
-import $ from 'jquery'
+import $ from 'jquery';
+import ChatBox from '@/components/base/ChatBox.vue';
 
 export default {
     components: {
-
+        ChatBox,
     },
     setup() {
         const route = useRoute();
         const store = useStore();
-        let chat_body = ref(null);
         let user_search = ref('');
         let user = ref([]);
         let show_chat = ref(false);
         let route_name = computed(() => route.name);
-
-        onMounted(() => {
-            new ChatBody(chat_body.value);
-        })
 
         const logout = () => {
             store.commit("updateWhich", 0);
@@ -231,7 +224,6 @@ export default {
             route_name,
             user_search,
             user,
-            chat_body,
             show_chat,
             search_user,
             logout,
@@ -240,10 +232,8 @@ export default {
             open_chat_body,
         }
     },
-    name: "NavBar"
 }
 </script>
-    
     
 <style scoped>
 img {
@@ -268,17 +258,5 @@ img {
 .item {
     margin-top: 8px;
     margin-right: 50px;
-}
-
-.chat {
-    width: 60vw;
-    height: 55vh;
-    background-color: whitesmoke;
-    border-radius: 15px;
-    position: absolute;
-    top:20%;
-    left:20%;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.7);
-    z-index: 999;
 }
 </style>
