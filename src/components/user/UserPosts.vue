@@ -151,7 +151,7 @@ export default {
             title: "",
             content: "",
             error_message: "",
-        })
+        });
 
         const pull_all_posts = () => {
             $.ajax({

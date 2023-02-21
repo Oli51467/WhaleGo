@@ -34,16 +34,46 @@
         </div>
     </div>
     <el-empty description="还没有人发新鲜事" v-else>
-        <el-button type="success">去分享</el-button>
+        <el-button type="success" data-bs-toggle="modal" data-bs-target="#postapost">去分享</el-button>
     </el-empty>
+
+    <!--发帖模态框-->
+    <div class="modal fade" id="postapost" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="post_title">发布新鲜事</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="post_title" class="form-label" style="float: left;">请填写标题</label>
+                        <input v-model="add_post.title" type="text" class="form-control" id="post_title"
+                            placeholder="请填写标题">
+                    </div>
+                    <div class="mb-3">
+                        <label for="post_content" class="form-label" style="float: left;">写点什么</label>
+                        <textarea v-model="add_post.content" class="form-control" id="post_content" rows="15"
+                            placeholder="请填写内容"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="error_message">{{ add_post.error_message }}</div>
+                    <button type="button" class="btn btn-primary" @click="post_a_post">发布</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import { API_URL } from '@/assets/apis/api';
 import $ from 'jquery';
-import { useStore} from 'vuex';
-import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { computed, reactive } from 'vue';
+import { Modal } from 'bootstrap/dist/js/bootstrap';
 export default {
+    emits: ['pull_all_posts'],
     props: {
         posts: {
             type: Object,
@@ -51,9 +81,14 @@ export default {
         },
     },
 
-    setup(props) {
+    setup(props, context) {
         const store = useStore();
         const show_blank = computed(() => props.posts.length != 0);
+        const add_post = reactive({
+            title: "",
+            content: "",
+            error_message: "",
+        })
         const star_a_post = (post) => {
             $.ajax({
                 url: `${API_URL}/post/star/`,
@@ -95,10 +130,41 @@ export default {
                 }
             })
         }
+
+        const post_a_post = () => {
+            add_post.error_message = "";
+            $.ajax({
+                url: `${API_URL}/post/add/`,
+                type: "post",
+                data: {
+                    title: add_post.title,
+                    content: add_post.content,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    if (resp.msg === 'success') {
+                        add_post.title = "";
+                        add_post.content = "";
+                        Modal.getInstance("#postapost").hide();
+                        context.emit("pull_all_posts");
+                    } else {
+                        add_post.error_message = resp.msg;
+                    }
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
         return {
             star_a_post,
             unstar_a_post,
+            post_a_post,
             show_blank,
+            add_post,
         }
     }
 }
@@ -147,5 +213,10 @@ export default {
 img {
     width: 1.5vw;
     cursor: pointer;
+}
+
+div.error_message {
+    font-weight: 700;
+    color: red;
 }
 </style>

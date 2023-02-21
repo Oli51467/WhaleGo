@@ -1,7 +1,7 @@
 <template>
     <div>
         <ContentBase>
-            <CommunityPosts :posts="posts"/>
+            <CommunityPosts :posts="posts" @pull_all_posts="pull_all_posts"/>
         </ContentBase>
     </div>
 </template>
@@ -34,7 +34,6 @@ export default {
                 success(resp) {
                     posts.value = resp;
                     posts.value.reverse();
-                    console.log(posts.value);
                 },
                 error(resp) {
                     console.log(resp);
