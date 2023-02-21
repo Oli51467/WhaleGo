@@ -1,8 +1,9 @@
 <template>
+    <el-skeleton :loading="loading" :rows="6" animated></el-skeleton>
     <div class="card-body">
         <div style="height:fit-content" class="d-flex flex-row-reverse">
             <button type="button" class="btn btn-sm btn-outline-success op" data-bs-toggle="modal"
-                data-bs-target="#postapost" v-if="is_me" style="margin-top:-6.5vh; height: max-content;">发新鲜事</button>
+                data-bs-target="#postapost" v-if="is_me && !loading" style="margin-top:-6.5vh; height: max-content;">发新鲜事</button>
         </div>
 
         <div v-for="post in posts" :key="post.id" style="margin-top:3vh" :id="'post_id_' + post.id">
@@ -145,6 +146,7 @@ export default {
 
     setup(props) {
         const store = useStore();
+        const loading = ref(true);
         const is_me = computed(() => props.userId === store.state.user.id);
         let posts = ref([]);
         const add_post = reactive({
@@ -154,6 +156,7 @@ export default {
         });
 
         const pull_all_posts = () => {
+            loading.value = true;
             $.ajax({
                 url: `${API_URL}/post/getPosts/`,
                 type: "get",
@@ -166,6 +169,7 @@ export default {
                 success(resp) {
                     posts.value = resp;
                     posts.value.reverse();
+                    loading.value = false;
                 },
                 error(resp) {
                     console.log(resp);
@@ -301,6 +305,7 @@ export default {
             posts,
             add_post,
             is_me,
+            loading,
             pull_all_posts,
             post_a_post,
             click_remove_a_post,

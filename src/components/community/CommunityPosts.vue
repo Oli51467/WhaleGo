@@ -1,5 +1,5 @@
 <template>
-    <div class="card-body" v-if="show_blank">
+    <div class="card-body" v-if="!show_blank">
         <div v-for="post in posts" :key="post.id" style="margin-top:3vh" :id="'post_id_' + post.id">
             <div class="card post-card">
                 <div class="card-body">
@@ -70,7 +70,7 @@
 import { API_URL } from '@/assets/apis/api';
 import $ from 'jquery';
 import { useStore } from 'vuex';
-import { computed, reactive } from 'vue';
+import { reactive } from 'vue';
 import { Modal } from 'bootstrap/dist/js/bootstrap';
 export default {
     emits: ['pull_all_posts'],
@@ -79,11 +79,14 @@ export default {
             type: Object,
             required: true,
         },
+        show_blank: {
+            type: Boolean,
+            required: true,
+        },
     },
 
     setup(props, context) {
         const store = useStore();
-        const show_blank = computed(() => props.posts.length != 0);
         const add_post = reactive({
             title: "",
             content: "",
@@ -163,7 +166,6 @@ export default {
             star_a_post,
             unstar_a_post,
             post_a_post,
-            show_blank,
             add_post,
         }
     }

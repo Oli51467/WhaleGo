@@ -1,7 +1,7 @@
 <template>
     <div>
         <ContentBase>
-            <CommunityPosts :posts="posts" @pull_all_posts="pull_all_posts"/>
+            <CommunityPosts :posts="posts" :show_blank="show_blank" @pull_all_posts="pull_all_posts"/>
         </ContentBase>
     </div>
 </template>
@@ -23,6 +23,8 @@ export default {
     setup() {
         let posts = ref([]);
         const store = useStore();
+        const show_blank = ref(false);
+        const loading = ref(true);
 
         const pull_all_posts = () => {
             $.ajax({
@@ -34,6 +36,10 @@ export default {
                 success(resp) {
                     posts.value = resp;
                     posts.value.reverse();
+                    if (posts.value.length == 0) {
+                        show_blank.value = true;
+                    }
+                    loading.value = false;
                 },
                 error(resp) {
                     console.log(resp);
@@ -43,8 +49,9 @@ export default {
         pull_all_posts();
 
         return {
-            pull_all_posts,
             posts,
+            show_blank,
+            pull_all_posts,
         }
     }
 }

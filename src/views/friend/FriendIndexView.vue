@@ -5,11 +5,11 @@
                 <el-tabs type="border-card" :stretch=true tab-position="top" class="play-board">
 
                     <el-tab-pane label="我的好友" class="settings">
-                        <MyFriendPage :friends="friends"/>
+                        <MyFriendPage :friends="friends" :friends_loading="friends_loading" />
                     </el-tab-pane>
 
                     <el-tab-pane label="我的关注" class="settings">
-                        <MyFollowedPage :followed_users="followed_users"/>
+                        <MyFollowedPage :followed_users="followed_users" />
                     </el-tab-pane>
 
                     <!-- <el-tab-pane label="我的粉丝" class="settings">
@@ -60,46 +60,57 @@ export default {
         let followed_users = ref([]);
         let followers = ref([]);
         let friends = ref([]);
+        let friends_loading = ref(true);
 
-        $.ajax({
-            url: `${API_URL}/friend/getFollowed/`,
-            type: "get",
-            headers: {
-                Authorization: "Bearer " + store.state.user.token,
-            },
-            success(resp) {
-                followed_users.value = resp;
-                for (let user of followed_users.value.users) {
-                    user.follow = true
+        const get_followed = () => {
+            $.ajax({
+                url: `${API_URL}/friend/getFollowed/`,
+                type: "get",
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    followed_users.value = resp;
+                    for (let user of followed_users.value.users) {
+                        user.follow = true
+                    }
+                },
+                error(resp) {
+                    console.log(resp);
                 }
-            },
-            error(resp) {
-                console.log(resp);
-            }
-        })
+            })
+        }
 
-        $.ajax({
-            url: `${API_URL}/friend/get/`,
-            type: "get",
-            headers: {
-                Authorization: "Bearer " + store.state.user.token,
-            },
-            success(resp) {
-                friends.value = resp;
-            },
-            error(resp) {
-                console.log(resp);
-            }
-        })
+        const get_friends = () => {
+            $.ajax({
+                url: `${API_URL}/friend/get/`,
+                type: "get",
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    friends.value = resp;
+                    friends_loading.value = false;
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
+        get_followed();
+        get_friends();
 
         return {
             followed_users,
             followers,
             friends,
+            friends_loading,
+            get_followed,
+            get_friends,
         }
     }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

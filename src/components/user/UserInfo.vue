@@ -1,98 +1,98 @@
 <template>
-    <div class="row">
-        <div class="card-body" style="width: 100%;">
-            <!--存储用户头像 字符串里是表达式要加:-->
-            <img :src="guests.user_avatar" alt="" style="width: 80%; text-align: center;">
+    <el-skeleton :loading="loading" :rows="10"></el-skeleton>
+    <div v-if="!loading">
+        <div class="row">
+            <div class="card-body" style="width: 100%;">
+                <!--存储用户头像 字符串里是表达式要加:-->
+                <img :src="guests.user_avatar" alt="" style="width: 80%; text-align: center;">
+            </div>
         </div>
-    </div>
-    <div class="row justify-content-center d-flex">
-        <div class="level">
-            <span class="level-text">棋力:{{ guests.user_level }}</span>
+        <div class="row justify-content-center d-flex">
+            <div class="level">
+                <span class="level-text">棋力:{{ guests.user_level }}</span>
+            </div>
+            &nbsp;
+            <div class="user-type">
+                <span class="type-text">普通用户</span>
+            </div>
         </div>
-        &nbsp;
-        <div class="user-type">
-            <span class="type-text">普通用户</span>
+        <hr />
+        <div class="row">
+            <span id="username"> {{ guests.username }}</span>
         </div>
-    </div>
-    <hr />
-    <div class="row">
-        <span id="username"> {{ guests.username }}</span>
-    </div>
-    <div class="row">
-        <span id="profile"> {{ guests.profile }}</span>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-4 count-info">
-            关注数
+        <div class="row">
+            <span id="profile"> {{ guests.profile }}</span>
         </div>
-        <div class="col-4 count-info">
-            粉丝数
+        <hr />
+        <div class="row">
+            <div class="col-4 count-info">
+                关注数
+            </div>
+            <div class="col-4 count-info">
+                粉丝数
+            </div>
+            <div class="col-4 count-info">
+                访客数
+            </div>
         </div>
-        <div class="col-4 count-info">
-            访客数
+        <div class="row">
+            <div class="col-4">
+                {{ guests.followed_count }}
+            </div>
+            <div class="col-4">
+                {{ guests.followers_count }}
+            </div>
+            <div class="col-4">
+                {{ guests.guests_count }}
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            {{ guests.followed_count }}
+        <div class="row follow-op" v-if="!is_me">
+            <div class="col-6 d-flex flex-row-reverse">
+                <el-button type="success" size="" style="display:inline-block;text-align: center;"
+                    v-if="guests.id != $store.state.user.id && relation === 'stranger' || relation === 'follower'"
+                    @click="follow">
+                    关注
+                </el-button>
+                <el-button type="info" size="" style="display:inline-block;text-align: center;"
+                    v-else-if="guests.id != $store.state.user.id && relation === 'followed'" @click="unfollow">
+                    已关注
+                </el-button>
+                <el-button type="info" size="" style="display:inline-block;text-align: center;"
+                    v-else-if="guests.id != $store.state.user.id && relation === 'friend'" @click="unfollow">
+                    互相关注
+                </el-button>
+            </div>
+            <div class="col-6 d-flex">
+                <el-button type="info" size="" style="display:inline-block;text-align: center;">发消息</el-button>
+            </div>
         </div>
-        <div class="col-4">
-            {{ guests.followers_count }}
+        <div class="row" style="margin-top:20px;font-weight: 700;">
+            <span class="info" style="text-align:left">最近来访</span>
         </div>
-        <div class="col-4">
-            {{ guests.guests_count }}
+        <div class="row">
+            <div class="col-2 info" v-for="guest in guests.guests_front" :key="guest.guests_id">
+                <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
+                    style="cursor:pointer" />
+            </div>
         </div>
-    </div>
-    <div class="row follow-op" v-if="!is_me">
-        <div class="col-6 d-flex flex-row-reverse">
-            <el-button type="success" size="" style="display:inline-block;text-align: center;"
-                v-if="guests.id != $store.state.user.id && relation === 'stranger' || relation === 'follower'"
-                @click="follow">
-                关注
-            </el-button>
-            <el-button type="info" size="" style="display:inline-block;text-align: center;"
-                v-else-if="guests.id != $store.state.user.id && relation === 'followed'"
-                @click="unfollow">
-                已关注
-            </el-button>
-            <el-button type="info" size="" style="display:inline-block;text-align: center;"
-                v-else-if="guests.id != $store.state.user.id && relation === 'friend'"
-                @click="unfollow">
-                互相关注
-            </el-button>
+        <div class="row">
+            <div class="col-2 info" v-for="guest in guests.guests_front" :key="guest.guests_id">
+                <span class="guests">{{ guest.guests_username }}</span>
+            </div>
         </div>
-        <div class="col-6 d-flex">
-            <el-button type="info" size="" style="display:inline-block;text-align: center;">发消息</el-button>
-        </div>
-    </div>
-    <div class="row" style="margin-top:20px;font-weight: 700;">
-        <span class="info" style="text-align:left">最近来访</span>
-    </div>
-    <div class="row">
-        <div class="col-2 info" v-for="guest in guests.guests_front" :key="guest.guests_id">
-            <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
-                style="cursor:pointer" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2 info" v-for="guest in guests.guests_front" :key="guest.guests_id">
-            <span class="guests">{{ guest.guests_username }}</span>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-2 info" v-for="guest in guests.guests_back" :key="guest.guests_id">
-            <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
-                style="cursor:pointer" />
+        <div class="row">
+            <div class="col-2 info" v-for="guest in guests.guests_back" :key="guest.guests_id">
+                <img :src="guest.guests_avatar" alt="" class="guests_avatar" @click="click_profile(guest.guests_id)"
+                    style="cursor:pointer" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2" v-for="guest in guests.guests_back" :key="guest.guests_id">
+                <span class="guests">{{ guest.guests_username }}</span>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-2" v-for="guest in guests.guests_back" :key="guest.guests_id">
-            <span class="guests">{{ guest.guests_username }}</span>
-        </div>
-    </div>
-
 </template>
 
 <script>
@@ -119,6 +119,7 @@ export default {
         const route = useRouter();
         const store = useStore();
         const is_me = computed(() => props.userId === store.state.user.id);
+        const loading = ref(true);
         let relation = ref();
 
         const click_profile = (user_id) => {
@@ -132,6 +133,7 @@ export default {
         }
 
         const get_relation = () => {
+            loading.value = true;
             $.ajax({
                 url: `${API_URL}/friend/getRelationship/`,
                 type: "get",
@@ -144,6 +146,7 @@ export default {
                 },
                 success(resp) {
                     relation.value = resp.relation;
+                    loading.value = false;
                 },
                 error(resp) {
                     console.log(resp);
@@ -201,10 +204,11 @@ export default {
 
         return {
             is_me,
+            relation,
+            loading,
             click_profile,
             follow,
             unfollow,
-            relation,
         }
     }
 }

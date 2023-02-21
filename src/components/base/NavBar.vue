@@ -26,13 +26,6 @@
                     </li>
                 </ul>
 
-                <!-- <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <div>
-                            <img src="@/assets/images/message.png" @click="click2chat" />
-                        </div>
-                    </li>
-                </ul> -->
                 <div class="d-flex search">
                     <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search"
                         v-model="user_search">
@@ -44,6 +37,9 @@
 
                 <!--若用户已登录则展示用户信息菜单-->
                 <ul class="navbar-nav" v-if="$store.state.user.is_login">
+                    <el-badge :value="0" class="item">
+                        <el-button size="small">消息</el-button>
+                    </el-badge>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             {{ $store.state.user.username }}
@@ -249,5 +245,10 @@ img {
 
 .search {
     margin: 0 auto;
+}
+
+.item {
+    margin-top: 8px;
+    margin-right: 50px;
 }
 </style>

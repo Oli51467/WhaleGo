@@ -1,42 +1,45 @@
 <template>
-    <table class="table table-striped table-hover" style="text-align:center">
-        <thead>
-            <tr>
-                <th>黑方</th>
-                <th>段位</th>
-                <th>白方</th>
-                <th>段位</th>
-                <th>对局结果</th>
-                <th>对局时间</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="record in records" :key="record.record.id">
-                <td>
-                    <img :src="record.black_avatar" alt="" class="record-user-avatar">
-                    &nbsp;
-                    <span class="record-user-username"> {{ record.black_username }}</span>
-                </td>
-                <td>
-                    <span> {{ record.black_level }}</span>
-                </td>
-                <td>
-                    <img :src="record.white_avatar" alt="" class="record-user-avatar">
-                    &nbsp;
-                    <span class="record-user-username"> {{ record.white_username }}</span>
-                </td>
-                <td>
-                    <span> {{ record.white_level }}</span>
-                </td>
-                <td> {{ record.record.result }}</td>
-                <td> {{ record.record.createTime }}</td>
-                <td>
-                    <el-button class="op" plain @click="open_record(record.record.id)">复盘</el-button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <el-skeleton :loading="loading" :rows="6" animated></el-skeleton>
+    <div>
+        <table class="table table-striped table-hover" style="text-align:center">
+            <thead v-if="!loading">
+                <tr>
+                    <th>黑方</th>
+                    <th>段位</th>
+                    <th>白方</th>
+                    <th>段位</th>
+                    <th>对局结果</th>
+                    <th>对局时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="record in records" :key="record.record.id">
+                    <td>
+                        <img :src="record.black_avatar" alt="" class="record-user-avatar">
+                        &nbsp;
+                        <span class="record-user-username"> {{ record.black_username }}</span>
+                    </td>
+                    <td>
+                        <span> {{ record.black_level }}</span>
+                    </td>
+                    <td>
+                        <img :src="record.white_avatar" alt="" class="record-user-avatar">
+                        &nbsp;
+                        <span class="record-user-username"> {{ record.white_username }}</span>
+                    </td>
+                    <td>
+                        <span> {{ record.white_level }}</span>
+                    </td>
+                    <td> {{ record.record.result }}</td>
+                    <td> {{ record.record.createTime }}</td>
+                    <td>
+                        <el-button class="op" plain @click="open_record(record.record.id)">复盘</el-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <nav aria-label="...">
         <ul class="pagination" style="float: right">
@@ -69,6 +72,7 @@ export default {
         let pages = ref([]);
         let current_page = 0;
         let total_records = 0;
+        const loading = ref(true);
 
         const click_page = page => {
             if (page === -2) page = current_page - 1;
@@ -109,6 +113,7 @@ export default {
                     records.value = resp.records;
                     total_records = resp.records_count;
                     update_pages();
+                    loading.value = false;
                 },
                 error(resp) {
                     console.log(resp);
@@ -146,10 +151,11 @@ export default {
         }
 
         return {
-            click_page,
-            pull_page,
             pages,
             records,
+            loading,
+            click_page,
+            pull_page,
             update_pages,
             open_record,
         }

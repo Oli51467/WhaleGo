@@ -1,4 +1,5 @@
 <template>
+    <el-skeleton :loading="friends_loading" :rows="6" animated></el-skeleton>
     <div>
         <table class="table table-striped table-hover" style="text-align:center">
             <tbody>
@@ -56,6 +57,10 @@ export default {
             type: Object,
             required: true,
         },
+        friends_loading: {
+            type: Boolean,
+            required: true,
+        }
     },
     setup() {
         const store = useStore();
