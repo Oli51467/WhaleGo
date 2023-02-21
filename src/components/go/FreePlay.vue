@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" style="margin-top:5vh">
+        <div class="row" style="margin-top:8vh">
             <MyFriendPage :friends="friends"/>
         </div>
     </div>

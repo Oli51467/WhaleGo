@@ -22,7 +22,7 @@
                         </td>
                         <td>
                             <div class="user-info">
-                                <button class="btn btn-outline-info"> {{ user.user_level }} </button>
+                                <el-button type="success"> {{ user.user_level }} </el-button>
                             </div>
                         </td>
                         <td>

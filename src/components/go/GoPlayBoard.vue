@@ -44,27 +44,24 @@
         <RoomUserList :roomId="roomId" />
 
         <div class="row" v-if="$store.state.gogame.which == 0" style="margin: 0 auto">
-            <button class="btn btn-outline-danger btn-lg leave" @click="leave_room">离开房间</button>
+            <el-button plain type="danger" class="leave" @click="leave_room">离开房间</el-button>
         </div>
 
         <div class="row" v-else>
             <div class="col-3 func">
-                <button type="button" class="btn btn-outline-info btn-lg" disabled="true">申请数目</button>
+                <el-button plain type="info" disabled="true">申请数目</el-button>
             </div>
             <div class="col-3 func">
-                <button type="button" class="btn btn-outline-secondary btn-lg" @click="request_draw">申请和棋</button>
+                <el-button type="info" plain @click="request_draw">申请和棋</el-button>
             </div>
             <div class="col-3 func">
-                <button type="button" class="btn btn-outline-success btn-lg" :disabled="regret" 
-                @click="request_regret">申请悔棋</button>
+                <el-button type="success" plain :disabled="regret" @click="request_regret">申请悔棋</el-button>
             </div>
             <div class="col-2 func">
-                <button type="button" class="btn btn-outline-danger btn-lg" @click="click_resign">认输</button>
+                <el-button type="danger" plain @click="click_resign">认输</el-button>
             </div>
         </div>
     </div>
-
-
 </template>
 
 <script>
@@ -293,7 +290,7 @@ div.username {
 }
 
 .leave {
-    width: 15vh;
+    width: 12vh;
     text-align: center;
     margin: 0 auto auto 30vh;
 }

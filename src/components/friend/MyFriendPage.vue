@@ -32,14 +32,12 @@
                         </span>
                     </td>
                     <td>
-                        <button type="button" style="margin-top:-4px" v-if="friend.status === 'stand'"
-                            v-bind:class="friend.state == 1 ? 'btn btn-outline-primary' : 'btn btn-outline-secondary'"
-                            v-bind:disabled="friend.state == 1 ? false : true"
-                            @click="invite_play($store.state.user.id, friend.id)">邀请对局</button>
-                        <button type="button" style="margin-top:-4px" v-else-if="friend.status === 'playing'"
-                            class="btn btn-outline-secondary" disabled="true">对局中</button>
-                        <button type="button" style="margin-top:-4px" v-else-if="friend.status === 'matching'"
-                            class="btn btn-outline-secondary" disabled="true">匹配中</button>
+                        <el-button plain v-if="friend.status === 'stand'"
+                            v-bind:type="friend.state == 1 ? 'primary' : 'info'"
+                            v-bind:disabled="friend.state == 1 ? false : true"  
+                            @click="invite_play($store.state.user.id, friend.id)">邀请对局</el-button>
+                        <el-button type="info" v-else-if="friend.status === 'playing'" disabled>对局中</el-button>
+                        <el-button type="info" v-else-if="friend.status === 'matching'" disabled="true">匹配中</el-button>
                     </td>
                 </tr>
             </tbody>

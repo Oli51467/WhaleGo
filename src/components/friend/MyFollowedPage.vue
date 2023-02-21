@@ -30,11 +30,8 @@
                         </span>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-outline-secondary" style="margin-top:-4px" @click="unfollow(user)"
-                            v-if="user.follow === true">取消关注</button>
-
-                        <button type="button" class="btn btn-outline-success" style="margin-top:-4px" @click="follow(user)"
-                            v-else>关注</button>
+                        <el-button type="info" plain @click="unfollow(user)" v-if="user.follow === true">取消关注</el-button>
+                        <el-button type="success" plaing @click="follow(user)" v-else>关注</el-button>
                     </td>
                 </tr>
             </tbody>

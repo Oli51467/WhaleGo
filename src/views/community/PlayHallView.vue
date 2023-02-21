@@ -27,7 +27,7 @@
                     </td>
                     <td>
                         <div class="user-info">
-                            <button class="btn btn-outline-info"> {{ game.black_level }} </button>
+                            <el-button type="success"> {{ game.black_level }} </el-button>
                         </div>
                     </td>
                     <td>
@@ -39,26 +39,26 @@
                     </td>
                     <td>
                         <div class="user-info">
-                            <button class="btn btn-outline-info"> {{ game.white_level }} </button>
+                            <el-button type="success"> {{ game.white_level }} </el-button>
                         </div>
                     </td>
                     <td>
                         <div class="user-info">
-                            <button class="btn btn-outline-success" v-if="game.state === '布局'">
+                            <el-button type="info" v-if="game.state === '布局'">
                                 {{ game.state }}
-                            </button>
-                            <button class="btn btn-outline-warning" v-else-if="game.state === '中盘'"> {{ game.state }}
-                            </button>
-                            <button class="btn btn-outline-danger" v-else-if="game.state === '官子'"> {{ game.state }}
-                            </button>
-                            <button class="btn btn-outline-secondary" v-else> {{ game.state }}
-                            </button>
+                            </el-button>
+                            <el-button type="warning" plain v-else-if="game.state === '中盘'"> {{ game.state }}
+                            </el-button>
+                            <el-button type="danger" plain v-else-if="game.state === '官子'"> {{ game.state }}
+                            </el-button>
+                            <el-button type="info" plain v-else> {{ game.state }}
+                            </el-button>
 
                         </div>
                     </td>
                     <td>
                         <div class="user-info">
-                            <button class="btn btn-outline-primary" @click="watch_game(game.id)"> 观战</button>
+                            <el-button type="primary" plain @click="watch_game(game.id)"> 观战</el-button>
                         </div>
                     </td>
                 </tr>

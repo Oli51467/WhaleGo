@@ -32,8 +32,7 @@
                 <td> {{ record.record.result }}</td>
                 <td> {{ record.record.createTime }}</td>
                 <td>
-                    <button type="button op" class="btn btn-outline-primary op"
-                        @click="open_record(record.record.id)">复盘</button>
+                    <el-button class="op" plain @click="open_record(record.record.id)">复盘</el-button>
                 </td>
             </tr>
         </tbody>
