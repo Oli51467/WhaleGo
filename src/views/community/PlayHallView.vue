@@ -98,10 +98,9 @@ export default {
                 },
                 success(resp) {
                     games.value = resp;
+                    console.log(games.value);
                     if (games.value.length > 0) {
                         show_blank.value = false;
-                    } else {
-                        show_blank.value = true;
                     }
                 },
                 error(resp) {

@@ -1,4 +1,5 @@
 <template>
+    <el-skeleton :loading="loading" :rows="6" animated></el-skeleton>
     <div class="card-body" v-if="!show_blank">
         <div v-for="post in posts" :key="post.id" style="margin-top:3vh" :id="'post_id_' + post.id">
             <div class="card post-card">
@@ -80,6 +81,10 @@ export default {
             required: true,
         },
         show_blank: {
+            type: Boolean,
+            required: true,
+        },
+        loading: {
             type: Boolean,
             required: true,
         },

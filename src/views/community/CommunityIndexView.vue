@@ -1,7 +1,7 @@
 <template>
     <div>
         <ContentBase>
-            <CommunityPosts :posts="posts" :show_blank="show_blank" @pull_all_posts="pull_all_posts"/>
+            <CommunityPosts :posts="posts" :show_blank="show_blank" :loading="loading" @pull_all_posts="pull_all_posts"/>
         </ContentBase>
     </div>
 </template>
@@ -51,6 +51,7 @@ export default {
         return {
             posts,
             show_blank,
+            loading,
             pull_all_posts,
         }
     }
