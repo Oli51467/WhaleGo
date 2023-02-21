@@ -36,8 +36,8 @@
                             v-bind:type="friend.state == 1 ? 'primary' : 'info'"
                             v-bind:disabled="friend.state == 1 ? false : true"  
                             @click="invite_play($store.state.user.id, friend.id)">邀请对局</el-button>
-                        <el-button type="info" v-else-if="friend.status === 'playing'" disabled>对局中</el-button>
-                        <el-button type="info" v-else-if="friend.status === 'matching'" disabled="true">匹配中</el-button>
+                        <el-button type="info" v-else-if="friend.status === 'playing'" disabled :loading="true">对局中</el-button>
+                        <el-button type="info" v-else-if="friend.status === 'matching'" disabled :loading="true">匹配中</el-button>
                     </td>
                 </tr>
             </tbody>

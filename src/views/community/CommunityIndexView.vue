@@ -86,7 +86,7 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success() {
-                    post.stars ++;
+                    post.stars++;
                     post.liked = 'true';
                 },
                 error(resp) {
@@ -107,7 +107,7 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success() {
-                    post.stars --;
+                    post.stars--;
                     post.liked = 'false';
                 },
                 error(resp) {

@@ -34,7 +34,6 @@ export class GoBoard extends GameObject {
         if (g == null) return;
         let click_x = e.offsetX;
         let click_y = e.offsetY;
-        console.log(this.ctx.canvas.width, this.ctx.canvas.height, this.L, this.cell_len);
         let x = Math.floor(click_y / this.cell_len);
         let y = Math.floor(click_x / this.cell_len);
         if (x <= 0 || x > 19 || y <= 0 || y > 19 || g[x][y]) {

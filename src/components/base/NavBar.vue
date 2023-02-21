@@ -34,8 +34,10 @@
                     </li>
                 </ul> -->
                 <div class="d-flex search">
-                    <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search" v-model="user_search">
-                    <button class="btn btn-outline-success text-nowrap" data-bs-toggle="modal" data-bs-target="#search" @click="search_user">
+                    <input class="form-control me-2" type="search" placeholder="搜索用户" aria-label="Search"
+                        v-model="user_search">
+                    <button class="btn btn-outline-success text-nowrap" data-bs-toggle="modal" data-bs-target="#search"
+                        @click="search_user">
                         搜索
                     </button>
                 </div>
@@ -48,10 +50,12 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <router-link class="dropdown-item" :to="{ name: 'user_index', params:{userId:$store.state.user.id }}">我的空间</router-link>
+                                <router-link class="dropdown-item"
+                                    :to="{ name: 'user_index', params: { userId: $store.state.user.id } }">我的空间</router-link>
                             </li>
                             <li>
-                                <router-link class="dropdown-item" :to="{ name: 'update_info', params:{userId:$store.state.user.id }}">个人信息</router-link>
+                                <router-link class="dropdown-item"
+                                    :to="{ name: 'update_info', params: { userId: $store.state.user.id } }">个人信息</router-link>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -96,18 +100,15 @@
                                 </td>
                                 <td
                                     v-if="user.info.username != $store.state.user.username && user.relation === 'stranger' || user.relation === 'follower'">
-                                    <button type="button" style="margin-top:-4px" class="btn btn-success"
-                                        @click="follow">关注</button>
+                                    <el-button type="success" @click="follow">关注</el-button>
                                 </td>
                                 <td
                                     v-else-if="user.info.username != $store.state.user.username && user.relation === 'followed'">
-                                    <button type="button" style="margin-top:-4px" class="btn btn-secondary"
-                                        @click="unfollow">已关注</button>
+                                    <el-button type="info" @click="unfollow">已关注</el-button>
                                 </td>
                                 <td
                                     v-else-if="user.info.username != $store.state.user.username && user.relation === 'friend'">
-                                    <button type="button" style="margin-top:-4px" class="btn btn-secondary"
-                                        @click="unfollow">互相关注</button>
+                                    <el-button type="info" @click="unfollow">互相关注</el-button>
                                 </td>
                             </tr>
                             <tr v-else>
@@ -133,7 +134,7 @@ import $ from 'jquery'
 
 export default {
     components: {
-        
+
     },
     setup() {
         const route = useRoute();

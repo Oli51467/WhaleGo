@@ -12,7 +12,7 @@
                                 <span>{{ users.black_username }} &nbsp;{{ users.black_level }}</span>
                             </div>
                             <div class="col-1 parent">
-                                <canvas ref="canvas" tabindex="0"></canvas>
+                                <div class='black'></div>
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                                 <span> {{ users.white_username }} &nbsp;{{ users.white_level }}</span>
                             </div>
                             <div class="col-1 parent">
-                                <canvas ref="canvas1" tabindex="0"></canvas>
+                                <div class='white'></div>
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
 
         <div class="row" v-else>
             <div class="col-3 func">
-                <el-button plain type="info" disabled="true">申请数目</el-button>
+                <el-button plain type="info" disabled>申请数目</el-button>
             </div>
             <div class="col-3 func">
                 <el-button type="info" plain @click="request_draw">申请和棋</el-button>
@@ -98,16 +98,7 @@ export default {
         let regret = computed(() => store.state.gogame.which === store.state.gogame.current || store.state.gogame.which == 0)
 
         onMounted(() => {
-            let ctx = canvas.value.getContext('2d');
-            let ctx1 = canvas1.value.getContext('2d');
-            ctx.fillStyle = "black";
-            ctx1.fillStyle = "white";
-            ctx.beginPath();
-            ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-            ctx1.beginPath();
-            ctx1.arc(95, 50, 40, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx1.fill();
+            
         })
 
         const get_board_in_room = () => {
@@ -284,19 +275,39 @@ div.username {
     text-align: center;
 }
 
-.parent {
-    width: 20%;
-    margin: 0 auto auto -100;
-}
-
 .leave {
     width: 12vh;
     text-align: center;
     margin: 0 auto auto 30vh;
 }
 
-canvas {
-    width: 150%;
-    margin: -5px auto;
+.white {
+  left: 0;
+  box-sizing: border-box;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 1px 1px 1px #404040 , inset -3px -3px 5px gray;
+  width: 30px;
+  height: 30px;
+  content: '';
+  display: inline-block;
+}
+
+.black {
+  box-sizing: border-box;
+  left: 0;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 1px 1px 1px #404040;
+  background-image: -webkit-radial-gradient(40% 40%, circle closest-corner, #404040 0%, transparent 90%);
+  background-image: -moz-radial-gradient(40% 40%, circle closest-side, #404040 0%, transparent 90%);
+  width: 30px;
+  height: 30px;
+  content: '';
+  display: inline-block;
 }
 </style>

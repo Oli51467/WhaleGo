@@ -28,7 +28,8 @@ export default {
         }
         // 在页面刷新时将vue里的信息保存到localStorage里
         window.addEventListener('beforeunload', () => {
-            localStorage.setItem('store', JSON.stringify(this.$store.state))
+            this.$store.gogame.socket.close();
+            localStorage.setItem('store', JSON.stringify(this.$store.state));
         })
         let socket = null;
         const goSocketUrl = `${WS_URL}/${this.$store.state.user.token}/`;
@@ -69,6 +70,10 @@ export default {
                 store.commit("updateCurrent", 0);
                 store.commit("updateRoomId", null);
                 store.commit("updateGoGameStatus", "waiting");
+                store.commit("updateLastStep", {
+                    last_x: -2,
+                    last_y: -2,
+                })
                 go_resign.close();
                 request_draw_eb.close();
                 ElMessageBox.alert(data.loser, {
