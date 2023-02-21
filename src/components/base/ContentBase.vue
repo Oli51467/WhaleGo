@@ -27,5 +27,6 @@ export default {
 .card-body {
     text-align: center;
     height: auto;
+    width: auto;
 }
 </style>

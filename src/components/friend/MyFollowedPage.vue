@@ -53,7 +53,6 @@ export default {
     },
     setup() {
         const store = useStore();
-
         const unfollow = (user) => {
             $.ajax({
                 url: `${API_URL}/friend/unfollow/`,
