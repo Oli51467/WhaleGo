@@ -1,14 +1,14 @@
 <template>
     <div class="chat" ref="chat_body" v-show="show_chat">
-        <el-container style="height: 100%; width: 55vw;" >
+        <el-container style="height: 100%; width: 55vw;">
             <el-header height="15px">
                 <div class="pull-left">
-                    <i class="el-icon-chat-dot-round" style="margin:10px auto auto 10px;"></i>
+                    <img src="@/assets/images/chat_logo.png" />
                     &nbsp;
                     <span>聊天</span>
                 </div>
                 <div class="pull-right" @click="close_chat">
-                    <i class="el-icon-close" style="margin:10px 10px 10px 10px; "></i>
+                    <img src="@/assets/images/close.png" />
                 </div>
             </el-header>
             <el-divider></el-divider>
@@ -62,10 +62,10 @@ export default {
 </script>
 
 <style scoped>
-
 * {
     padding: 0px 0px 0px 0px;
 }
+
 .chat {
     width: 55vw;
     height: 60vh;
@@ -81,13 +81,13 @@ export default {
 
 .pull-left {
     float: left !important;
-    margin: 0 auto;
+    margin: 5px auto auto 15px;
     height: 5vh;
 }
 
 .pull-right {
     float: right !important;
-    margin: 0 auto;
+    margin: 5px -15px auto;
     height: 4vh;
     width: 4vh;
 }
@@ -114,6 +114,8 @@ export default {
     background-color: rgb(151, 154, 153);
 }
 
-
-
+img {
+    width: 30px;
+    height: 30px;
+}
 </style>
