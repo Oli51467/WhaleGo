@@ -4,11 +4,11 @@
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/js/bootstrap.js'
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import NavBar from './components/base/NavBar.vue';
 import router from './router';
-import { request_play } from '@/components/friend/MyFriendPage.vue'
+import { request_play } from '@/components/friend/MyFriendPage.vue';
 import { request_draw_eb, request_regret_eb } from './components/go/GoPlayBoard.vue';
 import { go_resign } from './components/go/GoPlayBoard.vue';
 import { ElMessageBox } from 'element-plus';

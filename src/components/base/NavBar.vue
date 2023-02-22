@@ -38,7 +38,9 @@
                 <!--若用户已登录则展示用户信息菜单-->
                 <ul class="navbar-nav" v-if="$store.state.user.is_login">
                     <el-badge :value="0" class="item">
-                        <el-button size="small" @click="open_chat_body">消息</el-button>
+                        <el-button size="small" @click="open_chat_body">
+                            <span style="margin: 0 auto;">消息</span>
+                        </el-button>
                     </el-badge>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">

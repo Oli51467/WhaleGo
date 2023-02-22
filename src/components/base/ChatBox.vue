@@ -1,6 +1,19 @@
 <template>
     <div class="chat" ref="chat_body" v-show="show_chat">
-        <button class="btn btn-primary" @click="test">关闭</button>
+        <el-container>
+            <el-header style="height: 2vh;">
+                <div class="float-end close" @click="close_chat">
+                    <i class="el-icon-close" style="margin:10px auto auto 10px; width: 100%; height: 100%;"></i>
+                </div>
+            </el-header>
+            <el-divider></el-divider>
+            <el-container>
+                <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+                    
+                </el-aside>
+                <el-main>Main</el-main>
+            </el-container>
+        </el-container>
     </div>
 </template>
 
@@ -23,13 +36,13 @@ export default {
             new ChatBody(chat_body.value);
         });
 
-        const test = () => {
+        const close_chat = () => {
             context.emit("open_chat_body");
         }
 
         return {
             chat_body,
-            test,
+            close_chat,
         }
     }
 }
@@ -37,14 +50,23 @@ export default {
 
 <style scoped>
 .chat {
-    width: 60vw;
-    height: 55vh;
+    width: 55vw;
+    height: 60vh;
     background-color: whitesmoke;
-    border-radius: 15px;
     position: absolute;
     top: 20%;
     left: 20%;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.7);
+    box-shadow: 2px 2px 2px rgba(215, 207, 207, 0.7);
     z-index: 999;
+}
+
+.close {
+    margin: 0 auto;
+    height: 4vh;
+    width: 4vh;
+}
+
+.close:hover {
+    background-color: rgba(98, 53, 53, 0.7);    
 }
 </style>
