@@ -1,6 +1,6 @@
 <template>
     <div class="chat" ref="chat_body" v-show="show_chat">
-        <el-container style="height: 100%; width: 55vw;">
+        <el-container style="height: 477px; width: 833px;">
             <el-header height="15px">
                 <div class="pull-left">
                     <img src="@/assets/images/chat_logo.png" />
@@ -12,16 +12,24 @@
                 </div>
             </el-header>
             <el-divider></el-divider>
-            <el-container style="margin-top:-25px; width: 55vw">
+
+            <el-container style="margin-top:-25px; width: 833px">
                 <el-aside width="225px" class="chat_aside">
 
                 </el-aside>
                 <el-main class="chat_main">
-                    <el-divider style="width: 100vw; margin-left: -75px; margin-top: 50px;"></el-divider>
+                    <el-divider style="width: 680px; margin-left: -75px; margin-top: 50px;"></el-divider>
                     <div class="chat_record">
 
                     </div>
-                    <el-input type="textarea" :rows="6" v-model="chat_msg"></el-input>
+
+                    <div class="d-flex align-items-end flex-column mb-3">
+                        <el-input type="textarea" :rows="4" v-model="chat_msg" :autofocus=true class="p-2">
+                        </el-input>
+                        <el-button type="info" id="send" class="p-2">发送</el-button>
+                    </div>
+
+
                 </el-main>
             </el-container>
         </el-container>
@@ -67,8 +75,8 @@ export default {
 }
 
 .chat {
-    width: 55vw;
-    height: 60vh;
+    width: 833px;
+    height: 477px;
     background-color: whitesmoke;
     position: absolute;
     border: 0.1px solid;
@@ -82,14 +90,14 @@ export default {
 .pull-left {
     float: left !important;
     margin: 5px auto auto 15px;
-    height: 5vh;
+    height: 50px;
 }
 
 .pull-right {
     float: right !important;
     margin: 5px -15px auto;
-    height: 4vh;
-    width: 4vh;
+    height: 40px;
+    width: 40px;
 }
 
 .pull-right:hover {
@@ -105,17 +113,22 @@ export default {
 .chat_main {
     background-color: white;
     padding: 0px 0px 0px 0px;
+    height: 100%;
 }
 
 .chat_record {
-    height: 57%;
+    height: 230px;
     padding: 0px 0px 0px 0px;
     margin-top: -25px;
-    background-color: rgb(151, 154, 153);
+    background-color: rgba(206, 201, 201, 0.2);
 }
 
 img {
     width: 30px;
     height: 30px;
+}
+
+#send {
+    margin: 0 10px auto;
 }
 </style>
