@@ -25,14 +25,20 @@
                         <hr>
                         <div class="mb-3 row ">
                             <label for="username" class="col-sm-2 col-form-label user-info"
-                                style="float: right;">用户名：</label>
-                            <div class="col-sm-10">
+                                style="float: right;">用户名</label>
+                            <div class="col-sm-4">
                                 <input v-model="username" type="text" class="form-control" id="username" maxlength="15">
                             </div>
                         </div>
                         <div class="mb-3 row">
+                            <label for="phone" class="col-sm-2 col-form-label user-info">手机号</label>
+                            <div class="col-sm-4">
+                                <input v-model="phone" type="tel" class="form-control" id="phone" rows="1" maxlength="11"/>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
                             <label for="profile" class="col-sm-2 col-form-label user-info">个人简介</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-6">
                                 <input v-model="profile" type="text" class="form-control" id="profile" rows="1" maxlength="30"/>
                             </div>
                         </div>
@@ -148,13 +154,14 @@ export default {
         const store = useStore();
         let profile = ref("");
         let username = ref("");
+        let phone = ref("");
         let error_message = ref("");
         let updatePassword = reactive({
             old_password: "",
             new_password: "",
             confirm_password: "",
         });
-        let isSuccess = ref(false);
+        let isSuccess = ref(true);
 
         const user_info = () => {
             $.ajax({
@@ -166,6 +173,7 @@ export default {
                 success(resp) {
                     profile.value = resp.profile;
                     username.value = resp.username;
+                    phone.value = resp.phone;
                 }
             });
         };
@@ -180,6 +188,7 @@ export default {
                 },
                 data: {
                     username: username.value,
+                    phone: phone.value,
                     profile: profile.value
                 },
                 success(resp) {
@@ -189,11 +198,13 @@ export default {
                         store.commit("updateUser", {
                             username: username.value,
                             profile: profile.value,
+                            phone: phone.value,
                         });
                     } else {
                         isSuccess.value = false;
                         username.value = store.state.user.username;
                         profile.value = store.state.user.profile;
+                        phone.value = store.state.user.phone;
                         error_message.value = resp.msg;
                     }
                 }
@@ -227,6 +238,7 @@ export default {
         return {
             profile,
             username,
+            phone,
             updatePassword,
             error_message,
             isSuccess,

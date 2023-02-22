@@ -6,6 +6,7 @@ const UserModule = {
         id: "",
         username: "",
         avatar: "",
+        phone: "",
         token: "",
         profile: "",
         is_login: false,
@@ -26,6 +27,7 @@ const UserModule = {
         updateUser(state, user) {
             state.username = user.username;
             state.profile = user.profile;
+            state.phone = user.phone;
         },
         logout(state) {
             state.id = "";
