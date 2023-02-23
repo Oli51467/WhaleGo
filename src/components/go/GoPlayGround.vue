@@ -91,7 +91,7 @@ canvas {
 .play-board {
     background-color: rgb(230, 231, 234);
     width: auto;
-    margin: 2vh 5vw auto -7vw;
+    margin: 1.5vh 5vw auto -5vw;
     box-shadow: 3px 3px 3px #b9b9b9;
 }
 </style>

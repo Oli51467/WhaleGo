@@ -7,7 +7,7 @@
                     &nbsp;
                     <span>聊天</span>
                 </div>
-                <div class="pull-right" @click="close_chat">
+                <div class="pull-right" @click.prevent="close_chat">
                     <img src="@/assets/images/close.png" />
                 </div>
             </el-header>
@@ -94,10 +94,10 @@ export default {
 }
 
 .pull-right {
-    float: right !important;
-    margin: 5px -15px auto;
-    height: 40px;
-    width: 40px;
+    float: right;
+    margin: 5px 0px 0px auto;
+    height: 35px;
+    width: 35px;
 }
 
 .pull-right:hover {

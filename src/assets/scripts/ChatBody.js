@@ -17,10 +17,9 @@ export class ChatBody {
                 let body_top = e.clientY - y;
                 let _h = window.innerHeight - this.chat_body.offsetHeight;
                 let _w = window.innerWidth - this.chat_body.offsetWidth;
-                console.log(this.chat_body.offsetHeight);
                 body_top = Math.min(Math.max(0, body_top), _h);
                 body_left = Math.min(Math.max(0, body_left), _w);
-                if (e.clientY > 200) {
+                if (e.clientY > 190) {
                     flag = false;
                 }
                 if (flag) {
