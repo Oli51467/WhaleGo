@@ -4,7 +4,7 @@
             <span>对局大厅</span>
             <hr />
         </div>
-        <el-empty description="没有人在下棋" v-if="show_blank">
+        <el-empty description="没有人在下棋" v-if="show_blank == true">
             <el-button type="success">去下棋！</el-button>
         </el-empty>
         <div v-else>
@@ -87,7 +87,7 @@ export default {
     setup() {
         const store = useStore();
         let games = ref([]);
-        const show_blank = ref(true);
+        let show_blank = ref(true);
 
         onMounted(() => {
             $.ajax({
@@ -98,8 +98,7 @@ export default {
                 },
                 success(resp) {
                     games.value = resp;
-                    console.log(games.value);
-                    if (games.value.length > 0) {
+                    if (games.value.games.length > 0) {
                         show_blank.value = false;
                     }
                 },
