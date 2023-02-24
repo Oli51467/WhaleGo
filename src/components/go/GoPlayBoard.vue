@@ -96,7 +96,7 @@ export default {
         let regret = computed(() => store.state.gogame.which === store.state.gogame.current || store.state.gogame.which == 0)
 
         onMounted(() => {
-            
+
         })
 
         const get_board_in_room = () => {
@@ -205,7 +205,10 @@ export default {
         const show_territory = () => {
             let show = store.state.gogame.show_territory;
             if (show) {
-                store.commit("updateShowTerritory", false);
+                store.commit("updateTerritory", {
+                    territory: null,
+                    show_territory: false,
+                });
                 return;
             }
             $.ajax({
@@ -218,9 +221,10 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
-                    console.log(resp.territory);
-                    store.commit("updateTerritory", resp.territory);
-                    store.commit("updateShowTerritory", true);
+                    store.commit("updateTerritory", {
+                        territory: resp.territory,
+                        show_territory: true,
+                    });
                 },
                 error(err) {
                     console.log(err);
@@ -305,32 +309,32 @@ div.username {
 }
 
 .white {
-  left: 0;
-  box-sizing: border-box;
-  background-color: white;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  box-shadow: 1px 1px 1px #404040 , inset -3px -3px 5px gray;
-  width: 30px;
-  height: 30px;
-  content: '';
-  display: inline-block;
+    left: 0;
+    box-sizing: border-box;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 1px 1px 1px #404040, inset -3px -3px 5px gray;
+    width: 30px;
+    height: 30px;
+    content: '';
+    display: inline-block;
 }
 
 .black {
-  box-sizing: border-box;
-  left: 0;
-  background-color: black;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  box-shadow: 1px 1px 1px #404040;
-  background-image: -webkit-radial-gradient(40% 40%, circle closest-corner, #404040 0%, transparent 90%);
-  background-image: -moz-radial-gradient(40% 40%, circle closest-side, #404040 0%, transparent 90%);
-  width: 30px;
-  height: 30px;
-  content: '';
-  display: inline-block;
+    box-sizing: border-box;
+    left: 0;
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 1px 1px 1px #404040;
+    background-image: -webkit-radial-gradient(40% 40%, circle closest-corner, #404040 0%, transparent 90%);
+    background-image: -moz-radial-gradient(40% 40%, circle closest-side, #404040 0%, transparent 90%);
+    width: 30px;
+    height: 30px;
+    content: '';
+    display: inline-block;
 }
 </style>

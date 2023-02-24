@@ -216,6 +216,10 @@ export default {
             store.commit("updateWhich", 0);
             store.commit("updateCurrent", 0);
             store.commit("updateSocket", null);
+            store.commit("updateTerritory", {
+                territory: null,
+                show_territory: false,
+            });
         };
     },
 } 

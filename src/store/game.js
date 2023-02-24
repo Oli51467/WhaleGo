@@ -19,8 +19,9 @@ const GoGameModule = {
         updateBoard(state, board) {
             state.board = board;
         },
-        updateTerritory(state, territory) {
-            state.territory = territory;
+        updateTerritory(state, terr) {
+            state.territory = terr.territory;
+            state.show_territory = terr.show_territory;
         },
         updateGoGameStatus(state, status) {
             state.status = status;
@@ -44,9 +45,6 @@ const GoGameModule = {
             state.last_x = last_step.last_x;
             state.last_y = last_step.last_y;
         },
-        updateShowTerritory(state, show_territory) {
-            state.show_territory = show_territory;
-        }
     },
 
     actions: {
