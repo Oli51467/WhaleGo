@@ -1,10 +1,12 @@
 const GoGameModule = {
     state: {
         board: null,
+        territory: null,
         status: 'waiting',
         socket: null,
         room_id: "",
         opponent_userid: "",
+        show_territory: false,
         current: 0, // 当前轮到哪一方
         which: 0,   // 自己是哪一方
         last_x: -1,
@@ -16,6 +18,9 @@ const GoGameModule = {
     mutations: {
         updateBoard(state, board) {
             state.board = board;
+        },
+        updateTerritory(state, territory) {
+            state.territory = territory;
         },
         updateGoGameStatus(state, status) {
             state.status = status;
@@ -39,6 +44,9 @@ const GoGameModule = {
             state.last_x = last_step.last_x;
             state.last_y = last_step.last_y;
         },
+        updateShowTerritory(state, show_territory) {
+            state.show_territory = show_territory;
+        }
     },
 
     actions: {

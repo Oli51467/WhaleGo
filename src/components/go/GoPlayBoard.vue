@@ -49,7 +49,7 @@
 
         <div class="row" v-else>
             <div class="col-3 func">
-                <el-button plain type="info" disabled>申请数目</el-button>
+                <el-button plain type="info" @click="show_territory">形势判断</el-button>
             </div>
             <div class="col-3 func">
                 <el-button type="info" plain @click="request_draw">申请和棋</el-button>
@@ -202,6 +202,32 @@ export default {
             })
         }
 
+        const show_territory = () => {
+            let show = store.state.gogame.show_territory;
+            if (show) {
+                store.commit("updateShowTerritory", false);
+                return;
+            }
+            $.ajax({
+                url: `${API_URL}/board/territory/`,
+                type: "get",
+                data: {
+                    room_id: "1",
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    console.log(resp.territory);
+                    store.commit("updateTerritory", resp.territory);
+                    store.commit("updateShowTerritory", true);
+                },
+                error(err) {
+                    console.log(err);
+                }
+            })
+        }
+
         onBeforeRouteLeave((to, from, next) => {
             if (store.state.gogame.which != 0) {
                 ElMessageBox.confirm("您的棋局还未下完，是否认输？", {
@@ -230,6 +256,7 @@ export default {
             click_resign,
             leave_room,
             request_regret,
+            show_territory,
             users,
             regret,
         }

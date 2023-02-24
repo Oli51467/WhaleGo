@@ -48,6 +48,15 @@ export class BoardIndex extends GameObject {
         this.ctx.fill();
     }
 
+    draw_light_territory(x, y) {
+        const center_x = (x - 0.25) * this.cell_len;
+        const center_y = (y - 0.25) * this.cell_len;
+        const r = this.cell_len;
+        this.ctx.fillRect(center_x, center_y, r / 2.2, r / 2.2);
+        this.ctx.fillStyle = 'black';
+        this.ctx.fill();
+    }
+
     draw_indexes() {
         for (let i = 1; i <= 19; i++) {
             this.ctx.fillStyle = "black";
@@ -87,5 +96,6 @@ export class BoardIndex extends GameObject {
     }
 
     render() {
+        this.draw_light_territory(2, 3);
     }
 }

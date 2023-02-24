@@ -165,10 +165,19 @@ export class GoBoard extends GameObject {
         const center_x = x * this.cell_len;
         const center_y = y * this.cell_len;
         const r = this.cell_len / 2 * 0.9;
-        this.ctx.fillStyle = "red";
+        this.ctx.fillStyle = 'red';
         this.ctx.beginPath();
         this.ctx.arc(center_x, center_y, r / 3, 0, Math.PI * 2);
         this.ctx.fill();
+    }
+
+    draw_territory(x, y, color) {
+        const center_x = (x - 0.25) * this.cell_len;
+        const center_y = (y - 0.25) * this.cell_len;
+        const r = this.cell_len;
+        if (color == 1) this.ctx.fillStyle = 'black';
+        else this.ctx.fillStyle = 'white';
+        this.ctx.fillRect(center_x, center_y, r / 2.2, r / 2.2);
     }
 
     on_destory() {
@@ -188,14 +197,21 @@ export class GoBoard extends GameObject {
 
     render() {
         const g = this.store.state.gogame.board;
+        const territory = this.store.state.gogame.territory;
         const last_x = this.store.state.gogame.last_x;
         const last_y = this.store.state.gogame.last_y;
+        const show_territory = this.store.state.gogame.show_territory;
         if (g === null) return;
         for (let r = 1; r <= this.rows; r++) {
             for (let c = 1; c <= this.cols; c++) {
                 this.draw_stones(c, r, g[r][c]);
                 if (last_x != -1 && last_y != -1) this.draw_red_point(last_y, last_x);
                 if (this.virtual_x != -1 && this.virtual_y != -1) this.draw_virtual_stone(this.virtual_x, this.virtual_y);
+                if (g[r][c] == 0 && show_territory == true && territory[r][c] > 50) {
+                    if (territory[r][c] > 75) {
+                        this.draw_territory(c, r, 1);
+                    } else this.draw_territory(c, r, 2);
+                }
             }
         }
     }
