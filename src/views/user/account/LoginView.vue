@@ -46,7 +46,8 @@ export default {
                 success() {
                     store.dispatch("getInfo", {
                         success() {
-                            router.push({ name: 'goplay'});
+                            localStorage.setItem('store', JSON.stringify(store.state));
+                            router.push({ name: 'goplay' });
                             console.log(store.state.user);
                         }
                     })

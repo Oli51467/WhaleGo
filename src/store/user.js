@@ -24,6 +24,9 @@ const UserModule = {
         updateToken(state, token) {
             state.token = token;
         },
+        updateLogin(state, is_login) {
+            state.is_login = is_login;
+        },
         updateUser(state, user) {
             state.username = user.username;
             state.profile = user.profile;
@@ -37,6 +40,7 @@ const UserModule = {
             state.username = "";
             state.avatar = "";
             state.token = "";
+            state.avatar = "";
             state.is_login = false;
         },
     },

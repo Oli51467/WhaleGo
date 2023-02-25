@@ -159,6 +159,7 @@ export default {
 <style scoped>
 img.record-user-avatar {
     width: 4vh;
+    height: 4vh;
     border-radius: 50%;
     margin: 0 auto;
 }

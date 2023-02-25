@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-3" style="margin-top:1vh">
                 <ContentBase>
-                    <UserInfo :guests="guests" :userId="userId"/>
+                    <UserInfo :guests="guests" :userId="userId" />
                 </ContentBase>
             </div>
             <div class="col-9" style="margin-top:4vh; margin-bottom: 3vh;">
@@ -28,10 +28,10 @@
                                 <UserPosts :userId="userId" :guests="guests" />
                             </div>
                             <div class="tab-pane fade" id="record-tab-pane" role="tabpanel" tabindex="0">
-                                <MyRecords/>
+                                <MyRecords />
                             </div>
                             <div class="tab-pane fade" id="data-tab-pane" role="tabpanel" tabindex="0">
-                                <RecordsData :recentRecords="recent_records"/>
+                                <RecordsData :recentRecords="recent_records" />
                             </div>
                         </div>
                     </div>
@@ -63,7 +63,6 @@ export default {
         MyRecords,
         RecordsData,
     },
-
     setup() {
         const store = useStore();
         const route = useRouter();

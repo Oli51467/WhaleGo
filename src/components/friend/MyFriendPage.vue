@@ -104,6 +104,7 @@ export default {
 
 img.user-avatar {
     width: 4vh;
+    height: 4vh;
     border-radius: 50%;
 }
 </style>

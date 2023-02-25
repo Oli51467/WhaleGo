@@ -28,8 +28,8 @@ export default {
         }
         // 在页面刷新时将vue里的信息保存到localStorage里
         window.addEventListener('beforeunload', () => {
-            this.$store.gogame.socket.close();
             localStorage.setItem('store', JSON.stringify(this.$store.state));
+            this.$store.gogame.socket.close();
         })
         let socket = null;
         const goSocketUrl = `${WS_URL}/${this.$store.state.user.token}/`;

@@ -4,7 +4,7 @@
 
             <div class="col-3">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body" style="text-align: center;">
                         <img class="photo" :src="$store.state.user.avatar" alt="头像">
                         <hr>    
                         <div class="d-grid gap-2 col-4 mx-auto">
@@ -306,8 +306,8 @@ span {
 }
 
 .photo {
-    width: 100%;
-    
+    width: 80%;
+    height: 80%;   
 }
 
 .card {
