@@ -6,14 +6,13 @@
                 <div class="card">
                     <div class="card-body">
                         <img class="photo" :src="$store.state.user.avatar" alt="头像">
-                        <hr>
+                        <hr>    
                         <div class="d-grid gap-2 col-4 mx-auto">
-                            <form>
-                                <label class="btn btn-outline-secondary btn-file">
-                                    更新头像
-                                    <input type="file" style="display: none;" name="photo">
-                                </label>
-                            </form>
+                            <el-upload class="upload-demo" :action="`${API_URL}/user/update/avatar/`" :headers="headers"
+                                :show-file-list=false name="file" :before-upload="beforeAvatarUpload"
+                                :on-success="uploadSuccess">
+                                <el-button type="info" plain>点击上传</el-button>
+                            </el-upload>
                         </div>
                     </div>
                 </div>
@@ -33,19 +32,21 @@
                         <div class="mb-3 row">
                             <label for="phone" class="col-sm-2 col-form-label user-info">手机号</label>
                             <div class="col-sm-4">
-                                <input v-model="phone" type="tel" class="form-control" id="phone" rows="1" maxlength="11"/>
+                                <input v-model="phone" type="tel" class="form-control" id="phone" rows="1" maxlength="11" />
                             </div>
                         </div>
                         <div class="mb-3 row">
                             <label for="profile" class="col-sm-2 col-form-label user-info">个人简介</label>
                             <div class="col-sm-6">
-                                <input v-model="profile" type="text" class="form-control" id="profile" rows="1" maxlength="30"/>
+                                <input v-model="profile" type="text" class="form-control" id="profile" rows="1"
+                                    maxlength="30" />
                             </div>
                         </div>
 
                         <div class="d-grid gap-2 col-2 mx-auto">
-                            <button @click="update_user" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#updateInfo">更新信息</button>
+                            <el-button type="primary" data-bs-toggle="modal" data-bs-target="#updateInfo"
+                                @click="update_user">更新信息</el-button>
+
                         </div>
                         <div class="modal fade" id="updateInfo" tabindex="-1">
                             <div class="modal-dialog modal-sm">
@@ -135,7 +136,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 
@@ -147,15 +147,13 @@ import { Modal } from 'bootstrap/dist/js/bootstrap'
 import { API_URL } from '@/assets/apis/api';
 
 export default {
-    name: " UserInfoView ",
-    components: {
-    },
     setup() {
         const store = useStore();
         let profile = ref("");
         let username = ref("");
         let phone = ref("");
         let error_message = ref("");
+        let fileList = ref([]);
         let updatePassword = reactive({
             old_password: "",
             new_password: "",
@@ -242,11 +240,52 @@ export default {
             updatePassword,
             error_message,
             isSuccess,
+            fileList,
+            API_URL,
             update_user,
             user_info,
             update_password,
             update_message,
+            headers: {
+                Authorization: "Bearer " + store.state.user.token,
+            },
         }
+    },
+
+    methods: {
+        beforeAvatarUpload(file) {
+            const isLt50M = file.size / 1024 / 1024 < 5;
+            const fileType = file.type;
+            const isJPG = fileType === 'image/jpg' || fileType === 'image/jpeg' || fileType === 'image/png'
+            // if (['image/jpeg', 'image/png'].indexOf(file.type) == -1) {
+            //     this.$message.error('上传图片限制为 png、jpeg格式!');
+            //     return false;
+            // }
+            if (!isJPG) {
+                this.$message.error('上传图片的格式只能是 JPG或PNG 格式!')
+                return false
+            }
+            if (!isLt50M) {
+                this.$message.error('上传视频大小不能超过 5MB!');
+                return false;
+            }
+            return true;
+        },
+
+        // 上传成功的回调
+        uploadSuccess(obj) {
+            console.log(obj);
+            if (obj.success) {
+                this.$message.success({
+                    dangerouslyUseHTMLString: true,
+                    message: obj.msg    
+                })
+                this.$store.commit("updateAvatar", obj.url);
+                //this.inputForm.url = obj.url // 后端返给我们的路径
+            } else {
+                this.$message.error('操作失败')
+            }
+        },
     }
 }
 </script>
@@ -268,6 +307,7 @@ span {
 
 .photo {
     width: 100%;
+    
 }
 
 .card {

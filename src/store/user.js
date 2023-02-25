@@ -29,6 +29,9 @@ const UserModule = {
             state.profile = user.profile;
             state.phone = user.phone;
         },
+        updateAvatar(state, avatar) {
+            state.avatar = avatar;
+        },
         logout(state) {
             state.id = "";
             state.username = "";
