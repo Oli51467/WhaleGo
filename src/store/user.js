@@ -56,7 +56,7 @@ const UserModule = {
                 },
                 success(resp) {
                     if (resp.msg === "success") {
-                        context.commit("updateToken", resp.token);  // 登陆成功后更新token
+                        context.commit("updateToken", resp.data);  // 登陆成功后更新token
                         userInfo.success(resp); // 成功的回调函数
                     } else {
                         userInfo.error(resp);   // 失败的回调函数
@@ -78,9 +78,8 @@ const UserModule = {
                 },
                 success(resp) {
                     if (resp.msg === "success") {
-                        console.log("!!", resp);
                         context.commit("updateUserInfo", {          // 更新用户信息 存储到store中
-                            ...resp,    // 解构resp 直接填充到函数的参数列表中
+                            ...resp.data,    // 解构resp 直接填充到函数的参数列表中
                             is_login: true,
                         });
                         data.success(resp);

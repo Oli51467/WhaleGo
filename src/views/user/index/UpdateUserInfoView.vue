@@ -169,9 +169,9 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
-                    profile.value = resp.profile;
-                    username.value = resp.username;
-                    phone.value = resp.phone;
+                    profile.value = resp.data.profile;
+                    username.value = resp.data.username;
+                    phone.value = resp.data.phone;
                 }
             });
         };

@@ -221,8 +221,11 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
+                    console.log(resp);
+                    console.log(resp.msg);
+                    console.log(resp.data);
                     store.commit("updateTerritory", {
-                        territory: resp.territory,
+                        territory: resp.data,
                         show_territory: true,
                     });
                 },
