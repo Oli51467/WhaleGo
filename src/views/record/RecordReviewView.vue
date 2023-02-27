@@ -201,6 +201,7 @@ div.user-avatar {
 
 div.user-avatar>img {
     width: 4vh;
+    height: 4vh;
     border-radius: 10%;
 }
 

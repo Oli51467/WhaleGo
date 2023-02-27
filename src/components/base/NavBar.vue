@@ -122,7 +122,7 @@
         </div>
     </div>
 
-    <ChatBox @open_chat_body="open_chat_body" :show_chat="show_chat"></ChatBox>
+    <ChatBox @open_chat_body="open_chat_body" :show_chat="show_chat" v-if="$store.state.user.is_login"></ChatBox>
 </template>
     
 <script>

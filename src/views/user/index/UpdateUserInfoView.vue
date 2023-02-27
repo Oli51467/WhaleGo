@@ -253,17 +253,14 @@ export default {
     },
 
     methods: {
+        // 上传之前的回调
         beforeAvatarUpload(file) {
             const isLt50M = file.size / 1024 / 1024 < 5;
             const fileType = file.type;
             const isJPG = fileType === 'image/jpg' || fileType === 'image/jpeg' || fileType === 'image/png'
-            // if (['image/jpeg', 'image/png'].indexOf(file.type) == -1) {
-            //     this.$message.error('上传图片限制为 png、jpeg格式!');
-            //     return false;
-            // }
             if (!isJPG) {
                 this.$message.error('上传图片的格式只能是 JPG或PNG 格式!')
-                return false
+                return false;
             }
             if (!isLt50M) {
                 this.$message.error('上传视频大小不能超过 5MB!');
@@ -275,13 +272,12 @@ export default {
         // 上传成功的回调
         uploadSuccess(obj) {
             console.log(obj);
-            if (obj.success) {
+            if (obj.code == 200) {
                 this.$message.success({
                     dangerouslyUseHTMLString: true,
                     message: obj.msg    
                 })
-                this.$store.commit("updateAvatar", obj.url);
-                //this.inputForm.url = obj.url // 后端返给我们的路径
+                this.$store.commit("updateAvatar", obj.data);
             } else {
                 this.$message.error('操作失败')
             }
