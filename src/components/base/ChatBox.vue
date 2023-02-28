@@ -8,12 +8,21 @@
             </div>
             <span class="close" v-on:click="close_chat">✕</span>
         </div>
-        <div class="container">
+        <div class="chat-container">
             <div class="friend-list">
                 <h3>好友列表</h3>
                 <ul>
-                    <li v-for="friend in friends" :key="friend.id" v-on:click="selectFriend(friend)">
-                        {{ friend.name }}
+                    <li v-for="friend in friends" :key="friend.id" :class="{ active: friend.id === selectedFriend.id }"
+                        @click="selectFriend(friend)">
+                        <!-- <img :src="friend.avatar" alt="friend-avatar" /> -->
+                        <div class="friend-info">
+                            <p class="friend-name">{{ friend.name }}</p>
+                            <p class="friend-last-message">{{ friend.lastMessage }}</p>
+                        </div>
+                        <!-- <div class="friend-status">
+                            <p v-if="friend.isOnline" class="online">在线</p>
+                            <p v-else class="offline">离线</p>
+                        </div> -->
                     </li>
                 </ul>
             </div>
@@ -27,9 +36,9 @@
                     </div>
                 </div>
                 <div class="input">
-                    <el-input type="textarea" :rows="4" v-model="chat_msg" class="in" placeholder="Type a message...">
+                    <el-input type="textarea" :rows="4" v-model="messageInput" class="in" placeholder="Type a message...">
                     </el-input>
-                    <el-button type="info" id="send" class="" plain>发送</el-button>
+                    <el-button type="info" id="send" class="" plain @click="sendMessage">发送</el-button>
                 </div>
 
             </div>
@@ -80,9 +89,60 @@ export default {
                         { id: 5, content: 'I\'m good too.', type: 'sent' },
                     ],
                 },
-                { id: 2, name: 'Bob', messages: ["hello"] },
-                { id: 3, name: 'Charlie', messages: ["2312"] },
-                { id: 4, name: 'David', messages: [] },
+                {
+                    id: 2, name: 'Bob', messages: [
+                        { id: 1, content: 'Hello!', type: 'sent' },
+                        { id: 2, content: 'Hi there!', type: 'received' },
+                        { id: 3, content: 'How are you?', type: 'sent' },
+                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
+                        { id: 5, content: 'I\'m good too.', type: 'sent' },
+                    ],
+                },
+                {
+                    id: 3, name: 'Mike', messages: [
+                        { id: 1, content: 'Hello!', type: 'sent' },
+                        { id: 2, content: 'Hi there!', type: 'received' },
+                        { id: 3, content: 'How are you?', type: 'sent' },
+                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
+                        { id: 5, content: 'I\'m good too.', type: 'sent' },
+                    ],
+                },
+                {
+                    id: 4, name: 'Kay', messages: [
+                        { id: 1, content: 'Hello!', type: 'sent' },
+                        { id: 2, content: 'Hi there!', type: 'received' },
+                        { id: 3, content: 'How are you?', type: 'sent' },
+                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
+                        { id: 5, content: 'I\'m good too.', type: 'sent' },
+                    ],
+                },
+                {
+                    id: 5, name: 'Porter', messages: [
+                        { id: 1, content: 'Hello!', type: 'sent' },
+                        { id: 2, content: 'Hi there!', type: 'received' },
+                        { id: 3, content: 'How are you?', type: 'sent' },
+                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
+                        { id: 5, content: 'I\'m good too.', type: 'sent' },
+                    ],
+                },
+                {
+                    id: 6, name: 'Lisa', messages: [
+                        { id: 1, content: 'Hello!', type: 'sent' },
+                        { id: 2, content: 'Hi there!', type: 'received' },
+                        { id: 3, content: 'How are you?', type: 'sent' },
+                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
+                        { id: 5, content: 'I\'m good too.', type: 'sent' },
+                    ],
+                },
+                {
+                    id: 7, name: 'Kevin', messages: [
+                        { id: 1, content: 'Hello!', type: 'sent' },
+                        { id: 2, content: 'Hi there!', type: 'received' },
+                        { id: 3, content: 'How are you?', type: 'sent' },
+                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
+                        { id: 5, content: 'I\'m good too.', type: 'sent' },
+                    ],
+                },
             ],
             selectedFriend: { id: null, name: null, messages: [] },
             messageInput: '',
@@ -97,9 +157,7 @@ export default {
                 this.selectedFriend.messages.push({ id: this.selectedFriend.messages.length + 1, content: this.messageInput, type: 'sent' });
                 this.messageInput = '';
                 // scroll to bottom of messages
-                this.$nextTick(() => {
-                    this.$refs.window.querySelector('.messages').scrollTop = this.$refs.window.querySelector('.messages').scrollHeight;
-                });
+                this.$refs.window.querySelector('.messages').scrollTop = this.$refs.window.querySelector('.messages').scrollHeight;
             }
         }
     }
@@ -109,6 +167,7 @@ export default {
 <style scoped>
 * {
     padding: 0px 0px 0px 0px;
+    box-sizing: border-box;
 }
 
 .chat {
@@ -135,30 +194,6 @@ img {
     height: 30px;
 }
 
-/* .messages {
-    overflow-y: scroll;
-    height: 205px;
-    padding: 10px;
-    margin-top: -25px;
-    background-color: rgba(206, 201, 201, 0.2);
-}
-
-.message {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f7f7f7;
-}
-
-.message.sent {
-    text-align: right;
-}
-
-.message.received {
-    text-align: left;
-} */
-
 .header {
     display: flex;
     justify-content: flex-end;
@@ -183,7 +218,7 @@ img {
     background-color: rgba(98, 34, 34, 0.7);
 }
 
-.container {
+.chat-container {
     display: flex;
     height: 92%;
 }
@@ -193,6 +228,8 @@ img {
     border-right: 1px solid #ccc;
     background-color: rgba(166, 159, 159, 0.2);
     text-align: center;
+    overflow-y: scroll;
+    height: 100%;
 }
 
 .friend-list ul {
@@ -234,21 +271,23 @@ img {
     flex: 1;
     overflow-y: scroll;
     padding: 10px;
+    display: inline-block;
 }
 
 .message {
     padding: 5px;
     margin-bottom: 5px;
     border-radius: 5px;
+    white-space: pre-wrap;
 }
 
 .message.sent {
-    background-color: #f7f7f7;
+    background-color: rgba(120, 178, 223, 0.4);
     text-align: right;
 }
 
 .message.received {
-    background-color: #fff;
+    background-color: #f7f7f7;
     text-align: left;
 }
 
