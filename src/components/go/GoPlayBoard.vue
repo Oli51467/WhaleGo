@@ -215,19 +215,18 @@ export default {
                 url: `${API_URL}/board/territory/`,
                 type: "get",
                 data: {
-                    room_id: "1",
+                    room_id: store.state.gogame.room_id,
                 },
                 headers: {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
+                    if (resp.code == 10001) return;
                     console.log(resp);
-                    console.log(resp.msg);
-                    console.log(resp.data);
-                    store.commit("updateTerritory", {
-                        territory: resp.data,
-                        show_territory: true,
-                    });
+                    // store.commit("updateTerritory", {
+                    //     territory: resp.data,
+                    //     show_territory: true,
+                    // });
                 },
                 error(err) {
                     console.log(err);

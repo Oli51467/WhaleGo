@@ -43,7 +43,7 @@
                 <div class="input">
                     <el-input type="textarea" :rows="4" v-model="messageInput" class="in" placeholder="Type a message...">
                     </el-input>
-                    <el-button type="info" id="send" class="" plain @click="sendMessage">发送</el-button>
+                    <el-button type="info" id="send" class="" plain @click="sendMessage" :disabled="selectedFriend.id == null ? true : false">发送</el-button>
                 </div>
 
             </div>
@@ -74,27 +74,26 @@ export default {
         let friends = ref([]);
         onMounted(() => {
             new ChatBody(chat_body.value);
+            const getFriendsAndMessages = setInterval(() => {
+                $.ajax({
+                    url: `${API_URL}/messages/get/`,
+                    type: "get",
+                    data: {
+                        user_id: store.state.user.id,
+                    },
+                    headers: {
+                        Authorization: "Bearer " + store.state.user.token,
+                    },
+                    success(resp) {
+                        friends.value = resp.data.friends;
+                    },
+                    error(err) {
+                        console.log(err);
+                        clearInterval(getFriendsAndMessages);
+                    }
+                })
+            }, 1000);
         });
-
-        const getFriendsAndMessages = setInterval(() => {
-            $.ajax({
-                url: `${API_URL}/messages/get/`,
-                type: "get",
-                data: {
-                    user_id: store.state.user.id,
-                },
-                headers: {
-                    Authorization: "Bearer " + store.state.user.token,
-                },
-                success(resp) {
-                    friends.value = resp.data.friends;
-                },
-                error(err) {
-                    console.log(err);
-                    clearInterval(getFriendsAndMessages);
-                }
-            })
-        }, 1000);
 
         const close_chat = () => {
             context.emit("open_chat_body");
@@ -105,7 +104,6 @@ export default {
             chat_msg,
             friends,
             close_chat,
-            getFriendsAndMessages,
         }
     },
 
@@ -119,11 +117,11 @@ export default {
         selectFriend(friend) {
             this.selectedFriend = friend;
         },
-        sendMessage () {
+        sendMessage() {
             if (this.messageInput.trim() !== '') {
                 let to_id = this.selectedFriend.id;
                 let my_id = this.$store.state.user.id;
-                this.selectedFriend.messages.push({ id: this.selectedFriend.messages.length + 1, content: this.messageInput, sendUserId: my_id});
+                this.selectedFriend.messages.push({ id: this.selectedFriend.messages.length + 1, content: this.messageInput, sendUserId: my_id });
                 this.$refs.chat_body.querySelector('.messages').scrollTop = this.$refs.chat_body.querySelector('.messages').scrollHeight;
                 $.ajax({
                     url: `${API_URL}/messages/send/`,
