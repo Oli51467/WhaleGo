@@ -31,8 +31,13 @@
                     <h3>{{ selectedFriend.name }}</h3>
                 </div>
                 <div class="messages">
-                    <div class="message" v-for="message in selectedFriend.messages" :key="message.id" :class="message.type">
-                        {{ message.content }}
+                    <div class="message" v-for="message in selectedFriend.messages" :key="message.id"
+                        v-bind:class="message.sendUserId == $store.state.user.id ? 'sent' : 'received'">
+                        <span>{{ message.content }} </span>
+                        <!-- <div class="d-flex mb-3">
+                            <span class="me-auto p-2">{{ message.content }}</span>
+                            <span class="p-2">{{ message.sendTime }}</span>
+                        </div> -->
                     </div>
                 </div>
                 <div class="input">
@@ -49,6 +54,9 @@
 <script>
 import { onMounted, ref } from 'vue';
 import { ChatBody } from '@/assets/scripts/ChatBody.js';
+import $ from 'jquery';
+import { API_URL } from '@/assets/apis/api';
+import { useStore } from 'vuex';
 
 export default {
     emits: ['open_chat_body'],
@@ -60,11 +68,33 @@ export default {
     },
 
     setup(props, context) {
+        const store = useStore();
         let chat_body = ref(null);
         let chat_msg = ref("");
+        let friends = ref([]);
         onMounted(() => {
             new ChatBody(chat_body.value);
         });
+
+        const getFriendsAndMessages = setInterval(() => {
+            $.ajax({
+                url: `${API_URL}/messages/get/`,
+                type: "get",
+                data: {
+                    user_id: store.state.user.id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    friends.value = resp.data.friends;
+                },
+                error(err) {
+                    console.log(err);
+                    clearInterval(getFriendsAndMessages);
+                }
+            })
+        }, 1000);
 
         const close_chat = () => {
             context.emit("open_chat_body");
@@ -73,77 +103,14 @@ export default {
         return {
             chat_body,
             chat_msg,
+            friends,
             close_chat,
+            getFriendsAndMessages,
         }
     },
 
     data() {
         return {
-            friends: [
-                {
-                    id: 1, name: 'Alice', messages: [
-                        { id: 1, content: 'Hello!', type: 'sent' },
-                        { id: 2, content: 'Hi there!', type: 'received' },
-                        { id: 3, content: 'How are you?', type: 'sent' },
-                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
-                        { id: 5, content: 'I\'m good too.', type: 'sent' },
-                    ],
-                },
-                {
-                    id: 2, name: 'Bob', messages: [
-                        { id: 1, content: 'Hello!', type: 'sent' },
-                        { id: 2, content: 'Hi there!', type: 'received' },
-                        { id: 3, content: 'How are you?', type: 'sent' },
-                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
-                        { id: 5, content: 'I\'m good too.', type: 'sent' },
-                    ],
-                },
-                {
-                    id: 3, name: 'Mike', messages: [
-                        { id: 1, content: 'Hello!', type: 'sent' },
-                        { id: 2, content: 'Hi there!', type: 'received' },
-                        { id: 3, content: 'How are you?', type: 'sent' },
-                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
-                        { id: 5, content: 'I\'m good too.', type: 'sent' },
-                    ],
-                },
-                {
-                    id: 4, name: 'Kay', messages: [
-                        { id: 1, content: 'Hello!', type: 'sent' },
-                        { id: 2, content: 'Hi there!', type: 'received' },
-                        { id: 3, content: 'How are you?', type: 'sent' },
-                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
-                        { id: 5, content: 'I\'m good too.', type: 'sent' },
-                    ],
-                },
-                {
-                    id: 5, name: 'Porter', messages: [
-                        { id: 1, content: 'Hello!', type: 'sent' },
-                        { id: 2, content: 'Hi there!', type: 'received' },
-                        { id: 3, content: 'How are you?', type: 'sent' },
-                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
-                        { id: 5, content: 'I\'m good too.', type: 'sent' },
-                    ],
-                },
-                {
-                    id: 6, name: 'Lisa', messages: [
-                        { id: 1, content: 'Hello!', type: 'sent' },
-                        { id: 2, content: 'Hi there!', type: 'received' },
-                        { id: 3, content: 'How are you?', type: 'sent' },
-                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
-                        { id: 5, content: 'I\'m good too.', type: 'sent' },
-                    ],
-                },
-                {
-                    id: 7, name: 'Kevin', messages: [
-                        { id: 1, content: 'Hello!', type: 'sent' },
-                        { id: 2, content: 'Hi there!', type: 'received' },
-                        { id: 3, content: 'How are you?', type: 'sent' },
-                        { id: 4, content: 'I\'m doing well, thanks. How about you?', type: 'received' },
-                        { id: 5, content: 'I\'m good too.', type: 'sent' },
-                    ],
-                },
-            ],
             selectedFriend: { id: null, name: null, messages: [] },
             messageInput: '',
         }
@@ -152,12 +119,31 @@ export default {
         selectFriend(friend) {
             this.selectedFriend = friend;
         },
-        sendMessage() {
+        sendMessage () {
             if (this.messageInput.trim() !== '') {
-                this.selectedFriend.messages.push({ id: this.selectedFriend.messages.length + 1, content: this.messageInput, type: 'sent' });
+                let to_id = this.selectedFriend.id;
+                let my_id = this.$store.state.user.id;
+                this.selectedFriend.messages.push({ id: this.selectedFriend.messages.length + 1, content: this.messageInput, sendUserId: my_id});
+                this.$refs.chat_body.querySelector('.messages').scrollTop = this.$refs.chat_body.querySelector('.messages').scrollHeight;
+                $.ajax({
+                    url: `${API_URL}/messages/send/`,
+                    type: "post",
+                    data: {
+                        user_id: this.$store.state.user.id,
+                        to_id: to_id,
+                        message: this.messageInput,
+                    },
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.user.token,
+                    },
+                    success(resp) {
+                        console.log(resp.code);
+                    },
+                    error(err) {
+                        console.log(err);
+                    }
+                })
                 this.messageInput = '';
-                // scroll to bottom of messages
-                this.$refs.window.querySelector('.messages').scrollTop = this.$refs.window.querySelector('.messages').scrollHeight;
             }
         }
     }
