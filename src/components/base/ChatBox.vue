@@ -1,8 +1,8 @@
 <template>
     <div class="chat" ref="chat_body" v-show="show_chat">
-        <div class="header">
+        <div class="header" ref="chat_header">
             <div class="pull-left">
-                <img src="@/assets/images/chat_logo.png" class="chat_logo"/>
+                <img src="@/assets/images/chat_logo.png" class="chat_logo" />
                 &nbsp;
                 <span>聊天</span>
             </div>
@@ -16,7 +16,7 @@
                         @click="selectFriend(friend)">
                         <div class="row">
                             <div class="col-4">
-                                <img :src="friend.avatar" alt="friend-avatar" class="friend-list-avatar"/>
+                                <img :src="friend.avatar" alt="friend-avatar" class="friend-list-avatar" />
                             </div>
                             <div class="col-4">
                                 <div class="friend-info">
@@ -41,19 +41,14 @@
                     <div class="message" v-for="message in selectedFriend.messages" :key="message.id"
                         v-bind:class="message.sendUserId == $store.state.user.id ? 'sent' : 'received'">
                         &nbsp;<img :src="selectedFriend.avatar" alt="friend-avatar"
-                            v-if="message.sendUserId != $store.state.user.id" class="friend-chat-avatar"/> &nbsp;&nbsp;
+                            v-if="message.sendUserId != $store.state.user.id" class="friend-chat-avatar" /> &nbsp;&nbsp;
                         <div class="message-content">{{ message.content }} </div>
                         <img :src="$store.state.user.avatar" alt="friend-avatar"
-                            v-if="message.sendUserId == $store.state.user.id" class="friend-chat-avatar"/>
-
-                        <!-- <div class="d-flex mb-3">
-                            <span class="me-auto p-2">{{ message.content }}</span>
-                            <span class="p-2">{{ message.sendTime }}</span>
-                        </div> -->
+                            v-if="message.sendUserId == $store.state.user.id" class="friend-chat-avatar" />
                     </div>
                 </div>
                 <div class="input">
-                    <el-input type="textarea" :rows="4" v-model="messageInput" class="in" placeholder="Type a message...">
+                    <el-input type="textarea" :rows="4" v-model="messageInput" class="in" placeholder="来聊天吧...">
                     </el-input>
                     <el-button type="info" id="send" class="" plain @click="sendMessage"
                         :disabled="selectedFriend.id == null ? true : false">发送</el-button>
@@ -83,10 +78,11 @@ export default {
     setup(props, context) {
         const store = useStore();
         let chat_body = ref(null);
+        let chat_header = ref(null);
         let chat_msg = ref("");
         let friends = ref([]);
         onMounted(() => {
-            new ChatBody(chat_body.value);
+            new ChatBody(chat_body.value, chat_header.value);
             const getFriendsAndMessages = setInterval(() => {
                 $.ajax({
                     url: `${API_URL}/messages/get/`,
@@ -114,6 +110,7 @@ export default {
 
         return {
             chat_body,
+            chat_header,
             chat_msg,
             friends,
             close_chat,
@@ -176,7 +173,7 @@ export default {
     border-radius: 5px;
     top: 20%;
     left: 20%;
-    box-shadow: 2px 2px 2px rgba(215, 207, 207, 0.7);
+    box-shadow: 1px 1px 1px rgba(130, 121, 121, 0.8);
     z-index: 999;
 }
 
@@ -261,7 +258,7 @@ export default {
     align-items: center;
     height: 50px;
     border-bottom: 1px solid #ccc;
-    background-color: #f7f7f7;
+    background-color: rgba(146, 152, 152, 0.1);
 }
 
 .messages {
@@ -316,7 +313,7 @@ export default {
     border-radius: 5px;
 }
 
-.friend-chat-avatar{
+.friend-chat-avatar {
     width: 4vh;
     height: 4vh;
     border-radius: 50%;
@@ -332,6 +329,7 @@ export default {
     display: flex;
     align-items: center;
     margin-right: 10px;
+    margin-top: 10px;
 }
 
 .online::before {
@@ -339,7 +337,7 @@ export default {
     display: inline-block;
     width: 8px;
     height: 8px;
-    background-color: green;
+    background-color: rgb(22, 207, 22);
     border-radius: 50%;
     margin-right: 5px;
 }
@@ -355,6 +353,7 @@ export default {
 }
 
 .friend-name {
+    margin-top: 10px;
     font-weight: bold;
 }
 </style>
