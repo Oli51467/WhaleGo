@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <router-link class="navbar-brand title" :to="{ name: 'goplay' }">AI Space</router-link>
+            <router-link class="navbar-brand title" :to="{ name: 'goplay' }">棋礧</router-link>
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item nv">
@@ -250,7 +250,7 @@ img {
 }
 
 .title {
-    margin-left: -2vw;
+    margin-left: 5vw;
 }
 
 .search {

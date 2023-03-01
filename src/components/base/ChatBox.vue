@@ -2,7 +2,7 @@
     <div class="chat" ref="chat_body" v-show="show_chat">
         <div class="header">
             <div class="pull-left">
-                <img src="@/assets/images/chat_logo.png" />
+                <img src="@/assets/images/chat_logo.png" class="chat_logo"/>
                 &nbsp;
                 <span>聊天</span>
             </div>
@@ -14,15 +14,22 @@
                 <ul>
                     <li v-for="friend in friends" :key="friend.id" :class="{ active: friend.id === selectedFriend.id }"
                         @click="selectFriend(friend)">
-                        <!-- <img :src="friend.avatar" alt="friend-avatar" /> -->
-                        <div class="friend-info">
-                            <p class="friend-name">{{ friend.name }}</p>
-                            <p class="friend-last-message">{{ friend.lastMessage }}</p>
+                        <div class="row">
+                            <div class="col-4">
+                                <img :src="friend.avatar" alt="friend-avatar" class="friend-list-avatar"/>
+                            </div>
+                            <div class="col-4">
+                                <div class="friend-info">
+                                    <p class="friend-name">{{ friend.name }}</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="friend-status">
+                                    <p v-if="friend.isOnline" class="online">在线</p>
+                                    <p v-else class="offline">离线</p>
+                                </div>
+                            </div>
                         </div>
-                        <!-- <div class="friend-status">
-                            <p v-if="friend.isOnline" class="online">在线</p>
-                            <p v-else class="offline">离线</p>
-                        </div> -->
                     </li>
                 </ul>
             </div>
@@ -33,7 +40,12 @@
                 <div class="messages">
                     <div class="message" v-for="message in selectedFriend.messages" :key="message.id"
                         v-bind:class="message.sendUserId == $store.state.user.id ? 'sent' : 'received'">
-                        <span>{{ message.content }} </span>
+                        &nbsp;<img :src="selectedFriend.avatar" alt="friend-avatar"
+                            v-if="message.sendUserId != $store.state.user.id" class="friend-chat-avatar"/> &nbsp;&nbsp;
+                        <div class="message-content">{{ message.content }} </div>
+                        <img :src="$store.state.user.avatar" alt="friend-avatar"
+                            v-if="message.sendUserId == $store.state.user.id" class="friend-chat-avatar"/>
+
                         <!-- <div class="d-flex mb-3">
                             <span class="me-auto p-2">{{ message.content }}</span>
                             <span class="p-2">{{ message.sendTime }}</span>
@@ -43,7 +55,8 @@
                 <div class="input">
                     <el-input type="textarea" :rows="4" v-model="messageInput" class="in" placeholder="Type a message...">
                     </el-input>
-                    <el-button type="info" id="send" class="" plain @click="sendMessage" :disabled="selectedFriend.id == null ? true : false">发送</el-button>
+                    <el-button type="info" id="send" class="" plain @click="sendMessage"
+                        :disabled="selectedFriend.id == null ? true : false">发送</el-button>
                 </div>
 
             </div>
@@ -109,7 +122,7 @@ export default {
 
     data() {
         return {
-            selectedFriend: { id: null, name: null, messages: [] },
+            selectedFriend: { id: null, name: null, avatar: null, messages: [] },
             messageInput: '',
         }
     },
@@ -173,7 +186,7 @@ export default {
     height: 50px;
 }
 
-img {
+.chat_logo {
     width: 30px;
     height: 30px;
 }
@@ -255,24 +268,34 @@ img {
     flex: 1;
     overflow-y: scroll;
     padding: 10px;
-    display: inline-block;
 }
 
 .message {
-    padding: 5px;
-    margin-bottom: 5px;
-    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+}
+
+.message-content {
+    max-width: 85%;
+    word-wrap: break-word;
     white-space: pre-wrap;
 }
 
 .message.sent {
-    background-color: rgba(120, 178, 223, 0.4);
-    text-align: right;
+    justify-content: flex-end;
+    margin-left: 50%;
+    border-radius: 5px;
+    background-color: rgba(110, 181, 235, 0.4);
 }
 
 .message.received {
+    justify-content: flex-start;
+    margin-right: 50%;
+    border-radius: 5px;
     background-color: #f7f7f7;
-    text-align: left;
 }
 
 .input {
@@ -291,5 +314,47 @@ img {
     padding: 10px;
     border: none;
     border-radius: 5px;
+}
+
+.friend-chat-avatar{
+    width: 4vh;
+    height: 4vh;
+    border-radius: 50%;
+}
+
+.friend-list-avatar {
+    width: 4vh;
+    height: 4vh;
+    border-radius: 50%;
+}
+
+.friend-status {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.online::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: green;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.offline::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: gray;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.friend-name {
+    font-weight: bold;
 }
 </style>
