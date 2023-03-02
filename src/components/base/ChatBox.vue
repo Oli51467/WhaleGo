@@ -63,8 +63,10 @@
 import { onMounted, ref } from 'vue';
 import { ChatBody } from '@/assets/scripts/ChatBody.js';
 import $ from 'jquery';
-import { API_URL } from '@/assets/apis/api';
+import { API_URL, WS_URL } from '@/assets/apis/api';
 import { useStore } from 'vuex';
+
+export let selectedFriend = ref({ id: null, name: null, avatar: null, messages: [] });
 
 export default {
     emits: ['open_chat_body'],
@@ -77,82 +79,79 @@ export default {
 
     setup(props, context) {
         const store = useStore();
+        const socketUrl = `${WS_URL}/${store.state.user.token}`;
         let chat_body = ref(null);
         let chat_header = ref(null);
         let chat_msg = ref("");
         let friends = ref([]);
+        let messageInput = ref('');
+        let socket = null;
         onMounted(() => {
             new ChatBody(chat_body.value, chat_header.value);
-            const getFriendsAndMessages = setInterval(() => {
-                $.ajax({
-                    url: `${API_URL}/messages/get/`,
-                    type: "get",
-                    data: {
-                        user_id: store.state.user.id,
-                    },
-                    headers: {
-                        Authorization: "Bearer " + store.state.user.token,
-                    },
-                    success(resp) {
-                        friends.value = resp.data.friends;
-                    },
-                    error(err) {
-                        console.log(err);
-                        clearInterval(getFriendsAndMessages);
-                    }
-                })
-            }, 1000);
+            $.ajax({
+                url: `${API_URL}/messages/get/`,
+                type: "get",
+                data: {
+                    user_id: store.state.user.id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    friends.value = resp.data.friends;
+                },
+                error(err) {
+                    console.log(err);
+                }
+            });
         });
 
         const close_chat = () => {
             context.emit("open_chat_body");
         }
 
+        const sendMessage = () => {
+            if (messageInput.value.trim() !== '') {
+                let to_id = selectedFriend.value.id;
+                let my_id = store.state.user.id;
+                selectedFriend.value.messages.push({ id: selectedFriend.value.messages.length + 1, content: messageInput.value, sendUserId: my_id });
+                scroll();
+                socket = store.state.gogame.socket;
+                if (null == socket) {
+                    socket = new WebSocket(socketUrl);
+                    store.commit("updateSocket", socket);
+                }
+                socket.send(JSON.stringify({
+                    event: "chat",
+                    send_id: my_id,
+                    to_id: to_id,
+                    msg: messageInput.value,
+                }));
+                messageInput.value = '';
+            }
+        }
+
+        const selectFriend = (friend) => {
+            selectedFriend.value = friend;
+        }
+
         return {
             chat_body,
+            socketUrl,
+            messageInput,
+            selectedFriend,
             chat_header,
             chat_msg,
             friends,
             close_chat,
+            sendMessage,
+            selectFriend,
         }
     },
 
-    data() {
-        return {
-            selectedFriend: { id: null, name: null, avatar: null, messages: [] },
-            messageInput: '',
-        }
-    },
     methods: {
-        selectFriend(friend) {
-            this.selectedFriend = friend;
-        },
-        sendMessage() {
-            if (this.messageInput.trim() !== '') {
-                let to_id = this.selectedFriend.id;
-                let my_id = this.$store.state.user.id;
-                this.selectedFriend.messages.push({ id: this.selectedFriend.messages.length + 1, content: this.messageInput, sendUserId: my_id });
-                this.$refs.chat_body.querySelector('.messages').scrollTop = this.$refs.chat_body.querySelector('.messages').scrollHeight;
-                $.ajax({
-                    url: `${API_URL}/messages/send/`,
-                    type: "post",
-                    data: {
-                        user_id: this.$store.state.user.id,
-                        to_id: to_id,
-                        message: this.messageInput,
-                    },
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.user.token,
-                    },
-                    success(resp) {
-                        console.log(resp.code);
-                    },
-                    error(err) {
-                        console.log(err);
-                    }
-                })
-                this.messageInput = '';
-            }
+        scroll() {
+            this.$refs.chat_body.querySelector('.messages').scrollTop = this.$refs.chat_body.querySelector('.messages').scrollHeight;
         }
     }
 }

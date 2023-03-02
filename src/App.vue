@@ -13,6 +13,7 @@ import { request_draw_eb, request_regret_eb } from './components/go/GoPlayBoard.
 import { go_resign } from './components/go/GoPlayBoard.vue';
 import { ElMessageBox } from 'element-plus';
 import { WS_URL } from './assets/apis/api';
+import { selectedFriend } from '@/components/base/ChatBox.vue';
 
 export default {
     components: {
@@ -32,16 +33,23 @@ export default {
             this.$store.gogame.socket.close();
         })
         let socket = null;
-        const goSocketUrl = `${WS_URL}/${this.$store.state.user.token}/`;
+        const socketUrl = `${WS_URL}/${this.$store.state.user.token}/`;
         const store = this.$store;
         const play_request = ElMessageBox;
-        socket = new WebSocket(goSocketUrl);
+        socket = new WebSocket(socketUrl);
         socket.onopen = () => {
             console.log("GoGame Socket Connnected!");
             store.commit("updateSocket", socket);
         }
         socket.onmessage = msg => {
             const data = JSON.parse(msg.data);
+            if (data.event === 'chat') {
+                selectedFriend.value.messages.push({
+                    id: data.id,
+                    content: data.content,
+                    sendUserId: data.sendUserId,
+                });
+            }
             if (data.event === "start") {
                 const roomId = data.game.room_id;
                 router.push({
