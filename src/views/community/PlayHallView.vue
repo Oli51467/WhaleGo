@@ -5,7 +5,7 @@
             <hr />
         </div>
         <el-empty description="没有人在下棋" v-if="show_blank == true">
-            <el-button type="success">去下棋！</el-button>
+            <el-button type="success" @click="play">去下棋！</el-button>
         </el-empty>
         <div v-else>
             <table class="table table-striped table-hover" style="text-align:center">
@@ -118,10 +118,15 @@ export default {
             })
         }
 
+        const play = () => {
+            router.replace({ name: 'goplay' });
+        }
+
         return {
             games,
             show_blank,
             watch_game,
+            play,
         }
     }
 }
