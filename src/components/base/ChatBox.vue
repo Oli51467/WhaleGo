@@ -37,7 +37,7 @@
                 <div class="title_header">
                     <h3>{{ selectedFriend.name }}</h3>
                 </div>
-                <div class="messages">
+                <div class="messages" ref="messages">
                     <div class="message" v-for="message in selectedFriend.messages" :key="message.id"
                         v-bind:class="message.sendUserId == $store.state.user.id ? 'sent' : 'received'">
                         &nbsp;<img :src="selectedFriend.avatar" alt="friend-avatar"
@@ -80,6 +80,7 @@ export default {
     setup(props, context) {
         const store = useStore();
         const socketUrl = `${WS_URL}/${store.state.user.token}`;
+        let messages = ref(null);
         let chat_body = ref(null);
         let chat_header = ref(null);
         let chat_msg = ref("");
@@ -135,6 +136,11 @@ export default {
             selectedFriend.value = friend;
         }
 
+        const scroll = () => {
+            messages.value.scrollTop = messages.value.scrollHeight;
+        }
+
+
         return {
             chat_body,
             socketUrl,
@@ -143,17 +149,13 @@ export default {
             chat_header,
             chat_msg,
             friends,
+            messages,
             close_chat,
             sendMessage,
+            scroll,
             selectFriend,
         }
     },
-
-    methods: {
-        scroll() {
-            this.$refs.chat_body.querySelector('.messages').scrollTop = this.$refs.chat_body.querySelector('.messages').scrollHeight;
-        }
-    }
 }
 </script>
 
@@ -263,7 +265,7 @@ export default {
 .messages {
     flex: 1;
     overflow-y: scroll;
-    padding: 10px;
+    padding: 20px;
 }
 
 .message {
@@ -321,6 +323,7 @@ export default {
 .friend-list-avatar {
     width: 4vh;
     height: 4vh;
+    margin-top: 7px;
     border-radius: 50%;
 }
 
