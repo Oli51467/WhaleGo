@@ -48,9 +48,9 @@
                     </div>
                 </div>
                 <div class="input">
-                    <el-input type="textarea" :rows="4" v-model="messageInput" class="in" placeholder="来聊天吧...">
+                    <el-input type="textarea" :rows="4" v-model="messageInput" placeholder="来聊天吧...">
                     </el-input>
-                    <el-button type="info" id="send" class="" plain @click="sendMessage"
+                    <el-button type="info" id="send" plain @click="sendMessage"
                         :disabled="selectedFriend.id == null ? true : false">发送</el-button>
                 </div>
 

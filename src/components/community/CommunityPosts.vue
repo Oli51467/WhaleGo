@@ -37,7 +37,7 @@
                             <el-button type="text" @click="click_comment(post)">评论</el-button>
                         </div>
                     </div>
-                    <CommentArea v-if="show_comment_post_set.has(post.id)"></CommentArea>
+                    <CommentArea v-if="show_comment_post_set.has(post.id)" :post_id="post.id"></CommentArea>
                 </div>
             </div>
         </div>
@@ -79,7 +79,7 @@
 import { API_URL } from '@/assets/apis/api';
 import $ from 'jquery';
 import { useStore } from 'vuex';
-import { reactive, ref} from 'vue';
+import { reactive, ref } from 'vue';
 import { Modal } from 'bootstrap/dist/js/bootstrap';
 import CommentArea from './CommentArea.vue';
 
@@ -247,7 +247,7 @@ img {
 }
 
 .not-top-post {
-    margin-top:3vh;
+    margin-top: 3vh;
 }
 
 div.error_message {
@@ -259,6 +259,7 @@ div.error_message {
     margin-right: 1vw;
     box-shadow: 2px 2px 2px #b9b9b9;
 }
+
 .comment-button {
     font-size: medium;
     padding: 0px 0px 0px 0px;
