@@ -22,6 +22,7 @@ export default {
 .container {
     margin-top: 3vh;
     margin-bottom: 3vh;
+    width: 65%;
 }
 
 .card-body {

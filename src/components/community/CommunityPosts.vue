@@ -1,7 +1,11 @@
 <template>
     <el-skeleton :loading="loading" :rows="6" animated></el-skeleton>
+    <div class="d-flex flex-row-reverse">
+        <button type="button" class="btn btn-sm btn-outline-success op" data-bs-toggle="modal" data-bs-target="#postapost"
+            v-if="!loading">发新鲜事</button>
+    </div>
     <div class="card-body" v-if="!show_blank">
-        <div v-for="post in posts" :key="post.id" style="margin-top:3vh" :id="'post_id_' + post.id">
+        <div v-for="(post, i) in posts" :key="post.id" :class="i === 0 ? '' : 'not-top-post'" :id="'post_id_' + post.id">
             <div class="card post-card">
                 <div class="card-body">
                     <div class="row">
@@ -26,10 +30,14 @@
                             <img src="@/assets/images/gray_star.png" v-if="post.liked == 'false'"
                                 @click="star_a_post(post)">&nbsp;
                             <img src="@/assets/images/red_star.png" v-else @click="unstar_a_post(post)">&nbsp;
-                            <span v-if="post.stars != 0">{{ post.stars }}</span>
-                            <span v-else>赞</span>
+                            <el-button type="text" v-if="post.stars != 0">{{ post.stars }}</el-button>
+                            <el-button type="text" v-else>赞</el-button>
+                        </div>
+                        <div class="comment-button">
+                            <el-button type="text" @click="click_comment(post)">评论</el-button>
                         </div>
                     </div>
+                    <CommentArea v-if="show_comment_post_set.has(post.id)"></CommentArea>
                 </div>
             </div>
         </div>
@@ -71,10 +79,15 @@
 import { API_URL } from '@/assets/apis/api';
 import $ from 'jquery';
 import { useStore } from 'vuex';
-import { reactive } from 'vue';
+import { reactive, ref} from 'vue';
 import { Modal } from 'bootstrap/dist/js/bootstrap';
+import CommentArea from './CommentArea.vue';
+
 export default {
     emits: ['pull_all_posts'],
+    components: {
+        CommentArea,
+    },
     props: {
         posts: {
             type: Object,
@@ -97,6 +110,8 @@ export default {
             content: "",
             error_message: "",
         })
+        let show_comment_post_set = ref(new Set());
+
         const star_a_post = (post) => {
             $.ajax({
                 url: `${API_URL}/post/star/`,
@@ -167,11 +182,19 @@ export default {
             })
         }
 
+        const click_comment = (post) => {
+            const click_comment_post_id = post.id;
+            if (show_comment_post_set.value.has(click_comment_post_id)) show_comment_post_set.value.delete(click_comment_post_id);
+            else show_comment_post_set.value.add(click_comment_post_id);
+        }
+
         return {
+            add_post,
+            show_comment_post_set,
             star_a_post,
             unstar_a_post,
             post_a_post,
-            add_post,
+            click_comment,
         }
     }
 }
@@ -186,6 +209,7 @@ export default {
 
 .hr {
     color: rgb(166, 163, 163, 0.5);
+    padding: 0px 0px 0px 0px;
 }
 
 .content {
@@ -222,8 +246,26 @@ img {
     cursor: pointer;
 }
 
+.not-top-post {
+    margin-top:3vh;
+}
+
 div.error_message {
     font-weight: 700;
     color: red;
+}
+
+.op {
+    margin-right: 1vw;
+    box-shadow: 2px 2px 2px #b9b9b9;
+}
+.comment-button {
+    font-size: medium;
+    padding: 0px 0px 0px 0px;
+}
+
+.stars {
+    font-size: medium;
+    padding: 0px 0px 0px 0px;
 }
 </style>
