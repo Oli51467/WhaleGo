@@ -2,7 +2,7 @@
     <div class="comment">
         <div class="row">
             <div class="col-2 comment-count">
-                <span>0 评论</span>
+                <span>{{ comments_count }} &nbsp;评论</span>
             </div>
         </div>
         <div class="row comment-area">
@@ -10,12 +10,12 @@
                 <img :src="$store.state.user.avatar" class="aside-user-avatar">
             </div>
             <div class="col-11">
-                <el-input type="textarea" :rows="3" v-model="messageInput" placeholder="在这里写评论...">
+                <el-input type="textarea" :rows="3" v-model="comment_input" placeholder="在这里写评论...">
                 </el-input>
             </div>
             <div class="row">
                 <div class="d-flex flex-row-reverse send-comment">
-                    <el-button type="info" id="send" plain>发送</el-button>
+                    <el-button type="info" id="send" plain @click="comment_a_post">发送</el-button>
                 </div>
             </div>
         </div>
@@ -28,7 +28,10 @@
                     </div>
                     <div class="col-11">
                         <div class="row">
-                            <span class="d-flex comment-username"> {{ comment.username }}</span>
+                            <span class="d-flex comment-username"> 
+                                {{ comment.username }} &nbsp;&nbsp;
+                                {{ comment.presentCommentTime}}
+                            </span>
                         </div>
                         <div class="row">
                             <span class="d-flex comment-content">
@@ -46,7 +49,7 @@
 import $ from 'jquery';
 import { API_URL } from '@/assets/apis/api';
 import { useStore } from 'vuex';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 export default {
     props: {
@@ -59,6 +62,53 @@ export default {
     setup(props) {
         const store = useStore();
         const posts_comments = ref([]);
+        let comments_count = ref(0);
+        let comment_input = ref('');
+        onMounted(() => {
+            $.ajax({
+                url: `${API_URL}/post/comment/get/`,
+                type: "get",
+                data: {
+                    post_id: props.post_id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    console.log(resp.data.comments);
+                    posts_comments.value = resp.data.comments;
+                    comments_count.value = resp.data.comments_count;
+                },
+                error(err) {
+                    console.log(err);
+                }
+            });
+        })
+
+        const comment_a_post = () => {
+            $.ajax({
+                url: `${API_URL}/post/comment/`,
+                type: "post",
+                data: {
+                    post_id: props.post_id,
+                    user_id: store.state.user.id,
+                    parent_comment_id: -1,
+                    content: comment_input.value,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    console.log(resp);
+                    comment_input.value = '';
+                    get_post_comments();
+                },
+                error(err) {
+                    console.log(err);
+                }
+            });
+        }
+
         const get_post_comments = () => {
             $.ajax({
                 url: `${API_URL}/post/comment/get/`,
@@ -72,17 +122,20 @@ export default {
                 success(resp) {
                     console.log(resp.data.comments);
                     posts_comments.value = resp.data.comments;
+                    comments_count.value = resp.data.comments_count;
                 },
                 error(err) {
                     console.log(err);
                 }
             });
         }
-        get_post_comments();
 
         return {
             posts_comments,
+            comments_count,
+            comment_input,
             get_post_comments,
+            comment_a_post,
         }
     }
 }
@@ -132,6 +185,7 @@ export default {
 
 .comment-username {
     margin: -2vh auto;
+    color: rgba(179, 171, 171, 0.788)
 }
 
 .comment-content {
