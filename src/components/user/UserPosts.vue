@@ -83,13 +83,16 @@
                     <div class="d-flex justify-content-evenly">
                         <div class="stars">
                             <img src="@/assets/images/gray_star.png" v-if="post.liked == 'false'"
-                            @click="star_a_post(post)">&nbsp;
-                            <img src="@/assets/images/red_star.png" v-else
-                            @click="unstar_a_post(post)">&nbsp;
-                            <span v-if="post.stars != 0">{{ post.stars }}</span>
-                            <span v-else>赞</span>
+                                @click="star_a_post(post)">&nbsp;
+                            <img src="@/assets/images/red_star.png" v-else @click="unstar_a_post(post)">&nbsp;
+                            <el-button type="text" v-if="post.stars != 0">{{ post.stars }}</el-button>
+                            <el-button type="text" v-else>赞</el-button>
+                        </div>
+                        <div class="comment-button">
+                            <el-button type="text" @click="click_comment(post)">评论</el-button>
                         </div>
                     </div>
+                    <CommentArea v-if="show_comment_post_set.has(post.id)" :post_id="post.id"></CommentArea>
                 </div>
             </div>
         </div>
@@ -131,8 +134,12 @@ import { useStore } from 'vuex';
 import { API_URL } from '@/assets/apis/api';
 import { Modal } from 'bootstrap/dist/js/bootstrap';
 import { reactive, computed } from 'vue';
+import CommentArea from '../community/CommentArea.vue';
 
 export default {
+    components: {
+        CommentArea,
+    },
     props: {
         userId: {
             type: String,
@@ -154,6 +161,7 @@ export default {
             content: "",
             error_message: "",
         });
+        let show_comment_post_set = ref(new Set());
 
         const pull_all_posts = () => {
             loading.value = true;
@@ -300,18 +308,26 @@ export default {
             })
         }
 
+        const click_comment = (post) => {
+            const click_comment_post_id = post.id;
+            if (show_comment_post_set.value.has(click_comment_post_id)) show_comment_post_set.value.delete(click_comment_post_id);
+            else show_comment_post_set.value.add(click_comment_post_id);
+        }
+
 
         return {
             posts,
             add_post,
             is_me,
             loading,
+            show_comment_post_set,
             pull_all_posts,
             post_a_post,
             click_remove_a_post,
             update_a_post,
             star_a_post,
             unstar_a_post,
+            click_comment,
         }
     },
 
@@ -372,4 +388,15 @@ img {
     width: 1.5vw;
     cursor: pointer;
 }
+
+.stars {
+    font-size: medium;
+    padding: 0px 0px 0px 0px;
+}
+
+.comment-button {
+    font-size: medium;
+    padding: 0px 0px 0px 0px;
+}
+
 </style>

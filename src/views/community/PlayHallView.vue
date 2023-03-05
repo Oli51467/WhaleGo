@@ -143,6 +143,7 @@ export default {
 .user-avatar {
     border-radius: 50%;
     width: 5vh;
+    height: 5vh;
 }
 
 .user-username {

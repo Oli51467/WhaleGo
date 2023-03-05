@@ -234,7 +234,7 @@ export default {
 }
 
 .guests_avatar {
-    width: 3vw;
+    width: 2.5vw;
 }
 
 .guests {
