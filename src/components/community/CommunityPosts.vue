@@ -30,11 +30,13 @@
                             <img src="@/assets/images/gray_star.png" v-if="post.liked == 'false'"
                                 @click="star_a_post(post)">&nbsp;
                             <img src="@/assets/images/red_star.png" v-else @click="unstar_a_post(post)">&nbsp;
-                            <el-button type="text" v-if="post.stars != 0">{{ post.stars }}</el-button>
-                            <el-button type="text" v-else>赞</el-button>
+                            <el-button type="text" v-if="post.stars != 0" style="color: gray;">{{ post.stars }}</el-button>
+                            <el-button type="text" v-else style="color: gray;">赞</el-button>
                         </div>
-                        <div class="comment-button">
-                            <el-button type="text" @click="click_comment(post)">评论</el-button>
+                        <div class="comment-button" @click="click_comment(post)">
+                            <img src="@/assets/images/comment.png">
+                            <el-button type="text" v-if="post.commentsCount == 0" style="color: gray;"> 评论</el-button>
+                            <el-button type="text" v-else style="color: gray;">&nbsp;{{ post.commentsCount }}</el-button>
                         </div>
                     </div>
                     <CommentArea v-if="show_comment_post_set.has(post.id)" :post_id="post.id"></CommentArea>
