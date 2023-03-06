@@ -1,7 +1,16 @@
 <template>
     <div>
         <ContentBase>
-            <CommunityPosts :posts="posts" :show_blank="show_blank" :loading="loading" @pull_all_posts="pull_all_posts"/>
+            <el-tabs type="border-card" :stretch=true tab-position="top">
+                <el-tab-pane label="新鲜事">
+                    <CommunityPosts :posts="posts" :show_blank="show_blank" :loading="loading"
+                        @pull_all_posts="pull_all_posts" />
+                </el-tab-pane>
+                <el-tab-pane label="棋友">
+                    <ShowAllUsersPage :users="users_online">
+                    </ShowAllUsersPage>
+                </el-tab-pane>
+            </el-tabs>
         </ContentBase>
     </div>
 </template>
@@ -9,6 +18,7 @@
 <script>
 import ContentBase from '@/components/base/ContentBase.vue';
 import CommunityPosts from '@/components/community/CommunityPosts.vue';
+import ShowAllUsersPage from '@/components/friend/ShowAllUsersPage.vue';
 import { ref } from 'vue';
 import { API_URL } from '@/assets/apis/api';
 import $ from 'jquery';
@@ -18,10 +28,12 @@ export default {
     components: {
         ContentBase,
         CommunityPosts,
+        ShowAllUsersPage,
     },
 
     setup() {
         let posts = ref([]);
+        let users_online = ref([]);
         const store = useStore();
         const show_blank = ref(false);
         const loading = ref(true);
@@ -46,13 +58,34 @@ export default {
                 }
             })
         }
+
+        const get_all_users_online = () => {
+            $.ajax({
+                url: `${API_URL}/user/get/online/`,
+                type: "get",
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    users_online.value = resp.data;
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        }
+
         pull_all_posts();
+        get_all_users_online();
+        
 
         return {
             posts,
+            users_online,
             show_blank,
             loading,
             pull_all_posts,
+            get_all_users_online,
         }
     }
 }
@@ -101,5 +134,9 @@ export default {
 img {
     width: 1.5vw;
     cursor: pointer;
+}
+
+.tab-btn {
+    color: rgb(109, 109, 238);
 }
 </style>

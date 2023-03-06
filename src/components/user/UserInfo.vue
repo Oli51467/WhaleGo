@@ -145,7 +145,7 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
-                    relation.value = resp.relation;
+                    relation.value = resp;
                     loading.value = false;
                 },
                 error(resp) {
