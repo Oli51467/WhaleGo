@@ -4,7 +4,7 @@
             <tbody>
                 <tr v-for="user in followed_users.users" :key="user.id">
                     <td>
-                        <img :src="user.avatar" alt="" class="user-avatar">
+                        <img :src="user.avatar" alt="" class="user-avatar" @click="nav_to_user_space(user.id)">
                         &nbsp;
                         <span class="user-info"> {{ user.username }}</span>
                     </td>
@@ -43,6 +43,7 @@
 import $ from 'jquery';
 import { API_URL } from '@/assets/apis/api';
 import { useStore } from 'vuex';
+import router from '@/router';
 
 export default {
     props: {
@@ -91,9 +92,19 @@ export default {
             })
         }
 
+        const nav_to_user_space = (user_id) => {
+            router.push({
+                name: "user_index",
+                params: {
+                    userId: user_id
+                }
+            })
+        }
+
         return {
             follow,
             unfollow,
+            nav_to_user_space,
         }
     }
 }
@@ -122,6 +133,7 @@ img.user-avatar {
     width: 4vh;
     height: 4vh;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .on {

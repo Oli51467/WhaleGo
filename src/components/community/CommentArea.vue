@@ -24,7 +24,7 @@
             <div class="comment-divider">
                 <div class="row">
                     <div class="col-1">
-                        <img :src="comment.userAvatar" class="comment-user-avatar">
+                        <img :src="comment.userAvatar" class="comment-user-avatar" @click="nav_to_user_space(comment.userId)">
                     </div>
                     <div class="col-11">
                         <div class="row">
@@ -50,6 +50,7 @@ import $ from 'jquery';
 import { API_URL } from '@/assets/apis/api';
 import { useStore } from 'vuex';
 import { ref, onMounted } from 'vue';
+import router from '@/router';
 
 export default {
     props: {
@@ -130,12 +131,22 @@ export default {
             });
         }
 
+        const nav_to_user_space = (user_id) => {
+            router.push({
+                name: "user_index",
+                params: {
+                    userId: user_id
+                }
+            })
+        }
+
         return {
             posts_comments,
             comments_count,
             comment_input,
             get_post_comments,
             comment_a_post,
+            nav_to_user_space,
         }
     }
 }
@@ -181,6 +192,7 @@ export default {
     height: 5vh;
     border-radius: 50%;
     margin: 0 auto 1vh 1vh;
+    cursor: pointer;
 }
 
 .comment-username {

@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-6 d-flex">
-                            <img :src="post.userAvatar" id="user_avatar" /> &nbsp;&nbsp;&nbsp;
+                            <img :src="post.userAvatar" id="user_avatar" @click="nav_to_user_space(post.userId)"/> &nbsp;&nbsp;&nbsp;
                             <span id="tag">{{ post.username }}</span> &nbsp;&nbsp;&nbsp;
                             <span id="post_time"> 发布于&nbsp;{{ post.modifyTime }}</span>
                         </div>
@@ -81,6 +81,7 @@
 import { API_URL } from '@/assets/apis/api';
 import $ from 'jquery';
 import { useStore } from 'vuex';
+import router from '@/router';
 import { reactive, ref } from 'vue';
 import { Modal } from 'bootstrap/dist/js/bootstrap';
 import CommentArea from './CommentArea.vue';
@@ -190,6 +191,15 @@ export default {
             else show_comment_post_set.value.add(click_comment_post_id);
         }
 
+        const nav_to_user_space = (user_id) => {
+            router.push({
+                name: "user_index",
+                params: {
+                    userId: user_id
+                }
+            })
+        }
+
         return {
             add_post,
             show_comment_post_set,
@@ -197,6 +207,7 @@ export default {
             unstar_a_post,
             post_a_post,
             click_comment,
+            nav_to_user_space,
         }
     }
 }

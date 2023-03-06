@@ -4,7 +4,7 @@
         <div class="row">
             <div class="card-body" style="width: 100%;">
                 <!--存储用户头像 字符串里是表达式要加:-->
-                <img :src="$store.state.user.avatar" alt="" style="width: 80%; height:80%; text-align: center;">
+                <img :src="guests.user_avatar" alt="" style="width: 80%; height:80%; text-align: center;">
             </div>
         </div>
         <div class="row justify-content-center d-flex">
@@ -12,7 +12,7 @@
                 <span class="level-text">棋力:{{ guests.user_level }}</span>
             </div>
             &nbsp;
-            <div class="user-type">
+            <div class="user-type" v-if="userId != -1">
                 <span class="type-text">普通用户</span>
             </div>
         </div>

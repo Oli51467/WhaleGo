@@ -4,7 +4,7 @@
             <tbody>
                 <tr v-for="user in users" :key="user.id">
                     <td>
-                        <img :src="user.avatar" alt="" class="user-avatar">
+                        <img :src="user.avatar" alt="" class="user-avatar" @click="nav_to_user_space(user.id)">
                         &nbsp;
                         <span class="user-info"> {{ user.username }}</span>
                     </td>
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import router from '@/router';
 
 export default {
     props: {
@@ -45,9 +46,16 @@ export default {
         },
     },
     setup() {
-
+        const nav_to_user_space = (user_id) => {
+            router.push({
+                name: "user_index",
+                params: {
+                    userId: user_id
+                }
+            })
+        }
         return {
-
+            nav_to_user_space,
         }
     }
 }
@@ -63,6 +71,7 @@ img.user-avatar {
     width: 4vh;
     height: 4vh;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .on {

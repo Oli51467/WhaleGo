@@ -16,7 +16,7 @@
             <tbody>
                 <tr v-for="record in records" :key="record.record.id">
                     <td>
-                        <img :src="record.black_avatar" alt="" class="record-user-avatar">
+                        <img :src="record.black_avatar" alt="" class="record-user-avatar" @click="nav_to_user_space(record.black_userid)">
                         &nbsp;
                         <span class="record-user-username"> {{ record.black_username }}</span>
                     </td>
@@ -24,7 +24,7 @@
                         <span> {{ record.black_level }}</span>
                     </td>
                     <td>
-                        <img :src="record.white_avatar" alt="" class="record-user-avatar">
+                        <img :src="record.white_avatar" alt="" class="record-user-avatar" @click="nav_to_user_space(record.white_userid)">
                         &nbsp;
                         <span class="record-user-username"> {{ record.white_username }}</span>
                     </td>
@@ -143,6 +143,15 @@ export default {
 
         pull_page(current_page);
 
+        const nav_to_user_space = (user_id) => {
+            router.push({
+                name: "user_index",
+                params: {
+                    userId: user_id
+                }
+            })
+        }
+
         return {
             pages,
             records,
@@ -151,6 +160,7 @@ export default {
             pull_page,
             update_pages,
             open_record,
+            nav_to_user_space,
         }
     }
 }
@@ -162,6 +172,7 @@ img.record-user-avatar {
     height: 4vh;
     border-radius: 50%;
     margin: 0 auto;
+    cursor: pointer;
 }
 
 .op {
