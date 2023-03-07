@@ -10,10 +10,8 @@
                 <div class="container">
                     <div class="card-body">
                         <el-tabs type="border-card" :stretch=true tab-position="top" class="play-board">
-                            <el-tab-pane label="复盘" class="settings">
-
                                 <div class="row">
-                                    <div class="col-11">
+                                    <div class="d-flex justify-content-evenly">
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="row">
@@ -34,7 +32,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-11">
+                                    <div class="d-flex justify-content-evenly">
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="row">
@@ -53,44 +51,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="d-flex justify-content-around">
-                                        <el-button type="success" round style="width:10vw; height:5vh">开始试下</el-button>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="d-flex justify-content-around">
-                                        <el-button type="danger" round style="width:10vw; height:5vh">结束试下</el-button>
-                                    </div>
-                                </div>
 
                                 <div class="row">
                                     <div class="d-flex justify-content-evenly">
-                    
+
                                         <div ref="fast_undo">
                                             <el-button type="primary" class="op">
-                                                <img src="@/assets/images/icon_fast_undo.png" style="width:2vw"/>
+                                                <img src="@/assets/images/icon_fast_undo.png" style="width:2vw" />
                                                 &nbsp;
                                                 快退
                                             </el-button>
                                         </div>
                                         <div ref="undo">
                                             <el-button type="primary" class="op">
-                                                <img src="@/assets/images/icon_undo.png" style="width:2vw"/>
+                                                <img src="@/assets/images/icon_undo.png" style="width:2vw" />
                                                 &nbsp;
                                                 后退
                                             </el-button>
                                         </div>
                                         <div ref="proceed">
                                             <el-button type="primary" class="op">
-                                                <img src="@/assets/images/icon_proceed.png" style="width:2vw"/>
+                                                <img src="@/assets/images/icon_proceed.png" style="width:2vw" />
                                                 &nbsp;
                                                 前进
                                             </el-button>
                                         </div>
                                         <div ref="fast_proceed">
                                             <el-button type="primary" class="op">
-                                                <img src="@/assets/images/icon_fast_proceed.png" style="width:2vw"/>
+                                                <img src="@/assets/images/icon_fast_proceed.png" style="width:2vw" />
                                                 &nbsp;
                                                 快进
                                             </el-button>
@@ -98,7 +86,18 @@
                                     </div>
                                 </div>
 
-                            </el-tab-pane>
+                                <div class="row">
+                                    <div class="d-flex justify-content-around">
+                                        <el-button type="success" round style="width:10vw; height:5vh">开始试下</el-button>
+                                        <el-button type="danger" round style="width:10vw; height:5vh">结束试下</el-button>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="d-flex justify-content-around">
+                                        <div ref="main" style="width:600px; height: 300px"></div>
+                                    </div>
+                                </div>
                         </el-tabs>
                     </div>
                 </div>
@@ -112,6 +111,7 @@ import { BoardRecord } from '@/assets/scripts/BoardRecord.js';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { onMounted } from 'vue';
+import * as echarts from "echarts";
 
 export default {
     components: {
@@ -127,7 +127,10 @@ export default {
         let fast_proceed = ref(null);
         let undo = ref(null);
         let fast_undo = ref(null);
+        // 基于准备好的dom，初始化echarts实例
+        let main = ref(null);
         const steps = store.state.record.steps;
+
         onMounted(() => {
             new BoardRecord(canvas.value.getContext('2d'), parent.value, 19, 19, steps,
                 proceed.value, fast_proceed.value, undo.value, fast_undo.value);
@@ -141,6 +144,28 @@ export default {
             ctx1.arc(95, 50, 40, 0, 2 * Math.PI);
             ctx.fill();
             ctx1.fill();
+
+            var myChart = echarts.init(main.value);
+            // 绘制图表
+            myChart.setOption({
+                title: {
+                    text: '胜率曲线'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: []
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: [50.4, 50.6, 56.4, 60.5, 46.5, 32.2, 70.9],
+                        type: 'line',
+                        smooth: true
+                    }
+                ]
+            });
         })
 
         return {
@@ -152,6 +177,7 @@ export default {
             fast_undo,
             canvas_black,
             canvas_white,
+            main,
         }
     },
 }
@@ -187,7 +213,7 @@ div.reviewboard {
 .container {
     width: auto;
     margin-left: -100px;
-    margin-top: 15px;
+    margin-top: 10px;
     margin-right: 100px;
 }
 
