@@ -10,94 +10,94 @@
                 <div class="container">
                     <div class="card-body">
                         <el-tabs type="border-card" :stretch=true tab-position="top" class="play-board">
-                                <div class="row">
-                                    <div class="d-flex justify-content-evenly">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-1 user-avatar">
-                                                        <img :src="$store.state.record.black_avatar" alt="">
-                                                    </div>
-                                                    <div class="col-4 username">
-                                                        <span>{{ $store.state.record.black_username }} &nbsp;
-                                                            {{ $store.state.record.black_level }}</span>
-                                                    </div>
-                                                    <div class="col-1 parent">
-                                                        <canvas ref="canvas_black" tabindex="0" class="stone"></canvas>
-                                                    </div>
+                            <div class="row">
+                                <div class="d-flex justify-content-evenly">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-1 user-avatar">
+                                                    <img :src="record.black_avatar" alt="">
+                                                </div>
+                                                <div class="col-4 username">
+                                                    <span>{{ record.black_username }} &nbsp;
+                                                        {{ record.black_level }}</span>
+                                                </div>
+                                                <div class="col-1 parent">
+                                                    <canvas ref="canvas_black" tabindex="0" class="stone"></canvas>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row">
-                                    <div class="d-flex justify-content-evenly">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-1 user-avatar">
-                                                        <img :src="$store.state.record.white_avatar" alt="">
-                                                    </div>
-                                                    <div class="col-4 username">
-                                                        <span> {{ $store.state.record.white_username }}
-                                                            &nbsp; {{ $store.state.record.white_level }}</span>
-                                                    </div>
-                                                    <div class="col-1 parent">
-                                                        <canvas ref="canvas_white" tabindex="0" class="stone"></canvas>
-                                                    </div>
+                            <div class="row">
+                                <div class="d-flex justify-content-evenly">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-1 user-avatar">
+                                                    <img :src="record.white_avatar" alt="">
+                                                </div>
+                                                <div class="col-4 username">
+                                                    <span> {{ record.white_username }}
+                                                        &nbsp; {{ record.white_level }}</span>
+                                                </div>
+                                                <div class="col-1 parent">
+                                                    <canvas ref="canvas_white" tabindex="0" class="stone"></canvas>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row">
-                                    <div class="d-flex justify-content-evenly">
+                            <div class="row">
+                                <div class="d-flex justify-content-evenly">
 
-                                        <div ref="fast_undo">
-                                            <el-button type="primary" class="op">
-                                                <img src="@/assets/images/icon_fast_undo.png" style="width:2vw" />
-                                                &nbsp;
-                                                快退
-                                            </el-button>
-                                        </div>
-                                        <div ref="undo">
-                                            <el-button type="primary" class="op">
-                                                <img src="@/assets/images/icon_undo.png" style="width:2vw" />
-                                                &nbsp;
-                                                后退
-                                            </el-button>
-                                        </div>
-                                        <div ref="proceed">
-                                            <el-button type="primary" class="op">
-                                                <img src="@/assets/images/icon_proceed.png" style="width:2vw" />
-                                                &nbsp;
-                                                前进
-                                            </el-button>
-                                        </div>
-                                        <div ref="fast_proceed">
-                                            <el-button type="primary" class="op">
-                                                <img src="@/assets/images/icon_fast_proceed.png" style="width:2vw" />
-                                                &nbsp;
-                                                快进
-                                            </el-button>
-                                        </div>
+                                    <div ref="fast_undo">
+                                        <el-button type="primary" class="op">
+                                            <img src="@/assets/images/icon_fast_undo.png" style="width:2vw" />
+                                            &nbsp;
+                                            快退
+                                        </el-button>
+                                    </div>
+                                    <div ref="undo">
+                                        <el-button type="primary" class="op">
+                                            <img src="@/assets/images/icon_undo.png" style="width:2vw" />
+                                            &nbsp;
+                                            后退
+                                        </el-button>
+                                    </div>
+                                    <div ref="proceed">
+                                        <el-button type="primary" class="op">
+                                            <img src="@/assets/images/icon_proceed.png" style="width:2vw" />
+                                            &nbsp;
+                                            前进
+                                        </el-button>
+                                    </div>
+                                    <div ref="fast_proceed">
+                                        <el-button type="primary" class="op">
+                                            <img src="@/assets/images/icon_fast_proceed.png" style="width:2vw" />
+                                            &nbsp;
+                                            快进
+                                        </el-button>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row">
-                                    <div class="d-flex justify-content-around">
-                                        <el-button type="success" round style="width:10vw; height:5vh">开始试下</el-button>
-                                        <el-button type="danger" round style="width:10vw; height:5vh">结束试下</el-button>
-                                    </div>
+                            <div class="row">
+                                <div class="d-flex justify-content-around">
+                                    <el-button type="success" round style="width:10vw; height:5vh">开始试下</el-button>
+                                    <el-button type="danger" round style="width:10vw; height:5vh">结束试下</el-button>
                                 </div>
+                            </div>
 
-                                <div class="row">
-                                    <div class="d-flex justify-content-around">
-                                        <div ref="main" style="width:600px; height: 300px"></div>
-                                    </div>
+                            <div class="row">
+                                <div class="d-flex justify-content-around">
+                                    <div ref="win_rate_chart" style="width:900px; height: 300px"></div>
                                 </div>
+                            </div>
                         </el-tabs>
                     </div>
                 </div>
@@ -110,15 +110,19 @@
 import { BoardRecord } from '@/assets/scripts/BoardRecord.js';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 import * as echarts from "echarts";
+import $ from 'jquery'
+import { API_URL } from "@/assets/apis/api";
 
 export default {
-    components: {
-    },
 
     setup() {
+        const route = useRoute();
+        const recordId = route.params.recordId;
         const store = useStore();
+        
         let parent = ref(null);
         let canvas = ref(null);
         let canvas_black = ref(null);
@@ -128,43 +132,62 @@ export default {
         let undo = ref(null);
         let fast_undo = ref(null);
         // 基于准备好的dom，初始化echarts实例
-        let main = ref(null);
-        const steps = store.state.record.steps;
+        let win_rate_chart = ref(null);
+        let record = ref([]);
+        let steps = null;
+        let win_rate = [];
 
         onMounted(() => {
-            new BoardRecord(canvas.value.getContext('2d'), parent.value, 19, 19, steps,
-                proceed.value, fast_proceed.value, undo.value, fast_undo.value);
-            let ctx = canvas_black.value.getContext('2d');
-            let ctx1 = canvas_white.value.getContext('2d');
-            ctx.fillStyle = "black";
-            ctx1.fillStyle = "white";
-            ctx.beginPath();
-            ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-            ctx1.beginPath();
-            ctx1.arc(95, 50, 40, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx1.fill();
-
-            var myChart = echarts.init(main.value);
-            // 绘制图表
-            myChart.setOption({
-                title: {
-                    text: '胜率曲线'
+            $.ajax({
+                url: `${API_URL}/record/detail/`,
+                data: {
+                    record_id: recordId,
                 },
-                xAxis: {
-                    type: 'category',
-                    data: []
+                type: "get",
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
                 },
-                yAxis: {
-                    type: 'value'
+                success(resp) {
+                    steps = resp.steps;
+                    win_rate = resp.win_rate;
+                    record.value = resp.record;
+                    new BoardRecord(canvas.value.getContext('2d'), parent.value, 19, 19, steps,
+                        proceed.value, fast_proceed.value, undo.value, fast_undo.value);
+                    let ctx = canvas_black.value.getContext('2d');
+                    let ctx1 = canvas_white.value.getContext('2d');
+                    ctx.fillStyle = "black";
+                    ctx1.fillStyle = "white";
+                    ctx.beginPath();
+                    ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+                    ctx1.beginPath();
+                    ctx1.arc(95, 50, 40, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx1.fill();
+                    // 绘制图表
+                    let myChart = echarts.init(win_rate_chart.value);
+                    myChart.setOption({
+                        title: {
+                            text: '胜率曲线'
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: []
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                            {
+                                data: win_rate,
+                                type: 'line',
+                                smooth: true
+                            }
+                        ]
+                    });
                 },
-                series: [
-                    {
-                        data: [50.4, 50.6, 56.4, 60.5, 46.5, 32.2, 70.9],
-                        type: 'line',
-                        smooth: true
-                    }
-                ]
+                error(resp) {
+                    console.log(resp);
+                }
             });
         })
 
@@ -172,12 +195,13 @@ export default {
             parent,
             canvas,
             proceed,
+            record,
             fast_proceed,
             undo,
             fast_undo,
             canvas_black,
             canvas_white,
-            main,
+            win_rate_chart,
         }
     },
 }

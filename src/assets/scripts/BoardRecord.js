@@ -59,7 +59,7 @@ export class BoardRecord extends GameObject {
             const step = this.steps[i - 1].split(',');
             const x = step[0], y = step[1];
             this.board.play(parseInt(x), parseInt(y));
-            console.log(parseInt(x), parseInt(y));
+            //console.log(parseInt(x), parseInt(y));
             // 这里一定要转化一下！！否则会直接把引用赋值
             const t = JSON.parse(JSON.stringify(this.board.board));
             this.g[i] = t;
@@ -82,25 +82,25 @@ export class BoardRecord extends GameObject {
         this.btn_fast_undo.addEventListener('click', this.click_fast_undo);
     }
 
-    draw_virtual_stone(x, y) {
-        const center_x = x * this.cell_len;
-        const center_y = y * this.cell_len;
-        const r = this.cell_len / 2 * 0.9;
-        if (this.store.state.gogame.current == 1 && this.store.state.gogame.which == 1 || this.store.state.gogame.current == 0) {
-            let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
-            gradient.addColorStop(0, "#333333");
-            gradient.addColorStop(1, "#4d4d4d");
-            this.ctx.fillStyle = gradient;
-        } else if (this.store.state.gogame.current == 2 && this.store.state.gogame.which == 2) {
-            let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
-            gradient.addColorStop(0, "#e6e6e6");
-            gradient.addColorStop(1, "#ffffff");
-            this.ctx.fillStyle = gradient;
-        }
-        this.ctx.beginPath();
-        this.ctx.arc(center_x, center_y, r, 0, Math.PI * 2);
-        this.ctx.fill();
-    }
+    // draw_virtual_stone(x, y) {
+    //     const center_x = x * this.cell_len;
+    //     const center_y = y * this.cell_len;
+    //     const r = this.cell_len / 2 * 0.9;
+    //     if (this.store.state.gogame.current == 1 && this.store.state.gogame.which == 1 || this.store.state.gogame.current == 0) {
+    //         let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
+    //         gradient.addColorStop(0, "#333333");
+    //         gradient.addColorStop(1, "#4d4d4d");
+    //         this.ctx.fillStyle = gradient;
+    //     } else if (this.store.state.gogame.current == 2 && this.store.state.gogame.which == 2) {
+    //         let gradient = this.ctx.createRadialGradient(center_x, center_y, r / 1.8, center_x, center_y, 0);
+    //         gradient.addColorStop(0, "#e6e6e6");
+    //         gradient.addColorStop(1, "#ffffff");
+    //         this.ctx.fillStyle = gradient;
+    //     }
+    //     this.ctx.beginPath();
+    //     this.ctx.arc(center_x, center_y, r, 0, Math.PI * 2);
+    //     this.ctx.fill();
+    // }
 
     draw_lines() {
         this.ctx.strokeStyle = "#522";

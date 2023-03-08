@@ -14,9 +14,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="record in records" :key="record.record.id">
+                <tr v-for="record in records" :key="record.id">
                     <td>
-                        <img :src="record.black_avatar" alt="" class="record-user-avatar" @click="nav_to_user_space(record.black_userid)">
+                        <img :src="record.black_avatar" alt="" class="record-user-avatar"
+                            @click="nav_to_user_space(record.black_userid)">
                         &nbsp;
                         <span class="record-user-username"> {{ record.black_username }}</span>
                     </td>
@@ -24,17 +25,18 @@
                         <span> {{ record.black_level }}</span>
                     </td>
                     <td>
-                        <img :src="record.white_avatar" alt="" class="record-user-avatar" @click="nav_to_user_space(record.white_userid)">
+                        <img :src="record.white_avatar" alt="" class="record-user-avatar"
+                            @click="nav_to_user_space(record.white_userid)">
                         &nbsp;
                         <span class="record-user-username"> {{ record.white_username }}</span>
                     </td>
                     <td>
                         <span> {{ record.white_level }}</span>
                     </td>
-                    <td> {{ record.record.result }}</td>
-                    <td> {{ record.record.createTime }}</td>
+                    <td> {{ record.result }}</td>
+                    <td> {{ record.create_time }}</td>
                     <td>
-                        <el-button class="op" plain @click="open_record(record.record.id)">复盘</el-button>
+                        <el-button class="op" plain @click="open_record(record.id)">复盘</el-button>
                     </td>
                 </tr>
             </tbody>
@@ -126,18 +128,12 @@ export default {
 
         const open_record = recordId => {
             for (const record of records.value) {
-                if (record.record.id === recordId) {
-                    store.commit("updateRecord", {
-                        ...record,
-                        steps: record.steps,
-                        record_result: record.record.result,
-                        record_time: record.record.createTime,
-                    });
+                if (record.id === recordId) {
                     route.push({
                         name: 'record_review',
                         params: {
                             recordId
-                        }
+                        },
                     })
                     // let routeData = route.resolve({
                     //     name: 'record_review',
