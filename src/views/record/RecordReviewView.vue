@@ -10,43 +10,45 @@
                 <div class="container">
                     <div class="card-body">
                         <el-tabs type="border-card" :stretch=true tab-position="top" class="play-board">
-                            <div class="row">
-                                <div class="d-flex justify-content-evenly">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-1 user-avatar">
-                                                    <img :src="record.black_avatar" alt="">
-                                                </div>
-                                                <div class="col-4 username">
-                                                    <span>{{ record.black_username }} &nbsp;
-                                                        {{ record.black_level }}</span>
-                                                </div>
-                                                <div class="col-1 parent">
-                                                    <canvas ref="canvas_black" tabindex="0" class="stone"></canvas>
-                                                </div>
-                                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-1 user-avatar">
+                                            <img :src="record.black_avatar" alt="">
+                                        </div>
+                                        <div class="col-4 username">
+                                            <span>{{ record.black_username }} &nbsp;
+                                                {{ record.black_level }}</span>
+                                        </div>
+                                        <div class="col-1 parent">
+                                            <canvas ref="canvas_black" tabindex="0" class="stone"></canvas>
+                                        </div>
+                                        <div class="col-3" v-if="record.result === '黑中盘胜'">
+                                            <span id="black_win">
+                                                {{ record.result }}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="d-flex justify-content-evenly">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-1 user-avatar">
-                                                    <img :src="record.white_avatar" alt="">
-                                                </div>
-                                                <div class="col-4 username">
-                                                    <span> {{ record.white_username }}
-                                                        &nbsp; {{ record.white_level }}</span>
-                                                </div>
-                                                <div class="col-1 parent">
-                                                    <canvas ref="canvas_white" tabindex="0" class="stone"></canvas>
-                                                </div>
-                                            </div>
+                            <div class="card" style="margin-top:15px">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-1 user-avatar">
+                                            <img :src="record.white_avatar" alt="">
+                                        </div>
+                                        <div class="col-4 username">
+                                            <span> {{ record.white_username }}
+                                                &nbsp; {{ record.white_level }}</span>
+                                        </div>
+                                        <div class="col-1 parent">
+                                            <canvas ref="canvas_white" tabindex="0" class="stone"></canvas>
+                                        </div>
+                                        <div class="col-3" v-if="record.result === '白中盘胜'">
+                                            <span id="white_win">
+                                                {{ record.result }}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -56,28 +58,28 @@
                                 <div class="d-flex justify-content-evenly">
 
                                     <div ref="fast_undo">
-                                        <el-button type="primary" class="op">
+                                        <el-button type="info" class="op" plain>
                                             <img src="@/assets/images/icon_fast_undo.png" style="width:2vw" />
                                             &nbsp;
                                             快退
                                         </el-button>
                                     </div>
                                     <div ref="undo">
-                                        <el-button type="primary" class="op">
+                                        <el-button type="info" class="op" plain>
                                             <img src="@/assets/images/icon_undo.png" style="width:2vw" />
                                             &nbsp;
                                             后退
                                         </el-button>
                                     </div>
                                     <div ref="proceed">
-                                        <el-button type="primary" class="op">
+                                        <el-button type="info" class="op" plain>
                                             <img src="@/assets/images/icon_proceed.png" style="width:2vw" />
                                             &nbsp;
                                             前进
                                         </el-button>
                                     </div>
                                     <div ref="fast_proceed">
-                                        <el-button type="primary" class="op">
+                                        <el-button type="info" class="op" plain>
                                             <img src="@/assets/images/icon_fast_proceed.png" style="width:2vw" />
                                             &nbsp;
                                             快进
@@ -122,7 +124,7 @@ export default {
         const route = useRoute();
         const recordId = route.params.recordId;
         const store = useStore();
-        
+
         let parent = ref(null);
         let canvas = ref(null);
         let canvas_black = ref(null);
@@ -282,5 +284,19 @@ div.username {
 
 .op {
     height: 5vh;
+}
+
+#white_win {
+    color: white;
+    font-weight: bolder;
+    text-shadow: 0 8px 10px #6699FF;
+    /*设置文字阴影*/
+}
+
+#black_win {
+    color: black;
+    font-weight: bolder;
+    text-shadow: 0 8px 10px #6699FF;
+    /*设置文字阴影*/
 }
 </style>
