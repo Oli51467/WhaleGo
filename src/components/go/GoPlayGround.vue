@@ -81,13 +81,6 @@ canvas {
     box-shadow: 3px 3px 3px #b9b9b9;
 }
 
-.container {
-    width: auto;
-    margin-left: -70px;
-    margin-top: 15px;
-    margin-right: 20px;
-}
-
 .play-board {
     background-color: rgb(230, 231, 234);
     width: auto;

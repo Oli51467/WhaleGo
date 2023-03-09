@@ -331,7 +331,7 @@ div.username {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    box-shadow: 1px 1px 1px #404040;
+    box-shadow: 1px 1px 1px #404040, inset -3px -3px 5px rgb(160, 152, 152);
     background-image: -webkit-radial-gradient(40% 40%, circle closest-corner, #404040 0%, transparent 90%);
     background-image: -moz-radial-gradient(40% 40%, circle closest-side, #404040 0%, transparent 90%);
     width: 30px;

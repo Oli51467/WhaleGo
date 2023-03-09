@@ -21,7 +21,7 @@
                                                 {{ record.black_level }}</span>
                                         </div>
                                         <div class="col-1 parent">
-                                            <canvas ref="canvas_black" tabindex="0" class="stone"></canvas>
+                                            <div class='black-stone'></div>
                                         </div>
                                         <div class="col-3" v-if="record.result === '黑中盘胜'">
                                             <span id="black_win">
@@ -43,7 +43,7 @@
                                                 &nbsp; {{ record.white_level }}</span>
                                         </div>
                                         <div class="col-1 parent">
-                                            <canvas ref="canvas_white" tabindex="0" class="stone"></canvas>
+                                            <div class='white-stone'></div>
                                         </div>
                                         <div class="col-3" v-if="record.result === '白中盘胜'">
                                             <span id="white_win">
@@ -51,6 +51,19 @@
                                             </span>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="d-flex justify-content-around">
+                                    <div ref="win_rate_chart" style="width:900px; height: 300px"></div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:-50px">
+                                <div class="d-flex justify-content-around">
+                                    <el-button type="success" round style="width:10vw; height:5vh">开始试下</el-button>
+                                    <el-button type="danger" round style="width:10vw; height:5vh">结束试下</el-button>
                                 </div>
                             </div>
 
@@ -88,18 +101,6 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="d-flex justify-content-around">
-                                    <el-button type="success" round style="width:10vw; height:5vh">开始试下</el-button>
-                                    <el-button type="danger" round style="width:10vw; height:5vh">结束试下</el-button>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="d-flex justify-content-around">
-                                    <div ref="win_rate_chart" style="width:900px; height: 300px"></div>
-                                </div>
-                            </div>
                         </el-tabs>
                     </div>
                 </div>
@@ -127,13 +128,12 @@ export default {
 
         let parent = ref(null);
         let canvas = ref(null);
-        let canvas_black = ref(null);
-        let canvas_white = ref(null);
+
         let proceed = ref(null);
         let fast_proceed = ref(null);
         let undo = ref(null);
         let fast_undo = ref(null);
-        // 基于准备好的dom，初始化echarts实例
+
         let win_rate_chart = ref(null);
         let record = ref([]);
         let steps = null;
@@ -155,16 +155,6 @@ export default {
                     record.value = resp.record;
                     new BoardRecord(canvas.value.getContext('2d'), parent.value, 19, 19, steps,
                         proceed.value, fast_proceed.value, undo.value, fast_undo.value);
-                    let ctx = canvas_black.value.getContext('2d');
-                    let ctx1 = canvas_white.value.getContext('2d');
-                    ctx.fillStyle = "black";
-                    ctx1.fillStyle = "white";
-                    ctx.beginPath();
-                    ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-                    ctx1.beginPath();
-                    ctx1.arc(95, 50, 40, 0, 2 * Math.PI);
-                    ctx.fill();
-                    ctx1.fill();
                     // 绘制图表
                     let myChart = echarts.init(win_rate_chart.value);
                     myChart.setOption({
@@ -201,8 +191,6 @@ export default {
             fast_proceed,
             undo,
             fast_undo,
-            canvas_black,
-            canvas_white,
             win_rate_chart,
         }
     },
@@ -264,11 +252,6 @@ div.username {
     color: black;
 }
 
-.stone {
-    width: 150%;
-    margin: -5px auto;
-}
-
 .row {
     margin-top: 15px;
 }
@@ -288,15 +271,45 @@ div.username {
 
 #white_win {
     color: white;
+    font-size: larger;
     font-weight: bolder;
-    text-shadow: 0 8px 10px #6699FF;
-    /*设置文字阴影*/
+    text-shadow: 0 8px 10px #6699FF;  /*设置文字阴影*/
 }
 
 #black_win {
     color: black;
+    font-size: larger;
     font-weight: bolder;
-    text-shadow: 0 8px 10px #6699FF;
-    /*设置文字阴影*/
+    text-shadow: 0 8px 10px #6699FF;  /*设置文字阴影*/
+}
+
+.white-stone {
+    left: 0;
+    box-sizing: border-box;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 1px 1px 1px #404040, inset -3px -3px 5px gray;
+    width: 30px;
+    height: 30px;
+    content: '';
+    display: inline-block;
+}
+
+.black-stone {
+    box-sizing: border-box;
+    left: 0;
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 1px 1px 1px #404040, inset -3px -3px 5px rgb(160, 152, 152);
+    background-image: -webkit-radial-gradient(40% 40%, circle closest-corner, #404040 0%, transparent 90%);
+    background-image: -moz-radial-gradient(40% 40%, circle closest-side, #404040 0%, transparent 90%);
+    width: 30px;
+    height: 30px;
+    content: '';
+    display: inline-block;
 }
 </style>
