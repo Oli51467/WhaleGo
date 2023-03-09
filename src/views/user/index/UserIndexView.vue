@@ -28,7 +28,7 @@
                                 <UserPosts :userId="userId" :guests="guests" />
                             </div>
                             <div class="tab-pane fade" id="record-tab-pane" role="tabpanel" tabindex="0">
-                                <MyRecords />
+                                <MyRecords :userId="userId"/>
                             </div>
                             <div class="tab-pane fade" id="data-tab-pane" role="tabpanel" tabindex="0">
                                 <RecordsData :recentRecords="recent_records" />

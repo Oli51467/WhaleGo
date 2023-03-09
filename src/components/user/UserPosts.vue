@@ -1,9 +1,14 @@
 <template>
     <el-skeleton :loading="loading" :rows="6" animated></el-skeleton>
-    <div class="card-body">
+    <el-empty description="这里空空如也" v-if="show_blank == true">
+        <el-button v-if="is_me" type="success" data-bs-toggle="modal"
+                data-bs-target="#postapost">去发帖！</el-button>
+    </el-empty>
+    <div class="card-body" v-else>
         <div style="height:fit-content" class="d-flex flex-row-reverse">
             <button type="button" class="btn btn-sm btn-outline-success op" data-bs-toggle="modal"
-                data-bs-target="#postapost" v-if="is_me && !loading" style="margin-top:-6.5vh; height: max-content;">发新鲜事</button>
+                data-bs-target="#postapost" v-if="is_me && !loading"
+                style="margin-top:-6.5vh; height: max-content;">发新鲜事</button>
         </div>
 
         <div v-for="post in posts" :key="post.id" style="margin-top:3vh" :id="'post_id_' + post.id">
@@ -36,8 +41,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger"
                                             @click="click_remove_a_post(post.id)">删除</button>
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                                     </div>
                                 </div>
                             </div>
@@ -73,13 +77,13 @@
                         </div>
 
                     </div>
-                    <hr class="hr"/>
+                    <hr class="hr" />
                     <div class="card">
                         <div class="card-body content">
                             <span id="content">{{ post.content }}</span>
                         </div>
                     </div>
-                    <hr class="hr"/>
+                    <hr class="hr" />
                     <div class="d-flex justify-content-evenly">
                         <div class="stars">
                             <img src="@/assets/images/gray_star.png" v-if="post.liked == 'false'"
@@ -157,12 +161,14 @@ export default {
         const store = useStore();
         const loading = ref(true);
         const is_me = computed(() => props.userId === store.state.user.id);
-        let posts = ref([]);
         const add_post = reactive({
             title: "",
             content: "",
             error_message: "",
         });
+
+        let posts = ref([]);
+        let show_blank = ref(false);
         let show_comment_post_set = ref(new Set());
 
         const pull_all_posts = () => {
@@ -178,6 +184,7 @@ export default {
                 },
                 success(resp) {
                     posts.value = resp;
+                    if (resp.length == 0) show_blank.value = true;
                     posts.value.reverse();
                     loading.value = false;
                 },
@@ -280,7 +287,7 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success() {
-                    post.stars ++;
+                    post.stars++;
                     post.liked = 'true';
                 },
                 error(resp) {
@@ -301,7 +308,7 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success() {
-                    post.stars --;
+                    post.stars--;
                     post.liked = 'false';
                 },
                 error(resp) {
@@ -323,6 +330,7 @@ export default {
             is_me,
             loading,
             show_comment_post_set,
+            show_blank,
             pull_all_posts,
             post_a_post,
             click_remove_a_post,
@@ -400,5 +408,4 @@ img {
     font-size: medium;
     padding: 0px 0px 0px 0px;
 }
-
 </style>

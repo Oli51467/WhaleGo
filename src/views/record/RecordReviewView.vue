@@ -214,7 +214,7 @@ div.reviewboard {
 }
 
 .review_board {
-    background-color: #c28b69;
+    background-color: rgba(186, 135, 27, 0.5);
     border: 2px solid #9d6746;
     margin-top: 20px;
     margin-left: 50px;

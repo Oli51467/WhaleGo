@@ -2,7 +2,7 @@
     <ContentBase>
         <el-tabs type="border-card" :stretch=true tab-position="top">
             <el-tab-pane label="我的棋谱">
-                <MyRecords/>
+                <MyRecords :userId="$store.state.user.id"/>
             </el-tab-pane>
             <el-tab-pane label="棋谱欣赏">
                 <RecordsLibrary/>

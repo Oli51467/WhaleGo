@@ -1,6 +1,9 @@
 <template>
     <el-skeleton :loading="loading" :rows="6" animated></el-skeleton>
-    <div>
+    <el-empty description="这里没有棋谱" v-if="show_blank == true">
+        <el-button type="success" v-if="is_me"  @click="nav_to_play">去下棋！</el-button>
+    </el-empty>
+    <div v-else>
         <table class="table table-striped table-hover" style="text-align:center">
             <thead v-if="!loading">
                 <tr>
@@ -41,41 +44,51 @@
                 </tr>
             </tbody>
         </table>
-    </div>
 
-    <nav aria-label="...">
-        <ul class="pagination" style="float: right">
-            <li class="page-item" @click="click_page(-2)">
-                <a class="page-link" href="#">前一页</a>
-            </li>
-            <li :class="'page-item ' + page.is_active" v-for="page in pages" :key="page.number"
-                @click="click_page(page.number - 1)">
-                <a class="page-link" href="#">{{ page.number }}</a>
-            </li>
-            <li class="page-item" @click="click_page(-1)">
-                <a class="page-link" href="#">后一页</a>
-            </li>
-        </ul>
-    </nav>
+        <nav aria-label="...">
+            <ul class="pagination" style="float: right">
+                <li class="page-item" @click="click_page(-2)">
+                    <a class="page-link" href="#">前一页</a>
+                </li>
+                <li :class="'page-item ' + page.is_active" v-for="page in pages" :key="page.number"
+                    @click="click_page(page.number - 1)">
+                    <a class="page-link" href="#">{{ page.number }}</a>
+                </li>
+                <li class="page-item" @click="click_page(-1)">
+                    <a class="page-link" href="#">后一页</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </template>
 
 <script>
 import { useStore } from "vuex";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import $ from 'jquery'
 import { API_URL } from "@/assets/apis/api";
 import { useRouter } from 'vue-router';
 import router from '@/router';
 
 export default {
-    setup() {
+    props: {
+        userId: {
+            type: Number,
+            required: true,
+        }
+    },
+
+    setup(props) {
         const store = useStore();
         const route = useRouter();
+        const loading = ref(true);
+        const is_me = computed(() => props.userId === store.state.user.id);
+
         let records = ref([]);
         let pages = ref([]);
+        let show_blank = ref(false);
         let current_page = 0;
         let total_records = 0;
-        const loading = ref(true);
 
         const click_page = page => {
             if (page === -2) page = current_page - 1;
@@ -106,7 +119,8 @@ export default {
             $.ajax({
                 url: `${API_URL}/record/getMy/`,
                 data: {
-                    page,
+                    page: page,
+                    user_id: props.userId,
                 },
                 type: "get",
                 headers: {
@@ -115,6 +129,8 @@ export default {
                 success(resp) {
                     records.value = resp.records;
                     total_records = resp.records_count;
+                    console.log(total_records);
+                    if (total_records == 0) show_blank.value = true;
                     update_pages();
                     loading.value = false;
                 },
@@ -156,15 +172,22 @@ export default {
             })
         }
 
+        const nav_to_play = () => {
+            router.replace({ name: 'goplay' });
+        }
+
         return {
             pages,
             records,
             loading,
+            show_blank,
+            is_me,
             click_page,
             pull_page,
             update_pages,
             open_record,
             nav_to_user_space,
+            nav_to_play,
         }
     }
 }

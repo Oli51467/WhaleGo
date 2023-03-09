@@ -136,7 +136,7 @@ export class BoardRecord extends GameObject {
     draw_stars(x, y) {
         this.ctx.fillStyle = "#f402f26";
         this.ctx.beginPath();
-        this.ctx.arc(x * this.cell_len, y * this.cell_len, this.cell_len / 5 * 0.75, 0, Math.PI * 2);
+        this.ctx.arc(x * this.cell_len, y * this.cell_len, this.cell_len / 6 * 0.75, 0, Math.PI * 2);
         this.ctx.fill();
     }
 
