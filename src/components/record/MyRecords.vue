@@ -122,7 +122,7 @@ export default {
                     page: page,
                     user_id: props.userId,
                 },
-                type: "get",
+                type: "post",
                 headers: {
                     Authorization: "Bearer " + store.state.user.token,
                 },

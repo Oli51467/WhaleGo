@@ -145,7 +145,7 @@ export default {
                 data: {
                     record_id: recordId,
                 },
-                type: "get",
+                type: "post",
                 headers: {
                     Authorization: "Bearer " + store.state.user.token,
                 },
