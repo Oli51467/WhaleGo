@@ -37,7 +37,7 @@
 
                 <!--若用户已登录则展示用户信息菜单-->
                 <ul class="navbar-nav" v-if="$store.state.user.is_login">
-                    <el-badge :value="0" class="item">
+                    <el-badge :value="message_unread" class="item">
                         <el-button size="small" @click="open_chat_body">
                             <span style="margin: 0 auto;">消息</span>
                         </el-button>
@@ -130,6 +130,7 @@ import { useRoute } from 'vue-router';
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { API_URL } from '@/assets/apis/api';
+import { onMounted } from 'vue';
 import $ from 'jquery';
 import ChatBox from '@/components/base/ChatBox.vue';
 
@@ -142,8 +143,28 @@ export default {
         const store = useStore();
         let user_search = ref('');
         let user = ref([]);
+        let message_unread = ref(0);
         let show_chat = ref(false);
         let route_name = computed(() => route.name);
+
+        onMounted(() => {
+            $.ajax({
+                url: `${API_URL}/messages/getCount/`,
+                type: "get",
+                data: {
+                    user_id: store.state.user.id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success(resp) {
+                    message_unread.value = resp.data;
+                },
+                error(resp) {
+                    console.log(resp);
+                }
+            })
+        })
 
         const logout = () => {
             store.commit("updateWhich", 0);
@@ -227,6 +248,7 @@ export default {
             user_search,
             user,
             show_chat,
+            message_unread,
             search_user,
             logout,
             follow,

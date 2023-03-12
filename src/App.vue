@@ -13,7 +13,7 @@ import { request_draw_eb, request_regret_eb } from './components/go/GoPlayBoard.
 import { go_resign } from './components/go/GoPlayBoard.vue';
 import { ElMessageBox } from 'element-plus';
 import { WS_URL } from './assets/apis/api';
-import { selectedFriend } from '@/components/base/ChatBox.vue';
+import { selectedFriend, friends } from '@/components/base/ChatBox.vue';
 
 export default {
     components: {
@@ -49,6 +49,13 @@ export default {
                     content: data.content,
                     sendUserId: data.sendUserId,
                 });
+                for (let friend of friends.value) {
+                    console.log(friend);
+                    if (friend.id == data.sendUserId) {
+                        friend.unread_cnt = data.unread_cnt;
+                        break;
+                    }
+                }
             }
             if (data.event === "start") {
                 const roomId = data.game.room_id;

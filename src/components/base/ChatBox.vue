@@ -15,7 +15,7 @@
                     <li v-for="friend in friends" :key="friend.id" :class="{ active: friend.id === selectedFriend.id }"
                         @click="selectFriend(friend)">
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-3">
                                 <img :src="friend.avatar" alt="friend-avatar" class="friend-list-avatar" />
                             </div>
                             <div class="col-4">
@@ -28,6 +28,9 @@
                                     <p v-if="friend.isOnline" class="online">在线</p>
                                     <p v-else class="offline">离线</p>
                                 </div>
+                            </div>
+                            <div class="col-1">
+                                <span v-if="friend.unread_cnt != 0"> {{friend.unread_cnt}} </span>
                             </div>
                         </div>
                     </li>
@@ -66,7 +69,8 @@ import $ from 'jquery';
 import { API_URL, WS_URL } from '@/assets/apis/api';
 import { useStore } from 'vuex';
 
-export let selectedFriend = ref({ id: null, name: null, avatar: null, messages: [] });
+export let selectedFriend = ref({ id: null, name: null, avatar: null, unread_cnt: 0, messages: [] });
+export let friends = ref([]);
 
 export default {
     emits: ['open_chat_body'],
@@ -84,7 +88,6 @@ export default {
         let chat_body = ref(null);
         let chat_header = ref(null);
         let chat_msg = ref("");
-        let friends = ref([]);
         let messageInput = ref('');
         let socket = null;
         onMounted(() => {
@@ -134,6 +137,23 @@ export default {
 
         const selectFriend = (friend) => {
             selectedFriend.value = friend;
+            friend.unread_cnt = 0;
+            $.ajax({
+                url: `${API_URL}/messages/clearUnread/`,
+                type: "post",
+                data: {
+                    send_id: friend.id,
+                    receive_id: store.state.user.id,
+                },
+                headers: {
+                    Authorization: "Bearer " + store.state.user.token,
+                },
+                success() {
+                },
+                error(err) {
+                    console.log(err);
+                }
+            });
         }
 
         const scroll = () => {
