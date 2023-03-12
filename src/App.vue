@@ -14,6 +14,7 @@ import { go_resign } from './components/go/GoPlayBoard.vue';
 import { ElMessageBox } from 'element-plus';
 import { WS_URL } from './assets/apis/api';
 import { selectedFriend, friends } from '@/components/base/ChatBox.vue';
+import { total_message_unread } from '@/components/base/NavBar.vue';
 
 export default {
     components: {
@@ -49,8 +50,8 @@ export default {
                     content: data.content,
                     sendUserId: data.sendUserId,
                 });
+                total_message_unread.value = data.sum_unread;
                 for (let friend of friends.value) {
-                    console.log(friend);
                     if (friend.id == data.sendUserId) {
                         friend.unread_cnt = data.unread_cnt;
                         break;

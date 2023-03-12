@@ -10,12 +10,11 @@
         </div>
         <div class="chat-container">
             <div class="friend-list">
-                <h3>好友列表</h3>
                 <ul>
                     <li v-for="friend in friends" :key="friend.id" :class="{ active: friend.id === selectedFriend.id }"
                         @click="selectFriend(friend)">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-2">
                                 <img :src="friend.avatar" alt="friend-avatar" class="friend-list-avatar" />
                             </div>
                             <div class="col-4">
@@ -29,8 +28,10 @@
                                     <p v-else class="offline">离线</p>
                                 </div>
                             </div>
-                            <div class="col-1">
-                                <span v-if="friend.unread_cnt != 0"> {{friend.unread_cnt}} </span>
+                            <div class="col-2">
+                                <el-badge v-if="friend.unread_cnt != 0" :value="friend.unread_cnt" class="msg_count">
+                                    
+                                </el-badge>
                             </div>
                         </div>
                     </li>
@@ -68,6 +69,7 @@ import { ChatBody } from '@/assets/scripts/ChatBody.js';
 import $ from 'jquery';
 import { API_URL, WS_URL } from '@/assets/apis/api';
 import { useStore } from 'vuex';
+import { total_message_unread } from '@/components/base/NavBar.vue';
 
 export let selectedFriend = ref({ id: null, name: null, avatar: null, unread_cnt: 0, messages: [] });
 export let friends = ref([]);
@@ -137,6 +139,7 @@ export default {
 
         const selectFriend = (friend) => {
             selectedFriend.value = friend;
+            total_message_unread.value -= friend.unread_cnt;
             friend.unread_cnt = 0;
             $.ajax({
                 url: `${API_URL}/messages/clearUnread/`,
@@ -377,5 +380,11 @@ export default {
 .friend-name {
     margin-top: 10px;
     font-weight: bold;
+}
+
+.msg_count {
+    display: inline-block;
+    margin-top: 12px;
+    margin-right: 10px;
 }
 </style>

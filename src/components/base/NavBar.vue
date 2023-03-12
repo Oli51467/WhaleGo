@@ -37,7 +37,7 @@
 
                 <!--若用户已登录则展示用户信息菜单-->
                 <ul class="navbar-nav" v-if="$store.state.user.is_login">
-                    <el-badge :value="message_unread" class="item">
+                    <el-badge :value="total_message_unread" class="item">
                         <el-button size="small" @click="open_chat_body">
                             <span style="margin: 0 auto;">消息</span>
                         </el-button>
@@ -134,6 +134,8 @@ import { onMounted } from 'vue';
 import $ from 'jquery';
 import ChatBox from '@/components/base/ChatBox.vue';
 
+export let total_message_unread = ref(0);
+
 export default {
     components: {
         ChatBox,
@@ -143,7 +145,6 @@ export default {
         const store = useStore();
         let user_search = ref('');
         let user = ref([]);
-        let message_unread = ref(0);
         let show_chat = ref(false);
         let route_name = computed(() => route.name);
 
@@ -158,7 +159,7 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
-                    message_unread.value = resp.data;
+                    total_message_unread.value = resp.data;
                 },
                 error(resp) {
                     console.log(resp);
@@ -184,7 +185,6 @@ export default {
                     Authorization: "Bearer " + store.state.user.token,
                 },
                 success(resp) {
-                    console.log(resp);
                     user.value = resp;
                 },
                 error(resp) {
@@ -248,7 +248,7 @@ export default {
             user_search,
             user,
             show_chat,
-            message_unread,
+            total_message_unread,
             search_user,
             logout,
             follow,
