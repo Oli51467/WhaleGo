@@ -9,25 +9,19 @@
                         <span class="user-info"> {{ user.username }}</span>
                     </td>
                     <td v-if="user.state == 1">
-                        <span class="on">在线</span>
+                        <el-tag type="success">在线</el-tag>
                     </td>
                     <td v-else>
-                        <span class="off">不在线</span>
+                        <el-tag type="info">不在线</el-tag>
                     </td>
                     <td>
-                        <span class="user-info">
-                            {{ "棋力：" + user.level }}
-                        </span>
+                        <el-tag type="danger" color="#ffd9b3">{{ "棋力：" + user.level }}</el-tag>
                     </td>
                     <td>
-                        <span class="user-info">
-                            {{ user.win + "胜" }}
-                        </span>
+                        <el-tag>{{ user.win + "胜" }}</el-tag>
                     </td>
                     <td>
-                        <span class="user-info">
-                            {{ user.lose + "负" }}
-                        </span>
+                        <el-tag>{{ user.lose + "负" }}</el-tag>
                     </td>
                     <td>
                         <el-button type="info" plain @click="unfollow(user)" v-if="user.follow === true">取消关注</el-button>

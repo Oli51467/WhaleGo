@@ -9,25 +9,19 @@
                         <span class="user-info"> {{ user.username }}</span>
                     </td>
                     <td v-if="user.state == 1">
-                        <span class="on">在线</span>
+                        <el-tag type="success">在线</el-tag>
                     </td>
                     <td v-else>
-                        <span class="off">不在线</span>
+                        <el-tag type="info">不在线</el-tag>
                     </td>
                     <td>
-                        <span class="user-info">
-                            {{ "棋力：" + user.level }}
-                        </span>
+                        <el-tag type="danger" color="#eeccff">{{ "棋力：" + user.level }}</el-tag>
                     </td>
                     <td>
-                        <span class="user-info">
-                            {{ user.win + "胜" }}
-                        </span>
+                        <el-tag>{{ user.win + "胜" }}</el-tag>
                     </td>
                     <td>
-                        <span class="user-info">
-                            {{ user.lose + "负" }}
-                        </span>
+                        <el-tag>{{ user.lose + "负" }}</el-tag>
                     </td>
                 </tr>
             </tbody>
@@ -72,10 +66,5 @@ img.user-avatar {
     height: 4vh;
     border-radius: 50%;
     cursor: pointer;
-}
-
-.on {
-    color: green;
-    font-weight: 600;
 }
 </style>

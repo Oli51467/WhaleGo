@@ -21,7 +21,7 @@
                         <span class="record-user-username"> {{ record.black_username }}</span>
                     </td>
                     <td>
-                        <span> {{ record.black_level }}</span>
+                        <el-tag type="danger" color="#ffd9b3">{{ record.black_level }}</el-tag>
                     </td>
                     <td>
                         <img :src="record.white_avatar" alt="" class="record-user-avatar" @click="nav_to_user_space(record.white_userid)">
@@ -29,10 +29,14 @@
                         <span class="record-user-username"> {{ record.white_username }}</span>
                     </td>
                     <td>
-                        <span> {{ record.white_level }}</span>
+                        <el-tag type="danger" color="#ffd9b3">{{ record.white_level }}</el-tag>
                     </td>
-                    <td> {{ record.result }}</td>
-                    <td> {{ record.create_time }}</td>
+                    <td> 
+                        <el-tag v-bind:color="record.result === '黑中盘胜' ? '#1a1a1a' : '#ffffff'">{{ record.result }}</el-tag>
+                    </td>
+                    <td> 
+                        <el-tag color="#cceeff">{{ record.create_time }}</el-tag>
+                    </td>
                     <td>
                         <el-button class="op" plain @click="open_record(record.id)">复盘</el-button>
                     </td>
@@ -170,5 +174,9 @@ img.record-user-avatar {
 
 .op {
     box-shadow: 2px 2px 2px #b9b9b9;
+}
+
+.record-user-username {
+    font-weight: 500;
 }
 </style>

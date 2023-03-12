@@ -12,25 +12,19 @@
                         <span class="user-info"> {{ friend.username }}</span>
                     </td>
                     <td v-if="friend.state == 1">
-                        <span class="on">在线</span>
+                        <el-tag type="success">在线</el-tag>
                     </td>
                     <td v-else>
-                        <span class="off">不在线</span>
+                        <el-tag type="info">不在线</el-tag>
                     </td>
                     <td>
-                        <span class="user-info">
-                            {{ "棋力：" + friend.level }}
-                        </span>
+                        <el-tag type="danger" color="#ffd9b3">{{ "棋力：" + friend.level }}</el-tag>
                     </td>
                     <td>
-                        <span class="user-info">
-                            {{ friend.win + "胜" }}
-                        </span>
+                        <el-tag>{{ friend.win + "胜" }}</el-tag>
                     </td>
                     <td>
-                        <span class="user-info">
-                            {{ friend.lose + "负" }}
-                        </span>
+                        <el-tag>{{ friend.lose + "负" }}</el-tag>
                     </td>
                     <td>
                         <el-button plain v-if="friend.status === 'stand'"
@@ -95,11 +89,6 @@ export default {
 .user-info {
     font-weight: 500;
     margin-top: -14px;
-}
-
-.on {
-    color: green;
-    font-weight: 600;
 }
 
 img.user-avatar {

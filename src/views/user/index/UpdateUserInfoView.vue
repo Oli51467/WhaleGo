@@ -122,10 +122,10 @@
                                         </div>
                                         <div class="modal-footer">
                                             <span class="error_message">{{ error_message }}</span>
-                                            <button @click="update_password" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#updateInfo" class="btn btn-primary">确认</button>
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">取消</button>
+                                            <el-button @click="update_password" type="primary" data-bs-toggle="modal"
+                                                data-bs-target="#updateInfo" plain>确认</el-button>
+                                            <el-button type="info" plain
+                                                data-bs-dismiss="modal">取消</el-button>
                                         </div>
                                     </div>
                                 </div>
