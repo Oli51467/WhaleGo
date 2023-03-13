@@ -139,6 +139,7 @@ export default {
 
         const selectFriend = (friend) => {
             selectedFriend.value = friend;
+            scroll();
             total_message_unread.value -= friend.unread_cnt;
             friend.unread_cnt = 0;
             $.ajax({
@@ -160,9 +161,8 @@ export default {
         }
 
         const scroll = () => {
-            messages.value.scrollTop = messages.value.scrollHeight;
+            messages.value.scrollTop = messages.value.scrollHeight - messages.value.clientHeight;
         }
-
 
         return {
             chat_body,
@@ -301,8 +301,8 @@ export default {
 
 .message-content {
     max-width: 85%;
+    font-size: 15px;
     word-wrap: break-word;
-    white-space: pre-wrap;
 }
 
 .message.sent {
