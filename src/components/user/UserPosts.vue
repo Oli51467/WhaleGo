@@ -140,7 +140,7 @@ import { useStore } from 'vuex';
 import { API_URL } from '@/assets/apis/api';
 import { Modal } from 'bootstrap/dist/js/bootstrap';
 import { reactive, computed } from 'vue';
-import CommentArea from '../community/CommentArea.vue';
+import CommentArea from '../comment/CommentArea.vue';
 
 export default {
     components: {

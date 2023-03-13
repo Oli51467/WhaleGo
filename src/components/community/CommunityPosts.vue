@@ -84,7 +84,7 @@ import { useStore } from 'vuex';
 import router from '@/router';
 import { reactive, ref } from 'vue';
 import { Modal } from 'bootstrap/dist/js/bootstrap';
-import CommentArea from './CommentArea.vue';
+import CommentArea from '../comment/CommentArea.vue';
 
 export default {
     emits: ['pull_all_posts'],

@@ -24,13 +24,17 @@
             <div class="comment-divider">
                 <div class="row">
                     <div class="col-1">
-                        <img :src="comment.userAvatar" class="comment-user-avatar" @click="nav_to_user_space(comment.userId)">
+                        <img :src="comment.userAvatar" class="comment-user-avatar"
+                            @click="nav_to_user_space(comment.userId)">
                     </div>
                     <div class="col-11">
                         <div class="row">
-                            <span class="d-flex comment-username"> 
+                            <span class="d-flex comment-username">
                                 {{ comment.username }} &nbsp;&nbsp;
-                                {{ comment.presentCommentTime}}
+                                {{ comment.presentCommentTime }} &nbsp;&nbsp;
+                                <span class="click-reply" @click="click_comment(comment)"
+                                    v-if="!show_comment_post_set.has(comment.id)">回复</span>
+                                <span class="click-reply" @click="click_comment(comment)" v-else>收起</span>
                             </span>
                         </div>
                         <div class="row">
@@ -38,6 +42,9 @@
                                 {{ comment.content }}
                             </span>
                         </div>
+                        <!-- <CommentReplyList :comment_id="comment.id"></CommentReplyList> -->
+                        <ReplyCommentArea v-if="show_comment_post_set.has(comment.id)" :comment_id="comment.id">
+                        </ReplyCommentArea>
                     </div>
                 </div>
             </div>
@@ -46,6 +53,7 @@
 </template>
 
 <script>
+import ReplyCommentArea from './ReplyCommentArea.vue';
 import $ from 'jquery';
 import { API_URL } from '@/assets/apis/api';
 import { useStore } from 'vuex';
@@ -53,6 +61,9 @@ import { ref, onMounted } from 'vue';
 import router from '@/router';
 
 export default {
+    components: {
+        ReplyCommentArea,
+    },
     props: {
         post_id: {
             type: Number,
@@ -65,6 +76,8 @@ export default {
         const posts_comments = ref([]);
         let comments_count = ref(0);
         let comment_input = ref('');
+        let show_comment_post_set = ref(new Set());
+
         onMounted(() => {
             $.ajax({
                 url: `${API_URL}/post/comment/get/`,
@@ -140,13 +153,21 @@ export default {
             })
         }
 
+        const click_comment = (comment) => {
+            const click_comment_comment_id = comment.id;
+            if (show_comment_post_set.value.has(click_comment_comment_id)) show_comment_post_set.value.delete(click_comment_comment_id);
+            else show_comment_post_set.value.add(click_comment_comment_id);
+        }
+
         return {
             posts_comments,
             comments_count,
             comment_input,
+            show_comment_post_set,
             get_post_comments,
             comment_a_post,
             nav_to_user_space,
+            click_comment,
         }
     }
 }
@@ -154,7 +175,6 @@ export default {
 
 <style scoped>
 .comment {
-    background-color: rgba(231, 224, 224, 0.2);
     border-radius: 10px;
     height: auto;
     width: auto;
@@ -203,4 +223,8 @@ export default {
 .comment-content {
     margin: 2vh auto;
 }
-</style>
+
+.click-reply:hover {
+    color: rgb(56, 110, 197);
+    cursor: pointer;
+}</style>
