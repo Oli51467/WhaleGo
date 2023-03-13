@@ -11,6 +11,7 @@ import LoginView from '../views/user/account/LoginView'
 import RegisterView from '../views/user/account/RegisterView'
 import UpdateUserInfoView from '../views/user/index/UpdateUserInfoView'
 import GoPlayView from '../views/play/GoPlayView'
+import VideoGroupView from '../views/community/VideoGroupIndex.vue'
 import store from '../store/index'
 
 const routes = [
@@ -74,6 +75,14 @@ const routes = [
         path: '/community/',
         name: 'community',
         component: CommunityIndexView,
+        meta: {
+            requestAuth: true,
+        }
+    },
+    {
+        path: '/community/video/',
+        name: 'video_index',
+        component: VideoGroupView,
         meta: {
             requestAuth: true,
         }

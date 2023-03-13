@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row">
             <div class="col-3" style="margin-top:1vh">
-                <UserInfoBase>
+                <LargeContentBase>
                     <UserInfo :guests="guests" :userId="userId" />
-                </UserInfoBase>
+                </LargeContentBase>
             </div>
             <div class="col-9" style="margin-top:4vh; margin-bottom: 3vh;">
                 <div class="card">
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import UserInfoBase from '@/components/base/UserInfoBase.vue';
+import LargeContentBase from '@/components/base/LargeContentBase.vue';
 import UserInfo from '@/components/user/UserInfo.vue';
 import UserPosts from '@/components/user/UserPosts.vue'
 import MyRecords from '@/components/record/MyRecords.vue';
@@ -57,7 +57,7 @@ export default {
     name: 'UserBots',
     // 存放templates中用到的其他组件
     components: {
-        UserInfoBase,
+        LargeContentBase,
         UserInfo,
         UserPosts,
         MyRecords,
